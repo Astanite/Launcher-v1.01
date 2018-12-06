@@ -29,19 +29,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/focusModeSettingsTextview" />
 
-    <TextView
-        android:id="@+id/workModeSettingsTextview"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="?attr/selectableItemBackground"
-        android:clickable="true"
-        android:padding="16dp"
-        android:text="Work Mode Settings"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/view" />
+
 
     <View
         android:id="@+id/view2"
@@ -50,7 +38,7 @@
         android:background="@android:color/darker_gray"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/workModeSettingsTextview" />
+        app:layout_constraintTop_toBottomOf="@+id/focusModeSettingsTextview" />
 
     <TextView
         android:id="@+id/sleepModeSettingsTextview"
@@ -81,7 +69,7 @@
         android:background="?attr/selectableItemBackground"
         android:clickable="true"
         android:padding="16dp"
-        android:text="My Mode Settings"
+        android:text="Leisure Mode Settings"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

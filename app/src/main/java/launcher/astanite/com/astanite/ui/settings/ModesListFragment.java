@@ -19,7 +19,6 @@ public class ModesListFragment extends Fragment {
 
     private SettingsViewModel settingsViewModel;
     private TextView focusModeSettings;
-    private TextView workModeSettings;
     private TextView sleepModeSettings;
     private TextView myModeSettings;
 
@@ -46,7 +45,6 @@ public class ModesListFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         focusModeSettings = view.findViewById(R.id.focusModeSettingsTextview);
-        workModeSettings = view.findViewById(R.id.workModeSettingsTextview);
         sleepModeSettings = view.findViewById(R.id.sleepModeSettingsTextview);
         myModeSettings = view.findViewById(R.id.myModeSettingsTextview);
 
@@ -54,10 +52,7 @@ public class ModesListFragment extends Fragment {
             settingsViewModel.currentFragment.setValue(Constants.FRAGMENT_SETTINGS);
             settingsViewModel.currentMode.setValue(Constants.MODE_FOCUS);
         });
-        workModeSettings.setOnClickListener(someView -> {
-            settingsViewModel.currentFragment.setValue(Constants.FRAGMENT_SETTINGS);
-            settingsViewModel.currentMode.setValue(Constants.MODE_WORK);
-        });
+
         sleepModeSettings.setOnClickListener(someView -> {
             settingsViewModel.currentFragment.setValue(Constants.FRAGMENT_SETTINGS);
             settingsViewModel.currentMode.setValue(Constants.MODE_SLEEP);

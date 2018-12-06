@@ -90,8 +90,6 @@ public class SettingsViewModel extends AndroidViewModel {
         switch (currentMode.getValue()) {
             case Constants.MODE_FOCUS: key = Constants.KEY_FOCUS_APPS;
             break;
-            case Constants.MODE_WORK: key = Constants.KEY_WORK_APPS;
-            break;
             case Constants.MODE_SLEEP: key = Constants.KEY_SLEEP_APPS;
             break;
             case Constants.MY_MODE: key = Constants.KEY_MY_MODE_APPS;

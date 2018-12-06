@@ -5,7 +5,6 @@ public class Constants {
 
     public static final String KEY_CURRENT_MODE = "current-mode";
     public static final String KEY_FOCUS_APPS = "focus-apps";
-    public static final String KEY_WORK_APPS = "work-apps";
     public static final String KEY_SLEEP_APPS = "sleep-apps";
     public static final String KEY_MY_MODE_APPS = "my-mode-apps";
     public static final String KEY_INTENTION = "intention";
@@ -16,7 +15,6 @@ public class Constants {
 
     public static final int MODE_NONE = 0;
     public static final int MODE_FOCUS = 1;
-    public static final int MODE_WORK = 2;
     public static final int MODE_SLEEP = 3;
     public static final int MY_MODE = 4;
 
