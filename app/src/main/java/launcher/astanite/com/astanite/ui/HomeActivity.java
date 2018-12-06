@@ -87,10 +87,7 @@ public class HomeActivity extends AppCompatActivity implements
                             snackbarMessage = "Switched to My Mode. Notifications Blocked.";
                             Snackbar.make(rootView, snackbarMessage, Snackbar.LENGTH_SHORT).show();
                             break;
-                        case Constants.MODE_WORK:
-                            snackbarMessage = "Switched to Work mode. Notifications Blocked.";
-                            Snackbar.make(rootView, snackbarMessage, Snackbar.LENGTH_SHORT).show();
-                            break;
+
                     }
                 });
     }

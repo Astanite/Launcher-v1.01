@@ -38,7 +38,6 @@ public class MainViewModel extends AndroidViewModel {
     private MutableLiveData<String> currentIntention;
 
     public List<String> focusModeApps;
-    public List<String> workModeApps;
     public List<String> sleepModeApps;
     public List<String> myModeApps;
     public MutableLiveData<List<AppInfo>> currentModeApps = new MutableLiveData<>();
@@ -58,7 +57,6 @@ public class MainViewModel extends AndroidViewModel {
         currentIntention.setValue(sharedPreferences.getString(Constants.KEY_INTENTION, ""));
 
         focusModeApps = new ArrayList<>();
-        workModeApps = new ArrayList<>();
         sleepModeApps = new ArrayList<>();
         myModeApps = new ArrayList<>();
 
@@ -66,7 +64,6 @@ public class MainViewModel extends AndroidViewModel {
         compositeDisposable.add(Completable
                 .fromAction(() -> {
                     focusModeApps.addAll(sharedPreferences.getStringSet(Constants.KEY_FOCUS_APPS, new HashSet<>()));
-                    workModeApps.addAll(sharedPreferences.getStringSet(Constants.KEY_WORK_APPS, new HashSet<>()));
                     sleepModeApps.addAll(sharedPreferences.getStringSet(Constants.KEY_SLEEP_APPS, new HashSet<>()));
                     myModeApps.addAll(sharedPreferences.getStringSet(Constants.KEY_MY_MODE_APPS, new HashSet<>()));
                 })
@@ -144,10 +141,7 @@ public class MainViewModel extends AndroidViewModel {
                 key = Constants.KEY_FOCUS_APPS;
                 enableDND();
                 break;
-            case Constants.MODE_WORK:
-                key = Constants.KEY_WORK_APPS;
-                enableDND();
-                break;
+
             case Constants.MODE_SLEEP:
                 key = Constants.KEY_SLEEP_APPS;
                 enableDND();

@@ -41,7 +41,6 @@ public class HomeScreenFragment extends Fragment {
     private EditText intentionEditText;
     private MainViewModel mainViewModel;
     private MaterialButton focusModeButton;
-    private MaterialButton workModeButton;
     private MaterialButton sleepModeButton;
     private MaterialButton myModeButton;
     private CompositeDisposable compositeDisposable;
@@ -96,7 +95,6 @@ public class HomeScreenFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         focusModeButton = view.findViewById(R.id.focusModeButton);
-        workModeButton = view.findViewById(R.id.workModeButton);
         sleepModeButton = view.findViewById(R.id.sleepModeButton);
         myModeButton = view.findViewById(R.id.myModeButton);
         intentionEditText = view.findViewById(R.id.intentionEditText);
@@ -113,12 +111,6 @@ public class HomeScreenFragment extends Fragment {
                 Log.d(TAG, "Showing penalty screen for mode: " + Constants.MODE_FOCUS);
                 penaltyScreenListener.showPenaltyScreen(Constants.MODE_FOCUS);
             } else
-                Snackbar.make(view, "You're already in another mode", Snackbar.LENGTH_SHORT).show();
-        });
-        workModeButton.setOnClickListener(someView -> {
-            if (mainViewModel.getCurrentMode().getValue() == Constants.MODE_NONE)
-                penaltyScreenListener.showPenaltyScreen(Constants.MODE_WORK);
-            else
                 Snackbar.make(view, "You're already in another mode", Snackbar.LENGTH_SHORT).show();
         });
         sleepModeButton.setOnClickListener(someView -> {
@@ -197,31 +189,21 @@ public class HomeScreenFragment extends Fragment {
             case Constants.MODE_FOCUS:
                 Log.d(TAG, "Enabling on focus button");
                 focusModeButton.setEnabled(true);
-                workModeButton.setEnabled(false);
-                sleepModeButton.setEnabled(false);
-                myModeButton.setEnabled(false);
-                break;
-            case Constants.MODE_WORK:
-                focusModeButton.setEnabled(false);
-                workModeButton.setEnabled(true);
                 sleepModeButton.setEnabled(false);
                 myModeButton.setEnabled(false);
                 break;
             case Constants.MODE_SLEEP:
                 focusModeButton.setEnabled(false);
-                workModeButton.setEnabled(false);
                 sleepModeButton.setEnabled(true);
                 myModeButton.setEnabled(false);
                 break;
             case Constants.MY_MODE:
                 focusModeButton.setEnabled(false);
-                workModeButton.setEnabled(false);
                 sleepModeButton.setEnabled(false);
                 myModeButton.setEnabled(true);
                 break;
             default:
                 focusModeButton.setEnabled(true);
-                workModeButton.setEnabled(true);
                 sleepModeButton.setEnabled(true);
                 myModeButton.setEnabled(true);
                 break;
