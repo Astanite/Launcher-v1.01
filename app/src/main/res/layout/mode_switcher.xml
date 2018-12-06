@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/intentionEditText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:minHeight="80dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/intention_edittext_background"
+        android:backgroundTint="#CCffffff"
+        android:padding="8dp"
+        android:hint="Your Intention here"
+        android:textColorHint="#414141"
+        android:textColor="#414141"
+        android:textAlignment="center"
+        android:textSize="18sp"
+        android:gravity="center"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/focusModeButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        tools:backgroundTint="#cc71cb69"
+        android:backgroundTint="@color/mode_button_colors"
+        android:text="Focus"
+        android:textAllCaps="false"
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="@+id/intentionEditText"
+        app:layout_constraintTop_toBottomOf="@+id/intentionEditText" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/sleepModeButton"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="2dp"
+        android:text="Sleep"
+        android:textAllCaps="false"
+        android:textSize="12sp"
+        tools:backgroundTint="#b38289a3"
+        android:backgroundTint="@color/mode_button_colors"
+        app:layout_constraintBottom_toBottomOf="@+id/workModeButton"
+        app:layout_constraintEnd_toStartOf="@+id/myModeButton"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/workModeButton"
+        app:layout_constraintTop_toTopOf="@+id/workModeButton" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/workModeButton"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="2dp"
+        tools:backgroundTint="#b38289a3"
+        android:backgroundTint="@color/mode_button_colors"
+        android:text="Work"
+        android:textAllCaps="false"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@+id/focusModeButton"
+        app:layout_constraintEnd_toStartOf="@+id/sleepModeButton"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/focusModeButton"
+        app:layout_constraintTop_toTopOf="@+id/focusModeButton" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/myModeButton"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="2dp"
+        tools:backgroundTint="#b38289a3"
+        android:backgroundTint="@color/mode_button_colors"
+        android:text="My Mode"
+        android:textAllCaps="false"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@+id/sleepModeButton"
+        app:layout_constraintEnd_toEndOf="@+id/intentionEditText"
+        app:layout_constraintStart_toEndOf="@+id/sleepModeButton"
+        app:layout_constraintTop_toTopOf="@+id/sleepModeButton" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
