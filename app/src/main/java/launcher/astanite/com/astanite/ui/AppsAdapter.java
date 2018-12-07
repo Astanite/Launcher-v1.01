@@ -1,6 +1,8 @@
 package launcher.astanite.com.astanite.ui;
 
 import android.content.Context;
+import android.graphics.ColorMatrix;
+import android.graphics.ColorMatrixColorFilter;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -64,6 +66,10 @@ public class AppsAdapter extends RecyclerView.Adapter<AppsAdapter.ViewHolder> {
 
         public void bindValues(AppInfo app, Context context) {
             glide.load(app.icon).into(appIconImageview);
+            ColorMatrix matrix = new ColorMatrix();
+            matrix.setSaturation(0);
+            ColorMatrixColorFilter filter = new ColorMatrixColorFilter(matrix);
+            appIconImageview.setColorFilter(filter);
             appNameTextview.setText(app.label);
             appItem.setOnClickListener(view -> context.startActivity(app.launchIntent));
         }
