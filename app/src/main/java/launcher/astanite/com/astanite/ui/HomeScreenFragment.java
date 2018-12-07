@@ -2,17 +2,22 @@ package launcher.astanite.com.astanite.ui;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.provider.Telephony;
 import android.telecom.TelecomManager;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.android.material.button.MaterialButton;
@@ -30,7 +35,26 @@ import launcher.astanite.com.astanite.R;
 import launcher.astanite.com.astanite.utils.Constants;
 import launcher.astanite.com.astanite.viewmodel.MainViewModel;
 
-public class HomeScreenFragment extends Fragment {
+public class HomeScreenFragment extends Fragment implements TextWatcher {
+
+    @Override
+    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+    }
+
+    @Override
+    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+        //updating intention in SharedPreference directly
+        sharedPreferences.edit()
+                .putString(Constants.KEY_INTENTION, intentionEditText.getText().toString())
+                .apply();
+        Log.d("upd Home", sharedPreferences.getString(Constants.KEY_INTENTION, ""));
+    }
+
+    @Override
+    public void afterTextChanged(Editable editable) {
+
+    }
 
     interface PenaltyScreenListener {
         void showPenaltyScreen(int mode);
@@ -49,6 +73,7 @@ public class HomeScreenFragment extends Fragment {
     private ImageView dialerImageView;
     private ImageView messagingImageView;
     private PenaltyScreenListener penaltyScreenListener;
+    private SharedPreferences sharedPreferences;
 
     public HomeScreenFragment() {
         // Required empty public constructor
@@ -59,6 +84,7 @@ public class HomeScreenFragment extends Fragment {
         super.onCreate(savedInstanceState);
         compositeDisposable = new CompositeDisposable();
         packageManager = getContext().getPackageManager();
+        sharedPreferences = this.getActivity().getSharedPreferences(Constants.SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
     }
 
     @Override
@@ -82,7 +108,7 @@ public class HomeScreenFragment extends Fragment {
                     }
                     setActiveModeButton(mode);
                 });
-        }
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -98,13 +124,11 @@ public class HomeScreenFragment extends Fragment {
         sleepModeButton = view.findViewById(R.id.sleepModeButton);
         myModeButton = view.findViewById(R.id.myModeButton);
         intentionEditText = view.findViewById(R.id.intentionEditText);
+        intentionEditText.setText("");
         dialerImageView = view.findViewById(R.id.dialerImageView);
         messagingImageView = view.findViewById(R.id.messagingImageView);
         rootview = view;
 
-        compositeDisposable.add(RxTextView.textChanges(intentionEditText)
-                .debounce(1, TimeUnit.SECONDS)
-                .subscribe(text -> mainViewModel.updateIntention(text.toString())));
 
         focusModeButton.setOnClickListener(someView -> {
             if (mainViewModel.getCurrentMode().getValue() == Constants.MODE_NONE) {
@@ -125,7 +149,6 @@ public class HomeScreenFragment extends Fragment {
             else
                 Snackbar.make(view, "You're already in another mode", Snackbar.LENGTH_SHORT).show();
         });
-
 
         Drawable dialerIcon = null;
         Drawable smsIcon = null;
@@ -155,6 +178,9 @@ public class HomeScreenFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        //updating the intention from shared preference
+        intentionEditText.setText(sharedPreferences.getString(Constants.KEY_INTENTION, ""));
+        Log.d("update intention", intentionEditText.getText().toString());
         intentionEditText.setEnabled(true);
     }
 
@@ -208,5 +234,11 @@ public class HomeScreenFragment extends Fragment {
                 myModeButton.setEnabled(true);
                 break;
         }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        intentionEditText.addTextChangedListener(this);
     }
 }

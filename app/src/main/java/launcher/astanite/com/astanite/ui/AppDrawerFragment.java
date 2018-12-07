@@ -2,7 +2,13 @@ package launcher.astanite.com.astanite.ui;
 
 
 import android.app.Activity;
+import android.app.Application;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +33,7 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import io.reactivex.disposables.CompositeDisposable;
 import launcher.astanite.com.astanite.R;
 import launcher.astanite.com.astanite.data.AppInfo;
 import launcher.astanite.com.astanite.utils.Constants;
@@ -55,6 +62,7 @@ public class AppDrawerFragment extends Fragment {
     private View root;
     private SettingsScreenListener settingsScreenListener;
     private TimerScreenListener timerScreenListener;
+    private SharedPreferences sharedPreferences;
 
     public AppDrawerFragment() {
         // Required empty public constructor
@@ -64,6 +72,8 @@ public class AppDrawerFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         appsAdapter = new AppsAdapter(new ArrayList<>(), Glide.with(this), getContext());
+        Application app = new Application() ;
+        sharedPreferences = this.getActivity().getSharedPreferences(Constants.SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
     }
 
     @Override
@@ -88,14 +98,33 @@ public class AppDrawerFragment extends Fragment {
                 .observe(this, appInfos -> {
                     appsAdapter.updateAppsList(appInfos);
                 });
-        mainViewModel
-                .getCurrentIntention()
-                .observe(this, intention -> {
-                    intentionEditText.setText(intention);
-                });
+        //Setting up intention in App drawer from MainViewModel
+        intentionEditText.setText(sharedPreferences.getString(Constants.KEY_INTENTION, ""));
 
         mainViewModel.getCurrentMode()
                 .observe(this, mode -> this.currentMode = mode);
+
+        //updating the intention on text change
+        // in editText
+        intentionEditText.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start,
+                                          int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start,
+                                      int before, int count) {
+                //updating intention in SharedPreference directly
+                sharedPreferences.edit()
+                        .putString(Constants.KEY_INTENTION, intentionEditText.getText().toString())
+                        .apply();
+            }
+        });
     }
 
     @Override
@@ -158,6 +187,7 @@ public class AppDrawerFragment extends Fragment {
             }
             return true;
         });
+
     }
 
     @Override
