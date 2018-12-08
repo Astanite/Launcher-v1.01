@@ -2,10 +2,15 @@ package launcher.astanite.com.astanite.ui;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.ContextMenu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
@@ -37,7 +42,6 @@ public class HomeActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         Log.i("MYINFO", "Creating Home Activity");
-
         allAppsButton = findViewById(R.id.allAppsButton);
         rootView = findViewById(R.id.rootView);
 
@@ -90,6 +94,31 @@ public class HomeActivity extends AppCompatActivity implements
 
                     }
                 });
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo)
+    {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        getMenuInflater().inflate(R.menu.options_on_long_press_app, menu);
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item)
+    {
+        switch(item.getItemId())
+        {
+            case R.id.uninstall:    Intent intent1 = new Intent(Intent.ACTION_DELETE);
+                                    SharedPreferences prefs = getSharedPreferences(Constants.SHARED_PREFERENCES_NAME, MODE_PRIVATE);
+                                    String packageName = prefs.getString("packageName","Default Package Name");
+                                    intent1.setData(Uri.parse("package:"+packageName));
+                                    startActivity(intent1);
+                                    closeAppDrawer();
+                                    return true;
+            case R.id.addToHomeScreen: Toast.makeText(getApplicationContext(),"Option2",Toast.LENGTH_LONG).show();
+                return true;
+            default:            return super.onContextItemSelected(item);
+        }
     }
 
     private void openAppDrawer() {

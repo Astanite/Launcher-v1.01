@@ -1,6 +1,8 @@
 package launcher.astanite.com.astanite.ui;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.util.Log;
@@ -18,6 +20,9 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import launcher.astanite.com.astanite.*;
 import launcher.astanite.com.astanite.data.AppInfo;
+import launcher.astanite.com.astanite.utils.Constants;
+
+import static android.content.Context.MODE_PRIVATE;
 
 public class AppsAdapter extends RecyclerView.Adapter<AppsAdapter.ViewHolder> {
 
@@ -72,6 +77,13 @@ public class AppsAdapter extends RecyclerView.Adapter<AppsAdapter.ViewHolder> {
             appIconImageview.setColorFilter(filter);
             appNameTextview.setText(app.label);
             appItem.setOnClickListener(view -> context.startActivity(app.launchIntent));
+            appItem.setOnLongClickListener(view -> {
+                SharedPreferences.Editor editor = context.getSharedPreferences(Constants.SHARED_PREFERENCES_NAME, MODE_PRIVATE).edit();
+                editor.putString("packageName",app.packageName);
+                editor.apply();
+                ((Activity)context).registerForContextMenu(appItem);
+                return false;
+            });
         }
     }
 
@@ -80,4 +92,6 @@ public class AppsAdapter extends RecyclerView.Adapter<AppsAdapter.ViewHolder> {
         this.appsList = newList;
         notifyDataSetChanged();
     }
+
+
 }
