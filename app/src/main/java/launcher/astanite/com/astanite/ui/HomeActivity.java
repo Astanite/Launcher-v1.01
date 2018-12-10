@@ -2,18 +2,26 @@ package launcher.astanite.com.astanite.ui;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.ContextMenu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
+
+import java.util.List;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.lifecycle.ViewModelProviders;
 import launcher.astanite.com.astanite.R;
+import launcher.astanite.com.astanite.data.AppInfo;
 import launcher.astanite.com.astanite.ui.settings.SettingsActivity;
 import launcher.astanite.com.astanite.utils.Constants;
 import launcher.astanite.com.astanite.viewmodel.MainViewModel;
@@ -31,13 +39,16 @@ public class HomeActivity extends AppCompatActivity implements
     private AppDrawerFragment appDrawerFragment;
     private FloatingActionButton allAppsButton;
     private CoordinatorLayout rootView;
+    private Bundle savedInstanceStateGlobal;
+    private int totalNumberOfInstalledApps;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         Log.i("MYINFO", "Creating Home Activity");
-
+        findTotalNumberOfInstalledApps();
         allAppsButton = findViewById(R.id.allAppsButton);
         rootView = findViewById(R.id.rootView);
 
@@ -49,6 +60,7 @@ public class HomeActivity extends AppCompatActivity implements
 
         homeScreenFragment = new HomeScreenFragment();
         appDrawerFragment = new AppDrawerFragment();
+        savedInstanceStateGlobal = savedInstanceState;
 
         if (savedInstanceState == null) {
             getSupportFragmentManager()
@@ -90,6 +102,92 @@ public class HomeActivity extends AppCompatActivity implements
 
                     }
                 });
+    }
+
+    private void findTotalNumberOfInstalledApps()
+    {
+        totalNumberOfInstalledApps = getPackageManager().getInstalledApplications(0).size();
+    }
+
+    public void getAllData()
+    {
+        mainViewModel.getResolveInfoList(this);
+        findTotalNumberOfInstalledApps();
+
+        homeScreenFragment = new HomeScreenFragment();
+        appDrawerFragment = new AppDrawerFragment();
+
+        if (savedInstanceStateGlobal == null) {
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment_container, homeScreenFragment, "HomeScreenFragment")
+                    .commit();
+        }
+
+        allAppsButton.setOnClickListener(someView -> {
+            mainViewModel.isAppDrawerOpen.setValue(true);
+            openAppDrawer();
+        });
+
+//        mainViewModel.isAppDrawerOpen
+//                .observe(this, isOpen -> {
+//                    if (isOpen) {
+//                        openAppDrawer();
+//                    } else {
+//                        closeAppDrawer();
+//                    }
+//                });
+
+        mainViewModel.getCurrentMode()
+                .observe(this, mode -> {
+                    String snackbarMessage;
+                    switch (mode) {
+                        case Constants.MODE_FOCUS:
+                            snackbarMessage = "Switched to Focus mode. Notifications Blocked.";
+                            Snackbar.make(rootView, snackbarMessage, Snackbar.LENGTH_SHORT).show();
+                            break;
+                        case Constants.MODE_SLEEP:
+                            snackbarMessage = "Switched to Sleep mode. Notifications Blocked.";
+                            Snackbar.make(rootView, snackbarMessage, Snackbar.LENGTH_SHORT).show();
+                            break;
+                        case Constants.MY_MODE:
+                            snackbarMessage = "Switched to My Mode. Notifications Blocked.";
+                            Snackbar.make(rootView, snackbarMessage, Snackbar.LENGTH_SHORT).show();
+                            break;
+
+                    }
+                });
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo)
+    {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        getMenuInflater().inflate(R.menu.options_on_long_press_app, menu);
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item)
+    {
+        switch(item.getItemId())
+        {
+            case R.id.uninstall:    Intent intent1 = new Intent(Intent.ACTION_DELETE);
+                                    SharedPreferences prefs = getSharedPreferences(Constants.SHARED_PREFERENCES_NAME, MODE_PRIVATE);
+                                    String packageName = prefs.getString("packageName","Default Package Name");
+                                    intent1.setData(Uri.parse("package:"+packageName));
+                                    startActivity(intent1);
+                                    int initotalapps = totalNumberOfInstalledApps;
+                                    closeAppDrawer();
+                                    while(initotalapps==totalNumberOfInstalledApps)
+                                    {
+                                        findTotalNumberOfInstalledApps();
+                                    }
+                                    getAllData();
+                                    return true;
+            case R.id.addToHomeScreen: Toast.makeText(getApplicationContext(),"Option2",Toast.LENGTH_LONG).show();
+                return true;
+            default:            return super.onContextItemSelected(item);
+        }
     }
 
     private void openAppDrawer() {
