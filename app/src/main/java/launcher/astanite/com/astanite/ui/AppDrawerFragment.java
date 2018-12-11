@@ -158,7 +158,7 @@ public class AppDrawerFragment extends Fragment {
         });
     }
 
-    public void inflateOutOfModeMenu() {
+    private void inflateOutOfModeMenu() {
         popupMenu.inflate(R.menu.out_of_mode_menu);
         popupMenu.setOnMenuItemClickListener(menuItem -> {
             switch (menuItem.getItemId()) {
@@ -170,11 +170,12 @@ public class AppDrawerFragment extends Fragment {
             }
         });
     }
-
-    public void inflateInModeMenu() {
+    // inflating the menu options (settings in app drawer)
+    private void inflateInModeMenu() {
         popupMenu.inflate(R.menu.in_mode_menu);
         popupMenu.setOnMenuItemClickListener(menuItem -> {
             if (menuItem.getItemId() == R.id.exitMode) {
+                //if user tries to exit current active mode
                 long currentTime = System.currentTimeMillis();
                 long enteredTime = mainViewModel.getTimeOfEnteringMode();
                 long delta = currentTime - enteredTime;

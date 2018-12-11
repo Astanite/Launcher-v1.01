@@ -1,6 +1,9 @@
 package launcher.astanite.com.astanite.ui;
 
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,10 +15,14 @@ import android.widget.ImageView;
 import android.widget.NumberPicker;
 import android.widget.Spinner;
 
+import java.util.Objects;
+
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import launcher.astanite.com.astanite.R;
+import launcher.astanite.com.astanite.utils.Constants;
 import launcher.astanite.com.astanite.viewmodel.MainViewModel;
 
 /*
@@ -80,6 +87,12 @@ public class PenaltyFragment extends Fragment implements AdapterView.OnItemSelec
             mainViewModel.setModeTime(hrs, mins);
             mainViewModel.setPenalty(pen);
             homeScreenListener.showHomeScreen();
+
+            BlockedAppChecker bac = (BlockedAppChecker)Objects.requireNonNull(getActivity()).getApplication();
+            bac.onCreate();
+            //Write the code for starting a service to block not allowed apps
+            startService();
+
         });
 
         np.setMaxValue(5);
@@ -127,5 +140,9 @@ public class PenaltyFragment extends Fragment implements AdapterView.OnItemSelec
     public void onPause() {
         super.onPause();
         mainViewModel.penaltyScreenTriggeredForMode.setValue(0);
+    }
+    private void startService() {
+        Intent serviceIntent = new Intent(getContext(), BlockingAppService.class);
+        ContextCompat.startForegroundService(getContext(), serviceIntent);
     }
 }

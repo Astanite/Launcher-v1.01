@@ -74,14 +74,6 @@ public class HomeActivity extends AppCompatActivity implements
             openAppDrawer();
         });
 
-//        mainViewModel.isAppDrawerOpen
-//                .observe(this, isOpen -> {
-//                    if (isOpen) {
-//                        openAppDrawer();
-//                    } else {
-//                        closeAppDrawer();
-//                    }
-//                });
 
         mainViewModel.getCurrentMode()
                 .observe(this, mode -> {
@@ -129,14 +121,6 @@ public class HomeActivity extends AppCompatActivity implements
             openAppDrawer();
         });
 
-//        mainViewModel.isAppDrawerOpen
-//                .observe(this, isOpen -> {
-//                    if (isOpen) {
-//                        openAppDrawer();
-//                    } else {
-//                        closeAppDrawer();
-//                    }
-//                });
 
         mainViewModel.getCurrentMode()
                 .observe(this, mode -> {
