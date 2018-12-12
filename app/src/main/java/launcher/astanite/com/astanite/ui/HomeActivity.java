@@ -2,6 +2,7 @@ package launcher.astanite.com.astanite.ui;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
@@ -24,6 +25,7 @@ import androidx.lifecycle.ViewModelProviders;
 import launcher.astanite.com.astanite.R;
 import launcher.astanite.com.astanite.data.AppInfo;
 import launcher.astanite.com.astanite.ui.settings.SettingsActivity;
+import launcher.astanite.com.astanite.utils.BroadCastReceiver;
 import launcher.astanite.com.astanite.utils.Constants;
 import launcher.astanite.com.astanite.viewmodel.MainViewModel;
 
@@ -33,6 +35,7 @@ public class HomeActivity extends AppCompatActivity implements
         AppDrawerFragment.SettingsScreenListener,
         HomeScreenFragment.PenaltyScreenListener,
         PenaltyFragment.HomeScreenListener,
+        BroadCastReceiver.SendToMainActivity,
         AppDrawerFragment.TimerScreenListener {
 
     private static final String TAG = HomeActivity.class.getSimpleName();
@@ -42,8 +45,6 @@ public class HomeActivity extends AppCompatActivity implements
     private AppDrawerFragment appDrawerFragment;
     private FloatingActionButton allAppsButton;
     private CoordinatorLayout rootView;
-    private Bundle savedInstanceStateGlobal;
-    private int totalNumberOfInstalledApps;
 
 
     @Override
@@ -51,9 +52,16 @@ public class HomeActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         Log.i("MYINFO", "Creating Home Activity");
-        findTotalNumberOfInstalledApps();
         allAppsButton = findViewById(R.id.allAppsButton);
         rootView = findViewById(R.id.rootView);
+
+        IntentFilter filter = new IntentFilter();
+        filter.addDataScheme("package");
+        filter.addAction(Intent.ACTION_PACKAGE_REMOVED);
+        filter.addAction(Intent.ACTION_PACKAGE_FULLY_REMOVED);
+        filter.addAction(Intent.ACTION_PACKAGE_ADDED);
+        registerReceiver(new BroadCastReceiver(this), filter);
+        registerReceiver(new BroadCastReceiver(this), filter);
 
         mainViewModel = ViewModelProviders
                 .of(this)
@@ -63,7 +71,6 @@ public class HomeActivity extends AppCompatActivity implements
 
         homeScreenFragment = new HomeScreenFragment();
         appDrawerFragment = new AppDrawerFragment();
-        savedInstanceStateGlobal = savedInstanceState;
 
         if (savedInstanceState == null) {
             getSupportFragmentManager()
@@ -99,14 +106,17 @@ public class HomeActivity extends AppCompatActivity implements
                 });
     }
 
-    private void findTotalNumberOfInstalledApps()
+    @Override
+    public void sendToMainActivity()
     {
-        totalNumberOfInstalledApps = getPackageManager().getInstalledApplications(0).size();
+            refreshAllData();
     }
 
-    public void getAllData()
+    public void refreshAllData()
     {
+        closeAppDrawer();
         mainViewModel.getResolveInfoList(this);
+
         findTotalNumberOfInstalledApps();
 
         homeScreenFragment = new HomeScreenFragment();
@@ -144,6 +154,7 @@ public class HomeActivity extends AppCompatActivity implements
 
                     }
                 });
+
     }
 
     @Override
@@ -158,22 +169,15 @@ public class HomeActivity extends AppCompatActivity implements
     {
         switch(item.getItemId())
         {
-            case R.id.uninstall:    Intent intent1 = new Intent(Intent.ACTION_DELETE);
-                                    SharedPreferences prefs = getSharedPreferences(Constants.SHARED_PREFERENCES_NAME, MODE_PRIVATE);
-                                    String packageName = prefs.getString("packageName","Default Package Name");
-                                    intent1.setData(Uri.parse("package:"+packageName));
-                                    startActivity(intent1);
-                                    int initotalapps = totalNumberOfInstalledApps;
-                                    closeAppDrawer();
-                                    while(initotalapps==totalNumberOfInstalledApps)
-                                    {
-                                        findTotalNumberOfInstalledApps();
-                                    }
-                                    getAllData();
-                                    return true;
-            case R.id.addToHomeScreen: Toast.makeText(getApplicationContext(),"Option2",Toast.LENGTH_LONG).show();
-                return true;
-            default:            return super.onContextItemSelected(item);
+            case R.id.uninstall:        Intent intent1 = new Intent(Intent.ACTION_DELETE);
+                                        SharedPreferences prefs = getSharedPreferences(Constants.SHARED_PREFERENCES_NAME, MODE_PRIVATE);
+                                        String packageName = prefs.getString("packageName","Default Package Name");
+                                        intent1.setData(Uri.parse("package:"+packageName));
+                                        startActivity(intent1);
+                                        return true;
+            case R.id.addToHomeScreen:  Toast.makeText(getApplicationContext(),"Option2",Toast.LENGTH_LONG).show();
+                                        return true;
+            default:                    return super.onContextItemSelected(item);
         }
     }
 
@@ -187,7 +191,7 @@ public class HomeActivity extends AppCompatActivity implements
 //        allAppsButton.setVisibility(View.GONE);
     }
 
-    private void closeAppDrawer() {
+    public void closeAppDrawer() {
         getSupportFragmentManager()
                 .beginTransaction()
                 .setCustomAnimations(R.anim.exit_to_bottom, R.anim.fade_out)
