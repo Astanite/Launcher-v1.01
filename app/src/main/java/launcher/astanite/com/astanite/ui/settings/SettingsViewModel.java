@@ -89,10 +89,22 @@ public class SettingsViewModel extends AndroidViewModel {
         String key;
         switch (currentMode.getValue()) {
             case Constants.MODE_FOCUS: key = Constants.KEY_FOCUS_APPS;
+            sharedPreferences
+                    .edit()
+                    .putBoolean("FocusApps", true)
+                    .apply();
             break;
             case Constants.MODE_SLEEP: key = Constants.KEY_SLEEP_APPS;
+                sharedPreferences
+                        .edit()
+                        .putBoolean("SleepApps", true)
+                        .apply();
             break;
             case Constants.MY_MODE: key = Constants.KEY_MY_MODE_APPS;
+                sharedPreferences
+                        .edit()
+                        .putBoolean("LeisureApps", true)
+                        .apply();
             break;
             default: throw new IllegalArgumentException("Invalid mode given for saving apps");
         }

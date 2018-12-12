@@ -17,6 +17,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.List;
+import java.util.Objects;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
@@ -27,6 +28,8 @@ import launcher.astanite.com.astanite.ui.settings.SettingsActivity;
 import launcher.astanite.com.astanite.utils.BroadCastReceiver;
 import launcher.astanite.com.astanite.utils.Constants;
 import launcher.astanite.com.astanite.viewmodel.MainViewModel;
+
+import static java.security.AccessController.getContext;
 
 public class HomeActivity extends AppCompatActivity implements
         AppDrawerFragment.SettingsScreenListener,
@@ -81,14 +84,6 @@ public class HomeActivity extends AppCompatActivity implements
             openAppDrawer();
         });
 
-//        mainViewModel.isAppDrawerOpen
-//                .observe(this, isOpen -> {
-//                    if (isOpen) {
-//                        openAppDrawer();
-//                    } else {
-//                        closeAppDrawer();
-//                    }
-//                });
 
         mainViewModel.getCurrentMode()
                 .observe(this, mode -> {
@@ -121,6 +116,45 @@ public class HomeActivity extends AppCompatActivity implements
     {
         closeAppDrawer();
         mainViewModel.getResolveInfoList(this);
+
+        findTotalNumberOfInstalledApps();
+
+        homeScreenFragment = new HomeScreenFragment();
+        appDrawerFragment = new AppDrawerFragment();
+
+        if (savedInstanceStateGlobal == null) {
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment_container, homeScreenFragment, "HomeScreenFragment")
+                    .commit();
+        }
+
+        allAppsButton.setOnClickListener(someView -> {
+            mainViewModel.isAppDrawerOpen.setValue(true);
+            openAppDrawer();
+        });
+
+
+        mainViewModel.getCurrentMode()
+                .observe(this, mode -> {
+                    String snackbarMessage;
+                    switch (mode) {
+                        case Constants.MODE_FOCUS:
+                            snackbarMessage = "Switched to Focus mode. Notifications Blocked.";
+                            Snackbar.make(rootView, snackbarMessage, Snackbar.LENGTH_SHORT).show();
+                            break;
+                        case Constants.MODE_SLEEP:
+                            snackbarMessage = "Switched to Sleep mode. Notifications Blocked.";
+                            Snackbar.make(rootView, snackbarMessage, Snackbar.LENGTH_SHORT).show();
+                            break;
+                        case Constants.MY_MODE:
+                            snackbarMessage = "Switched to My Mode. Notifications Blocked.";
+                            Snackbar.make(rootView, snackbarMessage, Snackbar.LENGTH_SHORT).show();
+                            break;
+
+                    }
+                });
+
     }
 
     @Override
@@ -222,6 +256,7 @@ public class HomeActivity extends AppCompatActivity implements
                 .replace(R.id.fragment_container, timerFragment)
                 .addToBackStack(null)
                 .commit();
+
     }
 
     @Override

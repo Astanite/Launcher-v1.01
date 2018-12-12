@@ -132,7 +132,7 @@ public class MainViewModel extends AndroidViewModel {
         sharedPreferences
                 .edit()
                 .putInt(Constants.KEY_CURRENT_MODE, mode)
-                .commit();
+                .apply();
 
         Log.d(TAG, "Current mode updated to " + mode);
         String key;

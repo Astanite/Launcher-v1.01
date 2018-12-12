@@ -1,12 +1,18 @@
 package launcher.astanite.com.astanite.ui;
 
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import java.util.Objects;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -39,7 +45,8 @@ public class TimerFragment extends Fragment {
                 .of(getActivity())
                 .get(MainViewModel.class);
 
-        delta = mainViewModel.getPenalty();
+//        delta = mainViewModel.getPenalty();
+        delta = 500 ;
         cdt = new CountDownTimer(delta, 1000) {
 
             public void onTick(long millisUntilFinished) {
@@ -48,6 +55,13 @@ public class TimerFragment extends Fragment {
 
             public void onFinish() {
                 mainViewModel.setCurrentMode(Constants.MODE_NONE);
+                Log.d("_Service_ ", "Stopped");
+
+                getContext().getSharedPreferences(Constants.SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE)
+                        .edit()
+                        .putBoolean("isServiceStopped", true)
+                        .apply();
+                (getContext()).stopService(new Intent(getContext(), BlockingAppService.class));
                 homeScreenListener.showHomeScreen();
             }
 

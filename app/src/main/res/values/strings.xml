@@ -99,4 +99,8 @@
         completions."
     </string>
     <string name="login">Login</string>
+
+    <string name="title_activity_popup_to_block">PopupToBlockActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
 </resources>

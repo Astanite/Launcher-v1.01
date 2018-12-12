@@ -1,6 +1,10 @@
 package launcher.astanite.com.astanite.ui;
 
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,6 +15,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.NumberPicker;
 import android.widget.Spinner;
+
+import java.util.Objects;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -32,11 +38,12 @@ public class PenaltyFragment extends Fragment implements AdapterView.OnItemSelec
 
     private static NumberPicker np, npm;
     private int modeForPenaltyScreen;
-    int hrs, mins;
-    int pen;
+    private int hrs, mins;
+    private int pen;
 
     private MainViewModel mainViewModel;
     private HomeScreenListener homeScreenListener;
+    private ScreenOnOffReceiver mScreenReceiver;
 
     public PenaltyFragment() {
         // Required empty public constructor
@@ -46,7 +53,8 @@ public class PenaltyFragment extends Fragment implements AdapterView.OnItemSelec
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        if (!(getActivity() instanceof HomeScreenListener)) throw new ClassCastException("This class is not a HomeScreenListener");
+        if (!(getActivity() instanceof HomeScreenListener))
+            throw new ClassCastException("This class is not a HomeScreenListener");
         else this.homeScreenListener = (HomeScreenListener) getActivity();
 
         mainViewModel = ViewModelProviders
@@ -80,6 +88,16 @@ public class PenaltyFragment extends Fragment implements AdapterView.OnItemSelec
             mainViewModel.setModeTime(hrs, mins);
             mainViewModel.setPenalty(pen);
             homeScreenListener.showHomeScreen();
+            //Write the code for starting a service to block not allowed apps
+            Log.d("Service started", " Again");
+
+            mScreenReceiver = new ScreenOnOffReceiver();
+            IntentFilter filter = new IntentFilter();
+            filter.addAction(Intent.ACTION_SCREEN_OFF);
+            filter.addAction(Intent.ACTION_SCREEN_ON);
+            getContext().registerReceiver(mScreenReceiver, filter);
+
+            getContext().startService(new Intent(getContext(), BlockingAppService.class));
         });
 
         np.setMaxValue(5);
@@ -127,5 +145,21 @@ public class PenaltyFragment extends Fragment implements AdapterView.OnItemSelec
     public void onPause() {
         super.onPause();
         mainViewModel.penaltyScreenTriggeredForMode.setValue(0);
+    }
+
+
+    public class ScreenOnOffReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+            if (Objects.equals(intent.getAction(), Intent.ACTION_SCREEN_OFF)) {
+                Log.d("StackOverflow", "Screen Off");
+                getContext().stopService(new Intent(getContext(), BlockingAppService.class));
+            } else if (Objects.equals(intent.getAction(), Intent.ACTION_SCREEN_ON)) {
+                Log.d("StackOverflow", "Screen On");
+                getContext().startService(new Intent(getContext(), BlockingAppService.class));
+            }
+        }
     }
 }
