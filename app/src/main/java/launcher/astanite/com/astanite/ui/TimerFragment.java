@@ -45,8 +45,7 @@ public class TimerFragment extends Fragment {
                 .of(getActivity())
                 .get(MainViewModel.class);
 
-//        delta = mainViewModel.getPenalty();
-        delta = 500 ;
+        delta = mainViewModel.getPenalty();
         cdt = new CountDownTimer(delta, 1000) {
 
             public void onTick(long millisUntilFinished) {
