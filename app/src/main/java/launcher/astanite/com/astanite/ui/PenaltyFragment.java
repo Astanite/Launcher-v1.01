@@ -1,10 +1,13 @@
 package launcher.astanite.com.astanite.ui;
 
 
+import android.app.usage.UsageStats;
+import android.app.usage.UsageStatsManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,15 +18,24 @@ import android.widget.ImageView;
 import android.widget.NumberPicker;
 import android.widget.Spinner;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.ViewModelProviders;
 import launcher.astanite.com.astanite.R;
 import launcher.astanite.com.astanite.utils.Constants;
 import launcher.astanite.com.astanite.viewmodel.MainViewModel;
+
+import static android.content.ContentValues.TAG;
+import static android.content.Context.MODE_PRIVATE;
 
 /*
 CREATED BY UTSAV
@@ -39,8 +51,8 @@ public class PenaltyFragment extends Fragment implements AdapterView.OnItemSelec
 
     private static NumberPicker np, npm;
     private int modeForPenaltyScreen;
-    int hrs, mins;
-    int pen;
+    private int hrs, mins;
+    private int pen;
 
     private MainViewModel mainViewModel;
     private HomeScreenListener homeScreenListener;
@@ -87,12 +99,9 @@ public class PenaltyFragment extends Fragment implements AdapterView.OnItemSelec
             mainViewModel.setModeTime(hrs, mins);
             mainViewModel.setPenalty(pen);
             homeScreenListener.showHomeScreen();
-
-            BlockedAppChecker bac = (BlockedAppChecker)Objects.requireNonNull(getActivity()).getApplication();
-            bac.onCreate();
             //Write the code for starting a service to block not allowed apps
-            startService();
-
+            Log.d("Service started", " Again");
+            getContext().startService(new Intent(getContext(), BlockingAppService.class));
         });
 
         np.setMaxValue(5);
@@ -140,9 +149,5 @@ public class PenaltyFragment extends Fragment implements AdapterView.OnItemSelec
     public void onPause() {
         super.onPause();
         mainViewModel.penaltyScreenTriggeredForMode.setValue(0);
-    }
-    private void startService() {
-        Intent serviceIntent = new Intent(getContext(), BlockingAppService.class);
-        ContextCompat.startForegroundService(getContext(), serviceIntent);
     }
 }

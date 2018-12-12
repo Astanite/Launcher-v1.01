@@ -12,6 +12,7 @@ public class Constants {
     public static final String KEY_MODE_TIME = "mode-time";
     public static final String KEY_MODE_TIME_WHEN_MODE_ENTERED = "time-when-mode-entered";
     public static final String KEY_CURRENT_MODE_NOTIFS = "mode-notifs";
+    public static String CURRENT_MODE = "none";
 
     public static final int MODE_NONE = 0;
     public static final int MODE_FOCUS = 1;

@@ -16,6 +16,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.List;
+import java.util.Objects;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
@@ -25,6 +26,8 @@ import launcher.astanite.com.astanite.data.AppInfo;
 import launcher.astanite.com.astanite.ui.settings.SettingsActivity;
 import launcher.astanite.com.astanite.utils.Constants;
 import launcher.astanite.com.astanite.viewmodel.MainViewModel;
+
+import static java.security.AccessController.getContext;
 
 public class HomeActivity extends AppCompatActivity implements
         AppDrawerFragment.SettingsScreenListener,
@@ -249,6 +252,7 @@ public class HomeActivity extends AppCompatActivity implements
                 .replace(R.id.fragment_container, timerFragment)
                 .addToBackStack(null)
                 .commit();
+
     }
 
     @Override

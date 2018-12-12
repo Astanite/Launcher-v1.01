@@ -4,6 +4,7 @@ package launcher.astanite.com.astanite.ui;
 import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
@@ -23,6 +24,7 @@ import com.google.android.material.snackbar.Snackbar;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -72,7 +74,6 @@ public class AppDrawerFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         appsAdapter = new AppsAdapter(new ArrayList<>(), Glide.with(this), getContext());
-        Application app = new Application() ;
         sharedPreferences = this.getActivity().getSharedPreferences(Constants.SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
     }
 
@@ -182,7 +183,9 @@ public class AppDrawerFragment extends Fragment {
                 if (delta < mainViewModel.getModeTime() && delta != 0) {
                     timerScreenListener.showTimer();
                 } else {
+                    getContext().stopService(new Intent(getContext(), BlockingAppService.class));
                     mainViewModel.setCurrentMode(Constants.MODE_NONE);
+                    Log.d("Service ", "Stopped 2");
                     Snackbar.make(root, "Exited mode", Snackbar.LENGTH_SHORT).show();
                 }
             }
