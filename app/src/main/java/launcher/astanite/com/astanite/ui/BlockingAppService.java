@@ -1,45 +1,37 @@
-package launcher.astanite.com.astanite.ui ;
-
-import android.app.Service;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.os.IBinder;
-
-import androidx.annotation.Nullable;
-import androidx.fragment.app.FragmentActivity;
-import androidx.lifecycle.LifecycleOwner;
-import androidx.lifecycle.ViewModelProviders;
-import launcher.astanite.com.astanite.utils.Constants;
-import launcher.astanite.com.astanite.viewmodel.MainViewModel;
+package launcher.astanite.com.astanite.ui;
 
 import android.app.ActivityManager;
 import android.app.Service;
 import android.app.usage.UsageStats;
 import android.app.usage.UsageStatsManager;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.media.MediaPlayer;
+import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.IBinder;
-import android.provider.Settings;
 import android.util.Log;
-import android.view.View;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.SortedMap;
 import java.util.TreeMap;
+
+import launcher.astanite.com.astanite.utils.Constants;
 
 public class BlockingAppService extends Service {
 
     private Handler handler = new Handler();
     private Runnable myrunnable;
-    private SharedPreferences sp ;
-    private List<String> focusModeApps ;
-    private List<String> sleepModeApps ;
-    private List<String> leisureModeApps ;
-    private List<String> setCurrentMode ;
+    private SharedPreferences sp;
+    private List<String> focusModeApps;
+    private List<String> sleepModeApps;
+    private List<String> leisureModeApps;
+    private List<String> setCurrentMode;
+    private ScreenOnOffReceiver mScreenReceiver;
 
 
     @Override
@@ -49,27 +41,31 @@ public class BlockingAppService extends Service {
 
     @Override
     public void onCreate() {
-        Log.e("Service Created", "onCreate: " );
+        Log.e("Service Created", "onCreate: ");
+        registerScreenStatusReceiver();
         super.onCreate();
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-
-        handler.postDelayed(myrunnable = new Runnable() {
-            @Override
-            public void run() {
-                printForegroundTask();
-                handler.postDelayed(this, 1000);
-            }
-        }, 1000);
+        sp = getSharedPreferences(Constants.SHARED_PREFERENCES_NAME, MODE_PRIVATE);
+        if (sp.getInt(Constants.KEY_CURRENT_MODE, Constants.MODE_NONE) != 0) {
+            handler.postDelayed(myrunnable = new Runnable() {
+                @Override
+                public void run() {
+                    printForegroundTask();
+                    Log.e("screen_on", "loop");
+                    handler.postDelayed(this, 1000);
+                }
+            }, 1000);
+        }
         return START_STICKY;
     }
 
 
-
     @Override
     public void onDestroy() {
+        unregisterScreenStatusReceiver();
         handler.removeCallbacks(myrunnable);
         super.onDestroy();
     }
@@ -97,7 +93,6 @@ public class BlockingAppService extends Service {
         }
 
         Log.e("TAG", "Current App in foreground is: " + currentApp);
-        sp = getSharedPreferences(Constants.SHARED_PREFERENCES_NAME, MODE_PRIVATE);
         focusModeApps = new ArrayList<>(sp.getStringSet(Constants.KEY_FOCUS_APPS, new HashSet<>()));
         sleepModeApps = new ArrayList<>(sp.getStringSet(Constants.KEY_SLEEP_APPS, new HashSet<>()));
         leisureModeApps = new ArrayList<>(sp.getStringSet(Constants.KEY_MY_MODE_APPS, new HashSet<>()));
@@ -129,18 +124,49 @@ public class BlockingAppService extends Service {
     public void setActiveModeButton(int newMode) {
         switch (newMode) {
             case Constants.MODE_FOCUS:
-                setCurrentMode = focusModeApps ;
+                setCurrentMode = focusModeApps;
                 break;
             case Constants.MODE_SLEEP:
                 setCurrentMode = sleepModeApps;
                 break;
             case Constants.MY_MODE:
-                setCurrentMode = leisureModeApps ;
+                setCurrentMode = leisureModeApps;
                 break;
             default:
-                setCurrentMode = focusModeApps ;
+                setCurrentMode = focusModeApps;
                 break;
         }
     }
 
+    private void registerScreenStatusReceiver() {
+        mScreenReceiver = new ScreenOnOffReceiver();
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(Intent.ACTION_SCREEN_OFF);
+        filter.addAction(Intent.ACTION_SCREEN_ON);
+        registerReceiver(mScreenReceiver, filter);
+    }
+
+    private void unregisterScreenStatusReceiver() {
+        try {
+            if (mScreenReceiver != null) {
+                unregisterReceiver(mScreenReceiver);
+            }
+        } catch (IllegalArgumentException ignored) {
+        }
+    }
+
+    public class ScreenOnOffReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+            if (Objects.equals(intent.getAction(), Intent.ACTION_SCREEN_OFF)) {
+                Log.d("StackOverflow", "Screen Off");
+                getBaseContext().stopService(new Intent(getBaseContext(), BlockingAppService.class));
+            } else if (Objects.equals(intent.getAction(), Intent.ACTION_SCREEN_ON)) {
+                Log.d("StackOverflow", "Screen On");
+                getBaseContext().startService(new Intent(getBaseContext(), BlockingAppService.class));
+            }
+        }
+    }
 }

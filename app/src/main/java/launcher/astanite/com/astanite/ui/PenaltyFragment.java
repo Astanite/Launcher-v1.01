@@ -1,13 +1,11 @@
 package launcher.astanite.com.astanite.ui;
 
 
-import android.app.usage.UsageStats;
-import android.app.usage.UsageStatsManager;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
+import android.content.IntentFilter;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,24 +16,13 @@ import android.widget.ImageView;
 import android.widget.NumberPicker;
 import android.widget.Spinner;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Objects;
-import java.util.SortedMap;
-import java.util.TreeMap;
 
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.ViewModelProviders;
 import launcher.astanite.com.astanite.R;
-import launcher.astanite.com.astanite.utils.Constants;
 import launcher.astanite.com.astanite.viewmodel.MainViewModel;
-
-import static android.content.ContentValues.TAG;
-import static android.content.Context.MODE_PRIVATE;
 
 /*
 CREATED BY UTSAV
@@ -56,6 +43,7 @@ public class PenaltyFragment extends Fragment implements AdapterView.OnItemSelec
 
     private MainViewModel mainViewModel;
     private HomeScreenListener homeScreenListener;
+    private ScreenOnOffReceiver mScreenReceiver;
 
     public PenaltyFragment() {
         // Required empty public constructor
@@ -65,7 +53,8 @@ public class PenaltyFragment extends Fragment implements AdapterView.OnItemSelec
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        if (!(getActivity() instanceof HomeScreenListener)) throw new ClassCastException("This class is not a HomeScreenListener");
+        if (!(getActivity() instanceof HomeScreenListener))
+            throw new ClassCastException("This class is not a HomeScreenListener");
         else this.homeScreenListener = (HomeScreenListener) getActivity();
 
         mainViewModel = ViewModelProviders
@@ -101,6 +90,13 @@ public class PenaltyFragment extends Fragment implements AdapterView.OnItemSelec
             homeScreenListener.showHomeScreen();
             //Write the code for starting a service to block not allowed apps
             Log.d("Service started", " Again");
+
+            mScreenReceiver = new ScreenOnOffReceiver();
+            IntentFilter filter = new IntentFilter();
+            filter.addAction(Intent.ACTION_SCREEN_OFF);
+            filter.addAction(Intent.ACTION_SCREEN_ON);
+            getContext().registerReceiver(mScreenReceiver, filter);
+
             getContext().startService(new Intent(getContext(), BlockingAppService.class));
         });
 
@@ -149,5 +145,21 @@ public class PenaltyFragment extends Fragment implements AdapterView.OnItemSelec
     public void onPause() {
         super.onPause();
         mainViewModel.penaltyScreenTriggeredForMode.setValue(0);
+    }
+
+
+    public class ScreenOnOffReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+            if (Objects.equals(intent.getAction(), Intent.ACTION_SCREEN_OFF)) {
+                Log.d("StackOverflow", "Screen Off");
+                getContext().stopService(new Intent(getContext(), BlockingAppService.class));
+            } else if (Objects.equals(intent.getAction(), Intent.ACTION_SCREEN_ON)) {
+                Log.d("StackOverflow", "Screen On");
+                getContext().startService(new Intent(getContext(), BlockingAppService.class));
+            }
+        }
     }
 }
