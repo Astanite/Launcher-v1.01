@@ -103,9 +103,6 @@ public class AppDrawerFragment extends Fragment {
         mainViewModel
                 .currentModeApps
                 .observe(this, appInfos -> {
-                    for (AppInfo app : appInfos)
-                        Log.d("App_Infos", app.packageName);
-
                     appsAdapter.updateAppsList(appInfos);
                 });
 

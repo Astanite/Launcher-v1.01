@@ -89,7 +89,6 @@ public class AppsAdapter extends RecyclerView.Adapter<AppsAdapter.ViewHolder> {
     }
 
     public void updateAppsList(List<AppInfo> newList) {
-        Log.d(TAG, "Update AppsList: " + newList.size());
         this.appsList = newList;
         notifyDataSetChanged();
     }
