@@ -15,10 +15,13 @@ import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.List;
 import java.util.Objects;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.lifecycle.ViewModelProviders;
@@ -38,6 +41,8 @@ public class HomeActivity extends AppCompatActivity implements
         BroadCastReceiver.SendToMainActivity,
         AppDrawerFragment.TimerScreenListener {
 
+    private FirebaseAuth mAuth;
+    FirebaseAuth.AuthStateListener mAuthListener;
     private static final String TAG = HomeActivity.class.getSimpleName();
 
     private MainViewModel mainViewModel;
@@ -46,11 +51,29 @@ public class HomeActivity extends AppCompatActivity implements
     private FloatingActionButton allAppsButton;
     private CoordinatorLayout rootView;
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        mAuth.addAuthStateListener(mAuthListener);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        mAuth = FirebaseAuth.getInstance();
+        mAuthListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                if (firebaseAuth.getCurrentUser() == null) {
+                    //user not registered. Send it to Login Activity
+                    Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
+                    startActivity(intent);
+                }
+            }
+        };
+        
         Log.i("MYINFO", "Creating Home Activity");
         allAppsButton = findViewById(R.id.allAppsButton);
         rootView = findViewById(R.id.rootView);
@@ -117,17 +140,9 @@ public class HomeActivity extends AppCompatActivity implements
         closeAppDrawer();
         mainViewModel.getResolveInfoList(this);
 
-        findTotalNumberOfInstalledApps();
-
         homeScreenFragment = new HomeScreenFragment();
         appDrawerFragment = new AppDrawerFragment();
 
-        if (savedInstanceStateGlobal == null) {
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.fragment_container, homeScreenFragment, "HomeScreenFragment")
-                    .commit();
-        }
 
         allAppsButton.setOnClickListener(someView -> {
             mainViewModel.isAppDrawerOpen.setValue(true);

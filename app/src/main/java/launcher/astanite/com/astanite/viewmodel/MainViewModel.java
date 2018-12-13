@@ -88,13 +88,13 @@ public class MainViewModel extends AndroidViewModel {
     private void convertToAppInfo(List<ResolveInfo> resolveInfoList) {
         Single<List<AppInfo>> appInfoObservable = Observable.fromIterable(resolveInfoList)
                 .filter(resolveInfo -> {
-                    if (resolveInfo.activityInfo.packageName.equals("launcher.astanite.com.astanite"))
-                        return false;
-                    return true;
+                    return !resolveInfo.activityInfo.packageName.equals("launcher.astanite.com.astanite");
                 })
                 .map(resolveInfo -> {
                     AppInfo appInfo = new AppInfo();
+                    //TODO: get all the app info for that mode here and load it to app info
                     PackageManager packageManager = getApplication().getPackageManager();
+                    Log.d("MODE_NONE", String.valueOf(Constants.MODE_NONE));
                     appInfo.label = resolveInfo.loadLabel(packageManager).toString();
                     appInfo.icon = resolveInfo.activityInfo.loadIcon(packageManager);
                     appInfo.packageName = resolveInfo.activityInfo.packageName;
@@ -110,6 +110,12 @@ public class MainViewModel extends AndroidViewModel {
                     currentModeApps.postValue(appInfos);
                 });
         compositeDisposable.add(appInfoObservable.subscribe());
+    }
+
+    private AppInfo setModeApp(List<String> modeApps) {
+        AppInfo appInfo = new AppInfo();
+
+        return appInfo;
     }
 
     public void updateIntention(String intention) {
@@ -188,12 +194,12 @@ public class MainViewModel extends AndroidViewModel {
 
     public void enableDND() {
         Log.d(TAG, "Enabling DND");
-        Block_All_Notification.mode=1;
+        Block_All_Notification.mode = 1;
     }
 
     public void disableDND() {
         Log.d(TAG, "Disabling DND");
-        Block_All_Notification.mode=0;
+        Block_All_Notification.mode = 0;
     }
 
     public void setPenalty(int penalty) {

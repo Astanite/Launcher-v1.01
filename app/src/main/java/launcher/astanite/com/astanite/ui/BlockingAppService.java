@@ -55,9 +55,9 @@ public class BlockingAppService extends Service {
                 public void run() {
                     printForegroundTask();
                     Log.e("screen_on", "loop");
-                    handler.postDelayed(this, 1000);
+                    handler.postDelayed(this, 2000);
                 }
-            }, 1000);
+            }, 2000);
         }
         return START_STICKY;
     }
