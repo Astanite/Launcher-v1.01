@@ -7,6 +7,7 @@ public class Constants {
     public static final String KEY_FOCUS_APPS = "focus-apps";
     public static final String KEY_SLEEP_APPS = "sleep-apps";
     public static final String KEY_MY_MODE_APPS = "my-mode-apps";
+    public static final String KEY_DISTRACTIVE_APPS = "distractive-apps";
     public static final String KEY_INTENTION = "intention";
     public static final String KEY_PENALTY = "penalty";
     public static final String KEY_MODE_TIME = "mode-time";
@@ -17,6 +18,7 @@ public class Constants {
     public static final int MODE_FOCUS = 1;
     public static final int MODE_SLEEP = 3;
     public static final int MY_MODE = 4;
+    public static final int DISTRACTIVE_APP = 8;
 
     public static final int MODE_KEEP_NOTIFS = 0;
     public static final int MODE_DISMISS_NOTIFS = 1;
@@ -24,7 +26,7 @@ public class Constants {
     public static final int FRAGMENT_MODES = 5;
     public static final int FRAGMENT_SETTINGS = 6;
     public static final int FRAGMENT_FLAGGED_APPS = 7;
-    public static final int FRAGMENT_FLAGGED_CONTACTS = 8;
+
 
     public static final String ACTION_NOTIFICATION_SERVICE = "notif-service";
 }

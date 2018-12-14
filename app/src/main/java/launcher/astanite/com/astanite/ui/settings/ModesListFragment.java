@@ -18,9 +18,6 @@ import launcher.astanite.com.astanite.R;
 public class ModesListFragment extends Fragment {
 
     private SettingsViewModel settingsViewModel;
-    private TextView focusModeSettings;
-    private TextView sleepModeSettings;
-    private TextView myModeSettings;
 
     public ModesListFragment() {
         // Required empty public constructor
@@ -44,9 +41,10 @@ public class ModesListFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        focusModeSettings = view.findViewById(R.id.focusModeSettingsTextview);
-        sleepModeSettings = view.findViewById(R.id.sleepModeSettingsTextview);
-        myModeSettings = view.findViewById(R.id.myModeSettingsTextview);
+        TextView focusModeSettings = view.findViewById(R.id.focusModeSettingsTextview),
+                sleepModeSettings = view.findViewById(R.id.sleepModeSettingsTextview),
+                myModeSettings = view.findViewById(R.id.myModeSettingsTextview) ,
+                distractiveAppsSettings = view.findViewById(R.id.distractiveAppsSettings);
 
         focusModeSettings.setOnClickListener(someView -> {
             settingsViewModel.currentFragment.setValue(Constants.FRAGMENT_SETTINGS);
@@ -60,6 +58,10 @@ public class ModesListFragment extends Fragment {
         myModeSettings.setOnClickListener(someView -> {
             settingsViewModel.currentFragment.setValue(Constants.FRAGMENT_SETTINGS);
             settingsViewModel.currentMode.setValue(Constants.MY_MODE);
+        });
+        distractiveAppsSettings.setOnClickListener(view1 -> {
+            settingsViewModel.currentFragment.setValue(Constants.FRAGMENT_SETTINGS);
+            settingsViewModel.currentFragment.setValue(Constants.DISTRACTIVE_APP);
         });
     }
 }
