@@ -17,7 +17,6 @@ public class SettingsActivity extends AppCompatActivity {
     private SettingsViewModel settingsViewModel;
     private ModesListFragment modesListFragment;
     private FlaggedAppsFragment flaggedAppsFragment;
-    private FlaggedContactsFragment flaggedContactsFragment;
     private SettingsFragment settingsFragment;
 
     @Override
@@ -34,7 +33,6 @@ public class SettingsActivity extends AppCompatActivity {
                 .get(SettingsViewModel.class);
 
         flaggedAppsFragment = new FlaggedAppsFragment();
-        flaggedContactsFragment = new FlaggedContactsFragment();
         settingsFragment = new SettingsFragment();
         modesListFragment = new ModesListFragment();
 
@@ -69,14 +67,7 @@ public class SettingsActivity extends AppCompatActivity {
                                     .addToBackStack(null)
                                     .commit();
                             break;
-                        case Constants.FRAGMENT_FLAGGED_CONTACTS:
-                            getSupportFragmentManager()
-                                    .beginTransaction()
-                                    .setCustomAnimations(R.anim.fade_in, R.anim.fade_out)
-                                    .replace(R.id.settingsContainer, flaggedContactsFragment)
-                                    .addToBackStack(null)
-                                    .commit();
-                            break;
+
                         default:
                             Log.d(TAG, "Error. Requested fragment: " + currentFragment);
                     }

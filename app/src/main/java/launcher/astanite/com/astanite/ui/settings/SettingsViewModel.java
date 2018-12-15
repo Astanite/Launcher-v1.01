@@ -93,19 +93,26 @@ public class SettingsViewModel extends AndroidViewModel {
                     .edit()
                     .putBoolean("FocusApps", true)
                     .apply();
+            Log.d("FOCUS_MODE_APPS_SET", String.valueOf(appSet));
             break;
             case Constants.MODE_SLEEP: key = Constants.KEY_SLEEP_APPS;
                 sharedPreferences
                         .edit()
                         .putBoolean("SleepApps", true)
                         .apply();
+                Log.d("SLEEP_MODE_APPS_SET", String.valueOf(appSet));
             break;
             case Constants.MY_MODE: key = Constants.KEY_MY_MODE_APPS;
                 sharedPreferences
                         .edit()
                         .putBoolean("LeisureApps", true)
                         .apply();
+                Log.d("MY_MODE_APPS_SET", String.valueOf(appSet));
             break;
+            case Constants.DISTRACTIVE_APP:
+                key = Constants.KEY_DISTRACTIVE_APPS;  // distractive is not a mode simply setting the key and storing the data in shared preference below.
+                Log.d("DISTRACTIVE_APPS_SET", String.valueOf(appSet));
+                break;
             default: throw new IllegalArgumentException("Invalid mode given for saving apps");
         }
         Log.d(TAG, "Saving flagged apps for mode: " + key);
