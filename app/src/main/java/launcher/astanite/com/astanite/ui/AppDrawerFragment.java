@@ -103,7 +103,7 @@ public class AppDrawerFragment extends Fragment {
         mainViewModel
                 .currentModeApps
                 .observe(this, appInfos -> {
-                    appsAdapter.updateAppsList(appInfos);
+                    appsAdapter.updateAppsList(appInfos, currentMode);
                 });
 
         //updating the intention on text change

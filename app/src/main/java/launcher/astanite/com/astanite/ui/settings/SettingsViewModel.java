@@ -112,7 +112,7 @@ public class SettingsViewModel extends AndroidViewModel {
             case Constants.DISTRACTIVE_APP:
                 key = Constants.KEY_DISTRACTIVE_APPS;  // distractive is not a mode simply setting the key and storing the data in shared preference below.
                 Log.d("DISTRACTIVE_APPS_SET", String.valueOf(appSet));
-            break;
+                break;
             default: throw new IllegalArgumentException("Invalid mode given for saving apps");
         }
         Log.d(TAG, "Saving flagged apps for mode: " + key);
@@ -120,7 +120,6 @@ public class SettingsViewModel extends AndroidViewModel {
                 .edit()
                 .putStringSet(key, appSet)
                 .apply();
-
     }
 
     @Override

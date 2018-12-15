@@ -61,7 +61,7 @@ public class ModesListFragment extends Fragment {
         });
         distractiveAppsSettings.setOnClickListener(view1 -> {
             settingsViewModel.currentFragment.setValue(Constants.FRAGMENT_SETTINGS);
-            settingsViewModel.currentFragment.setValue(Constants.DISTRACTIVE_APP);
+            settingsViewModel.currentMode.setValue(Constants.DISTRACTIVE_APP);
         });
     }
 }
