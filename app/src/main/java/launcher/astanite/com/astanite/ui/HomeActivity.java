@@ -15,21 +15,17 @@ import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.FirebaseAuth;
 
-import java.util.List;
-import java.util.Objects;
-
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.lifecycle.ViewModelProviders;
 import launcher.astanite.com.astanite.R;
-import launcher.astanite.com.astanite.data.AppInfo;
 import launcher.astanite.com.astanite.ui.settings.SettingsActivity;
 import launcher.astanite.com.astanite.utils.BroadCastReceiver;
 import launcher.astanite.com.astanite.utils.Constants;
 import launcher.astanite.com.astanite.viewmodel.MainViewModel;
-
-import static java.security.AccessController.getContext;
 
 public class HomeActivity extends AppCompatActivity implements
         AppDrawerFragment.SettingsScreenListener,
@@ -38,6 +34,8 @@ public class HomeActivity extends AppCompatActivity implements
         BroadCastReceiver.SendToMainActivity,
         AppDrawerFragment.TimerScreenListener {
 
+    private FirebaseAuth mAuth;
+    FirebaseAuth.AuthStateListener mAuthListener;
     private static final String TAG = HomeActivity.class.getSimpleName();
 
     private MainViewModel mainViewModel;
@@ -46,11 +44,29 @@ public class HomeActivity extends AppCompatActivity implements
     private FloatingActionButton allAppsButton;
     private CoordinatorLayout rootView;
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        mAuth.addAuthStateListener(mAuthListener);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        mAuth = FirebaseAuth.getInstance();
+        mAuthListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                if (firebaseAuth.getCurrentUser() == null) {
+                    //user not registered. Send it to Login Activity
+                    Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
+                    startActivity(intent);
+                }
+            }
+        };
+
         Log.i("MYINFO", "Creating Home Activity");
         allAppsButton = findViewById(R.id.allAppsButton);
         rootView = findViewById(R.id.rootView);
@@ -107,27 +123,17 @@ public class HomeActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void sendToMainActivity()
-    {
-            refreshAllData();
+    public void sendToMainActivity() {
+        refreshAllData();
     }
 
-    public void refreshAllData()
-    {
+    public void refreshAllData() {
         closeAppDrawer();
         mainViewModel.getResolveInfoList(this);
-
-        findTotalNumberOfInstalledApps();
 
         homeScreenFragment = new HomeScreenFragment();
         appDrawerFragment = new AppDrawerFragment();
 
-        if (savedInstanceStateGlobal == null) {
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.fragment_container, homeScreenFragment, "HomeScreenFragment")
-                    .commit();
-        }
 
         allAppsButton.setOnClickListener(someView -> {
             mainViewModel.isAppDrawerOpen.setValue(true);
@@ -158,26 +164,26 @@ public class HomeActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo)
-    {
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
         getMenuInflater().inflate(R.menu.options_on_long_press_app, menu);
     }
 
     @Override
-    public boolean onContextItemSelected(MenuItem item)
-    {
-        switch(item.getItemId())
-        {
-            case R.id.uninstall:        Intent intent1 = new Intent(Intent.ACTION_DELETE);
-                                        SharedPreferences prefs = getSharedPreferences(Constants.SHARED_PREFERENCES_NAME, MODE_PRIVATE);
-                                        String packageName = prefs.getString("packageName","Default Package Name");
-                                        intent1.setData(Uri.parse("package:"+packageName));
-                                        startActivity(intent1);
-                                        return true;
-            case R.id.addToHomeScreen:  Toast.makeText(getApplicationContext(),"Option2",Toast.LENGTH_LONG).show();
-                                        return true;
-            default:                    return super.onContextItemSelected(item);
+    public boolean onContextItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.uninstall:
+                Intent intent1 = new Intent(Intent.ACTION_DELETE);
+                SharedPreferences prefs = getSharedPreferences(Constants.SHARED_PREFERENCES_NAME, MODE_PRIVATE);
+                String packageName = prefs.getString("packageName", "Default Package Name");
+                intent1.setData(Uri.parse("package:" + packageName));
+                startActivity(intent1);
+                return true;
+            case R.id.addToHomeScreen:
+                Toast.makeText(getApplicationContext(), "Option2", Toast.LENGTH_LONG).show();
+                return true;
+            default:
+                return super.onContextItemSelected(item);
         }
     }
 
@@ -262,6 +268,12 @@ public class HomeActivity extends AppCompatActivity implements
     @Override
     protected void onResume() {
         super.onResume();
+        closeAppDrawer();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
         closeAppDrawer();
     }
 

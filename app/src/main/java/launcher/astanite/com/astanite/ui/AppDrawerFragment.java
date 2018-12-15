@@ -2,7 +2,6 @@ package launcher.astanite.com.astanite.ui;
 
 
 import android.app.Activity;
-import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -24,18 +23,17 @@ import com.google.android.material.snackbar.Snackbar;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.util.Pair;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import io.reactivex.disposables.CompositeDisposable;
 import launcher.astanite.com.astanite.R;
 import launcher.astanite.com.astanite.data.AppInfo;
 import launcher.astanite.com.astanite.utils.Constants;
@@ -65,6 +63,7 @@ public class AppDrawerFragment extends Fragment {
     private SettingsScreenListener settingsScreenListener;
     private TimerScreenListener timerScreenListener;
     private SharedPreferences sharedPreferences;
+    private int modeForPenaltyScreen;
 
     public AppDrawerFragment() {
         // Required empty public constructor
@@ -94,23 +93,26 @@ public class AppDrawerFragment extends Fragment {
                 .of(getActivity())
                 .get(MainViewModel.class);
 
-        mainViewModel
-                .currentModeApps
-                .observe(this, appInfos -> {
-                    appsAdapter.updateAppsList(appInfos);
-                });
         //Setting up intention in App drawer from MainViewModel
         intentionEditText.setText(sharedPreferences.getString(Constants.KEY_INTENTION, ""));
 
         mainViewModel.getCurrentMode()
                 .observe(this, mode -> this.currentMode = mode);
+        Log.d("current_Mode", String.valueOf(currentMode));
+
+        mainViewModel
+                .currentModeApps
+                .observe(this, appInfos -> {
+                    appsAdapter.updateAppsList(appInfos);
+                });
 
         //updating the intention on text change
         // in editText
         intentionEditText.addTextChangedListener(new TextWatcher() {
 
             @Override
-            public void afterTextChanged(Editable s) {}
+            public void afterTextChanged(Editable s) {
+            }
 
             @Override
             public void beforeTextChanged(CharSequence s, int start,
@@ -171,6 +173,7 @@ public class AppDrawerFragment extends Fragment {
             }
         });
     }
+
     // inflating the menu options (settings in app drawer)
     private void inflateInModeMenu() {
         popupMenu.inflate(R.menu.in_mode_menu);

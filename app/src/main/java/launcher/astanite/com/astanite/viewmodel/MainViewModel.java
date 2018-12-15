@@ -73,6 +73,41 @@ public class MainViewModel extends AndroidViewModel {
     }
 
     public void getResolveInfoList(Context context) {
+        String key = null;
+        int mode = sharedPreferences.getInt(Constants.KEY_CURRENT_MODE, Constants.MODE_NONE);
+        Log.d("Current_Mode", String.valueOf(mode));
+
+        if (mode == Constants.MODE_FOCUS) key = Constants.KEY_FOCUS_APPS;
+        else if (mode == Constants.MODE_SLEEP) key = Constants.KEY_SLEEP_APPS;
+        else if (mode == Constants.MY_MODE) key = Constants.KEY_MY_MODE_APPS;
+
+        if (key == null) {
+            setcurrentModeToAllApps(context, false);
+        } else {
+            Set<String> appSet = sharedPreferences.getStringSet(key, new HashSet<>());
+            PackageManager packageManager = getApplication().getPackageManager();
+            compositeDisposable.add(
+                    Observable.fromIterable(appSet)
+                            .map(packageName -> {
+                                AppInfo appInfo = new AppInfo();
+                                ApplicationInfo ai = packageManager.getApplicationInfo(packageName, 0);
+                                appInfo.label = packageManager.getApplicationLabel(ai).toString();
+                                appInfo.icon = packageManager.getApplicationIcon(ai);
+                                appInfo.launchIntent = packageManager.getLaunchIntentForPackage(packageName);
+                                appInfo.packageName = packageName;
+                                return appInfo;
+                            })
+                            .toList()
+                            .subscribeOn(Schedulers.computation())
+                            .observeOn(Schedulers.computation())
+                            .doOnSuccess(list -> currentModeApps.postValue(list))
+                            .subscribe());
+            setcurrentModeToAllApps(context, true);
+        }
+        currentMode.postValue(mode);
+    }
+
+    private void setcurrentModeToAllApps(Context context, boolean toUpdateApps) {
         Single<List<ResolveInfo>> resolveInfoSingle =
                 Single.fromCallable(() -> {
                     Intent mainIntent = new Intent(Intent.ACTION_MAIN, null);
@@ -81,16 +116,15 @@ public class MainViewModel extends AndroidViewModel {
                 })
                         .subscribeOn(Schedulers.computation())
                         .subscribeOn(Schedulers.computation())
-                        .doOnSuccess((newList) -> convertToAppInfo(newList));
+                        .doOnSuccess((newList) -> convertToAppInfo(newList, toUpdateApps));
         compositeDisposable.add(resolveInfoSingle.subscribe());
     }
 
-    private void convertToAppInfo(List<ResolveInfo> resolveInfoList) {
+
+    private void convertToAppInfo(List<ResolveInfo> resolveInfoList, boolean toUpdateApps) {
         Single<List<AppInfo>> appInfoObservable = Observable.fromIterable(resolveInfoList)
                 .filter(resolveInfo -> {
-                    if (resolveInfo.activityInfo.packageName.equals("launcher.astanite.com.astanite"))
-                        return false;
-                    return true;
+                    return !resolveInfo.activityInfo.packageName.equals("launcher.astanite.com.astanite");
                 })
                 .map(resolveInfo -> {
                     AppInfo appInfo = new AppInfo();
@@ -107,9 +141,26 @@ public class MainViewModel extends AndroidViewModel {
                 .toList()
                 .doOnSuccess(appInfos -> {
                     allApps.postValue(appInfos);
-                    currentModeApps.postValue(appInfos);
+                    if (!toUpdateApps)
+                        currentModeApps.postValue(appInfos);
                 });
         compositeDisposable.add(appInfoObservable.subscribe());
+    }
+
+    private boolean isModeApp(List<String> mode, ResolveInfo resolveInfo) {
+        // run a binary search of String matching package name of resolveInfo with the
+        for (String modeApp : mode) {
+            if (modeApp.equals(resolveInfo.activityInfo.packageName)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private AppInfo setModeApp(List<String> modeApps) {
+        AppInfo appInfo = new AppInfo();
+
+        return appInfo;
     }
 
     public void updateIntention(String intention) {
@@ -188,12 +239,12 @@ public class MainViewModel extends AndroidViewModel {
 
     public void enableDND() {
         Log.d(TAG, "Enabling DND");
-        Block_All_Notification.mode=1;
+        Block_All_Notification.mode = 1;
     }
 
     public void disableDND() {
         Log.d(TAG, "Disabling DND");
-        Block_All_Notification.mode=0;
+        Block_All_Notification.mode = 0;
     }
 
     public void setPenalty(int penalty) {
