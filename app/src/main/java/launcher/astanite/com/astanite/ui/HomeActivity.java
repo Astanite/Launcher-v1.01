@@ -43,6 +43,7 @@ public class HomeActivity extends AppCompatActivity implements
     private AppDrawerFragment appDrawerFragment;
     private FloatingActionButton allAppsButton;
     private CoordinatorLayout rootView;
+    private BroadCastReceiver receiver = new BroadCastReceiver(this);
 
     @Override
     protected void onStart() {
@@ -76,8 +77,7 @@ public class HomeActivity extends AppCompatActivity implements
         filter.addAction(Intent.ACTION_PACKAGE_REMOVED);
         filter.addAction(Intent.ACTION_PACKAGE_FULLY_REMOVED);
         filter.addAction(Intent.ACTION_PACKAGE_ADDED);
-        registerReceiver(new BroadCastReceiver(this), filter);
-        registerReceiver(new BroadCastReceiver(this), filter);
+        registerReceiver(receiver, filter);
 
         mainViewModel = ViewModelProviders
                 .of(this)
@@ -265,17 +265,6 @@ public class HomeActivity extends AppCompatActivity implements
 
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        closeAppDrawer();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        closeAppDrawer();
-    }
 
     // Unused Function
     private void hideKeyboard(Activity activity) {
@@ -287,5 +276,16 @@ public class HomeActivity extends AppCompatActivity implements
             view = new View(activity);
         }
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+       try {
+           unregisterReceiver(receiver);
+       }catch (IllegalArgumentException e){
+           e.printStackTrace();
+       }
+
     }
 }

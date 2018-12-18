@@ -31,8 +31,6 @@ public class BlockingAppService extends Service {
     private List<String> sleepModeApps;
     private List<String> leisureModeApps;
     private List<String> setCurrentMode;
-    private ScreenOnOffReceiver mScreenReceiver;
-
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -42,7 +40,7 @@ public class BlockingAppService extends Service {
     @Override
     public void onCreate() {
         Log.e("Service Created", "onCreate: ");
-        registerScreenStatusReceiver();
+
         super.onCreate();
     }
 
@@ -65,7 +63,6 @@ public class BlockingAppService extends Service {
 
     @Override
     public void onDestroy() {
-        unregisterScreenStatusReceiver();
         handler.removeCallbacks(myrunnable);
         super.onDestroy();
     }
@@ -135,38 +132,6 @@ public class BlockingAppService extends Service {
             default:
                 setCurrentMode = focusModeApps;
                 break;
-        }
-    }
-
-    private void registerScreenStatusReceiver() {
-        mScreenReceiver = new ScreenOnOffReceiver();
-        IntentFilter filter = new IntentFilter();
-        filter.addAction(Intent.ACTION_SCREEN_OFF);
-        filter.addAction(Intent.ACTION_SCREEN_ON);
-        registerReceiver(mScreenReceiver, filter);
-    }
-
-    private void unregisterScreenStatusReceiver() {
-        try {
-            if (mScreenReceiver != null) {
-                unregisterReceiver(mScreenReceiver);
-            }
-        } catch (IllegalArgumentException ignored) {
-        }
-    }
-
-    public class ScreenOnOffReceiver extends BroadcastReceiver {
-
-        @Override
-        public void onReceive(Context context, Intent intent) {
-
-            if (Objects.equals(intent.getAction(), Intent.ACTION_SCREEN_OFF)) {
-                Log.d("StackOverflow", "Screen Off");
-                getBaseContext().stopService(new Intent(getBaseContext(), BlockingAppService.class));
-            } else if (Objects.equals(intent.getAction(), Intent.ACTION_SCREEN_ON)) {
-                Log.d("StackOverflow", "Screen On");
-                getBaseContext().startService(new Intent(getBaseContext(), BlockingAppService.class));
-            }
         }
     }
 }

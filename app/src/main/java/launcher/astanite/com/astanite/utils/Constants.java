@@ -29,4 +29,5 @@ public class Constants {
 
 
     public static final String ACTION_NOTIFICATION_SERVICE = "notif-service";
+    public static final int DRAW_OVER_OTHER_APP_PERMISSION = 101;
 }
