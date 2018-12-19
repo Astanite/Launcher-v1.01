@@ -9,7 +9,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.android.material.snackbar.Snackbar;
@@ -19,12 +18,14 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import launcher.astanite.com.astanite.R;
 import launcher.astanite.com.astanite.data.AppInfo;
+import launcher.astanite.com.astanite.utils.Constants;
 
 public class FlaggedAppsFragment extends Fragment {
 
@@ -35,6 +36,7 @@ public class FlaggedAppsFragment extends Fragment {
     private GridLayoutManager layoutManager;
     private RecyclerView flaggedAppsRecyclerview;
     private View rootView;
+    private CardView cv_focus, cv_sleep, cv_leisure;
 
     public FlaggedAppsFragment() {
         // Required empty public constructor
@@ -90,9 +92,28 @@ public class FlaggedAppsFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         rootView = view;
         flaggedAppsRecyclerview = view.findViewById(R.id.flaggedAppsRecyclerview);
+        cv_focus = view.findViewById(R.id.cv_focus_mode);
+        cv_sleep = view.findViewById(R.id.cv_sleep_mode);
+        cv_leisure = view.findViewById(R.id.cv_leisure_mode);
         flaggedAppsAdapter = new FlaggedAppsAdapter(new ArrayList<>(), Glide.with(getContext()));
         layoutManager = new GridLayoutManager(getContext(), 4);
         flaggedAppsRecyclerview.setAdapter(flaggedAppsAdapter);
         flaggedAppsRecyclerview.setLayoutManager(layoutManager);
+
+        cv_focus.setOnClickListener(view1 -> {
+            Log.d("cv_focus_clicked", String.valueOf(Constants.MODE_FOCUS));
+            settingsViewModel.currentFragment.setValue(Constants.FRAGMENT_FLAGGED_APPS);
+            settingsViewModel.currentMode.setValue(Constants.MODE_FOCUS);
+        });
+        cv_leisure.setOnClickListener(view12 -> {
+            Log.d("cv_leisure_clicked", String.valueOf(Constants.MY_MODE));
+            settingsViewModel.currentFragment.setValue(Constants.FRAGMENT_FLAGGED_APPS);
+            settingsViewModel.currentMode.setValue(Constants.MY_MODE);
+        });
+        cv_sleep.setOnClickListener(view13 -> {
+            Log.d("cv_sleep_clicked", String.valueOf(Constants.MODE_SLEEP));
+            settingsViewModel.currentFragment.setValue(Constants.FRAGMENT_FLAGGED_APPS);
+            settingsViewModel.currentMode.setValue(Constants.MODE_SLEEP);
+        });
     }
 }
