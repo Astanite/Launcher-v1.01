@@ -17,7 +17,6 @@ public class SettingsActivity extends AppCompatActivity {
     private SettingsViewModel settingsViewModel;
     private ModesListFragment modesListFragment;
     private FlaggedAppsFragment flaggedAppsFragment;
-    private SettingsFragment settingsFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +32,6 @@ public class SettingsActivity extends AppCompatActivity {
                 .get(SettingsViewModel.class);
 
         flaggedAppsFragment = new FlaggedAppsFragment();
-        settingsFragment = new SettingsFragment();
         modesListFragment = new ModesListFragment();
 
         if (savedInstanceState == null) {
@@ -52,13 +50,7 @@ public class SettingsActivity extends AppCompatActivity {
                 .observe(this, currentFragment -> {
                     Log.d(TAG, "Current fragment: " + currentFragment);
                     switch (currentFragment) {
-                        case Constants.FRAGMENT_SETTINGS:
-                            getSupportFragmentManager()
-                                    .beginTransaction()
-                                    .replace(R.id.settingsContainer, settingsFragment)
-                                    .addToBackStack(null)
-                                    .commit();
-                            break;
+
                         case Constants.FRAGMENT_FLAGGED_APPS:
                             getSupportFragmentManager()
                                     .beginTransaction()

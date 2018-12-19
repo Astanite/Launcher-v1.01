@@ -40,34 +40,18 @@ public class ModesListFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-//        TextView focusModeSettings = view.findViewById(R.id.focusModeSettingsTextview),
-//                sleepModeSettings = view.findViewById(R.id.sleepModeSettingsTextview),
-//                myModeSettings = view.findViewById(R.id.myModeSettingsTextview) ,
-//                distractiveAppsSettings = view.findViewById(R.id.distractiveAppsSettings);
         RelativeLayout appSelection = view.findViewById(R.id.app_selection),
                 distSelection = view.findViewById(R.id.distractive_apps),
                 feedback = view.findViewById(R.id.feedback),
                 contactus = view.findViewById(R.id.contact_us);
 
-//        focusModeSettings.setOnClickListener(someView -> {
-//            settingsViewModel.currentFragment.setValue(Constants.FRAGMENT_SETTINGS);
-//            settingsViewModel.currentMode.setValue(Constants.MODE_FOCUS);
-//        });
-//
-//        sleepModeSettings.setOnClickListener(someView -> {
-//            settingsViewModel.currentFragment.setValue(Constants.FRAGMENT_SETTINGS);
-//            settingsViewModel.currentMode.setValue(Constants.MODE_SLEEP);
-//        });
-//        myModeSettings.setOnClickListener(someView -> {
-//            settingsViewModel.currentFragment.setValue(Constants.FRAGMENT_SETTINGS);
-//            settingsViewModel.currentMode.setValue(Constants.MY_MODE);
-//        });
+
         appSelection.setOnClickListener(view0 ->{
-            settingsViewModel.currentFragment.setValue(Constants.FRAGMENT_SETTINGS);
+            settingsViewModel.currentFragment.postValue(Constants.FRAGMENT_FLAGGED_APPS);
             settingsViewModel.currentMode.setValue(Constants.MODE_NONE);
         });
         distSelection.setOnClickListener(view1 -> {
-            settingsViewModel.currentFragment.setValue(Constants.FRAGMENT_SETTINGS);
+            settingsViewModel.currentFragment.setValue(Constants.FRAGMENT_FLAGGED_APPS);
             settingsViewModel.currentMode.setValue(Constants.DISTRACTIVE_APP);
         });
     }
