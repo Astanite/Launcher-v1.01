@@ -44,8 +44,7 @@
 
             <RelativeLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="9dp">
+                android:layout_height="wrap_content">
 
                 <ImageView
                     android:id="@+id/iv_focus"
@@ -80,8 +79,7 @@
 
             <RelativeLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="9dp">
+                android:layout_height="wrap_content">
 
                 <ImageView
                     android:id="@+id/iv_sleep"
@@ -116,8 +114,7 @@
 
             <RelativeLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="9dp">
+                android:layout_height="wrap_content">
 
                 <ImageView
                     android:id="@+id/iv_leisure"

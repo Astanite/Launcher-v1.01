@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.bumptech.glide.Glide;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
@@ -33,10 +34,8 @@ public class FlaggedAppsFragment extends Fragment {
 
     private SettingsViewModel settingsViewModel;
     private FlaggedAppsAdapter flaggedAppsAdapter;
-    private GridLayoutManager layoutManager;
-    private RecyclerView flaggedAppsRecyclerview;
     private View rootView;
-    private CardView cv_focus, cv_sleep, cv_leisure;
+    private FloatingActionButton fab_save;
 
     public FlaggedAppsFragment() {
         // Required empty public constructor
@@ -67,36 +66,19 @@ public class FlaggedAppsFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_flagged_apps, container, false);
     }
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.flagged_apps_menu, menu);
-    }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.saveFlaggedApps:
-                Log.d(TAG, "Save menu option clicked");
-                List<AppInfo> flaggedApps = flaggedAppsAdapter.getCheckedApps();
-                settingsViewModel.saveFlaggedApps(flaggedApps);
-                Snackbar.make(rootView, "Flagged Apps updated!", Snackbar.LENGTH_SHORT).show();
-                return true;
-            default:
-                return true;
-        }
-    }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         rootView = view;
-        flaggedAppsRecyclerview = view.findViewById(R.id.flaggedAppsRecyclerview);
-        cv_focus = view.findViewById(R.id.cv_focus_mode);
-        cv_sleep = view.findViewById(R.id.cv_sleep_mode);
-        cv_leisure = view.findViewById(R.id.cv_leisure_mode);
+        RecyclerView flaggedAppsRecyclerview = view.findViewById(R.id.flaggedAppsRecyclerview);
+        CardView cv_focus = view.findViewById(R.id.cv_focus_mode),
+                cv_sleep = view.findViewById(R.id.cv_sleep_mode),
+                cv_leisure = view.findViewById(R.id.cv_leisure_mode);
+        fab_save = view.findViewById(R.id.fab_save);
         flaggedAppsAdapter = new FlaggedAppsAdapter(new ArrayList<>(), Glide.with(getContext()));
-        layoutManager = new GridLayoutManager(getContext(), 4);
+        GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 4);
         flaggedAppsRecyclerview.setAdapter(flaggedAppsAdapter);
         flaggedAppsRecyclerview.setLayoutManager(layoutManager);
 
@@ -114,6 +96,35 @@ public class FlaggedAppsFragment extends Fragment {
             Log.d("cv_sleep_clicked", String.valueOf(Constants.MODE_SLEEP));
             settingsViewModel.currentFragment.setValue(Constants.FRAGMENT_FLAGGED_APPS);
             settingsViewModel.currentMode.setValue(Constants.MODE_SLEEP);
+        });
+
+        flaggedAppsRecyclerview.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                if (dy > 0 || dy < 0 && fab_save.isShown()) {
+                    fab_save.hide();
+                }
+            }
+
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    fab_save.show();
+                }
+
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+        });
+
+        fab_save.setOnClickListener(view1 -> {
+            if (flaggedAppsAdapter.getCheckedApps().size() != 0) {
+                Log.d(TAG, "Save menu option clicked");
+                List<AppInfo> flaggedApps = flaggedAppsAdapter.getCheckedApps();
+                settingsViewModel.saveFlaggedApps(flaggedApps);
+                Snackbar.make(rootView, "Flagged Apps updated!", Snackbar.LENGTH_SHORT).show();
+            }else {
+                Snackbar.make(rootView, "Select Flagged Apps!", Snackbar.LENGTH_SHORT).show();
+            }
         });
     }
 }

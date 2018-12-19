@@ -20,10 +20,8 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.google.android.material.button.MaterialButton;
 import com.google.android.material.snackbar.Snackbar;
 
 import androidx.annotation.NonNull;
@@ -187,10 +185,19 @@ public class HomeScreenFragment extends Fragment implements TextWatcher {
                 Snackbar.make(view, "You're already in another mode", Snackbar.LENGTH_SHORT).show();
             }
         });
-        //if user wants to exit current active mode
-        ivExitFocus.setOnClickListener(this::ExitMode);
-        ivExitSleep.setOnClickListener(this::ExitMode);
-        ivExitLeisure.setOnClickListener(this::ExitMode);
+        //if user wants to exit current active mode.
+        ivExitFocus.setOnClickListener(view5 -> {
+            ExitMode(view);
+            animateFab();
+        });
+        ivExitSleep.setOnClickListener(view6 -> {
+            ExitMode(view);
+            animateFab();
+        });
+        ivExitLeisure.setOnClickListener(view7 -> {
+            ExitMode(view);
+            animateFab();
+        });
 
         intentionEditText.setOnTouchListener((v, event) -> {
             final int DRAWABLE_LEFT = 0;
@@ -198,8 +205,8 @@ public class HomeScreenFragment extends Fragment implements TextWatcher {
             final int DRAWABLE_RIGHT = 2;
             final int DRAWABLE_BOTTOM = 3;
 
-            if(event.getAction() == MotionEvent.ACTION_DOWN) {
-                if(event.getRawX() >= (intentionEditText.getRight() - intentionEditText.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
+            if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                if (event.getRawX() >= (intentionEditText.getRight() - intentionEditText.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
                     settingsScreenListener.showSettings();
                     return true;
                 }
@@ -237,7 +244,6 @@ public class HomeScreenFragment extends Fragment implements TextWatcher {
         } else {
             getContext().stopService(new Intent(getContext(), BlockingAppService.class));
             mainViewModel.setCurrentMode(Constants.MODE_NONE);
-            Log.d("Service ", "Stopped 2");
             Snackbar.make(view, "Exited mode", Snackbar.LENGTH_SHORT).show();
         }
     }
@@ -299,7 +305,6 @@ public class HomeScreenFragment extends Fragment implements TextWatcher {
 
         return icon;
     }
-
 
 
     @Override
