@@ -72,10 +72,7 @@
 
             </intent-filter>
         </service>
-        <service
-            android:name=".ui.FloatingWidgetService"
-            android:enabled="true"
-            android:exported="false" />
+
     </application>
 
 </manifest>

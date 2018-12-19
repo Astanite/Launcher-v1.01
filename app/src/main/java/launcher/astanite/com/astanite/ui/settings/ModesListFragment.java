@@ -2,18 +2,17 @@ package launcher.astanite.com.astanite.ui.settings;
 
 
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.RelativeLayout;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
-import launcher.astanite.com.astanite.utils.Constants;
 import launcher.astanite.com.astanite.R;
+import launcher.astanite.com.astanite.utils.Constants;
 
 public class ModesListFragment extends Fragment {
 
@@ -41,25 +40,33 @@ public class ModesListFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        TextView focusModeSettings = view.findViewById(R.id.focusModeSettingsTextview),
-                sleepModeSettings = view.findViewById(R.id.sleepModeSettingsTextview),
-                myModeSettings = view.findViewById(R.id.myModeSettingsTextview) ,
-                distractiveAppsSettings = view.findViewById(R.id.distractiveAppsSettings);
+//        TextView focusModeSettings = view.findViewById(R.id.focusModeSettingsTextview),
+//                sleepModeSettings = view.findViewById(R.id.sleepModeSettingsTextview),
+//                myModeSettings = view.findViewById(R.id.myModeSettingsTextview) ,
+//                distractiveAppsSettings = view.findViewById(R.id.distractiveAppsSettings);
+        RelativeLayout appSelection = view.findViewById(R.id.app_selection),
+                distSelection = view.findViewById(R.id.distractive_apps),
+                feedback = view.findViewById(R.id.feedback),
+                contactus = view.findViewById(R.id.contact_us);
 
-        focusModeSettings.setOnClickListener(someView -> {
+//        focusModeSettings.setOnClickListener(someView -> {
+//            settingsViewModel.currentFragment.setValue(Constants.FRAGMENT_SETTINGS);
+//            settingsViewModel.currentMode.setValue(Constants.MODE_FOCUS);
+//        });
+//
+//        sleepModeSettings.setOnClickListener(someView -> {
+//            settingsViewModel.currentFragment.setValue(Constants.FRAGMENT_SETTINGS);
+//            settingsViewModel.currentMode.setValue(Constants.MODE_SLEEP);
+//        });
+//        myModeSettings.setOnClickListener(someView -> {
+//            settingsViewModel.currentFragment.setValue(Constants.FRAGMENT_SETTINGS);
+//            settingsViewModel.currentMode.setValue(Constants.MY_MODE);
+//        });
+        appSelection.setOnClickListener(view0 ->{
             settingsViewModel.currentFragment.setValue(Constants.FRAGMENT_SETTINGS);
-            settingsViewModel.currentMode.setValue(Constants.MODE_FOCUS);
+            settingsViewModel.currentMode.setValue(Constants.MODE_NONE);
         });
-
-        sleepModeSettings.setOnClickListener(someView -> {
-            settingsViewModel.currentFragment.setValue(Constants.FRAGMENT_SETTINGS);
-            settingsViewModel.currentMode.setValue(Constants.MODE_SLEEP);
-        });
-        myModeSettings.setOnClickListener(someView -> {
-            settingsViewModel.currentFragment.setValue(Constants.FRAGMENT_SETTINGS);
-            settingsViewModel.currentMode.setValue(Constants.MY_MODE);
-        });
-        distractiveAppsSettings.setOnClickListener(view1 -> {
+        distSelection.setOnClickListener(view1 -> {
             settingsViewModel.currentFragment.setValue(Constants.FRAGMENT_SETTINGS);
             settingsViewModel.currentMode.setValue(Constants.DISTRACTIVE_APP);
         });
