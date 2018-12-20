@@ -3,7 +3,6 @@ package launcher.astanite.com.astanite.ui.settings;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Window;
-import android.view.WindowManager;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
@@ -15,10 +14,8 @@ public class SettingsActivity extends AppCompatActivity {
 
     private static final String TAG = SettingsActivity.class.getSimpleName();
 
-    private SettingsViewModel settingsViewModel;
-    private ModesListFragment modesListFragment;
     private FlaggedAppsFragment flaggedAppsFragment;
-
+    private Bundle argument = new Bundle() ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,12 +25,12 @@ public class SettingsActivity extends AppCompatActivity {
         //set content view AFTER ABOVE sequence (to avoid crash)
         this.setContentView(R.layout.activity_settings);
 
-        settingsViewModel = ViewModelProviders
+        SettingsViewModel settingsViewModel = ViewModelProviders
                 .of(this)
                 .get(SettingsViewModel.class);
 
         flaggedAppsFragment = new FlaggedAppsFragment();
-        modesListFragment = new ModesListFragment();
+        ModesListFragment modesListFragment = new ModesListFragment();
 
         if (savedInstanceState == null) {
             // 0 for ModesList Fragment
@@ -60,7 +57,17 @@ public class SettingsActivity extends AppCompatActivity {
                                     .addToBackStack(null)
                                     .commit();
                             break;
-
+                        case Constants.FRAGMENT_DISTRACTIVE_APPS:
+                            argument.putBoolean("isDist", true);
+                            flaggedAppsFragment.setArguments(argument);
+                            Log.d("isDist", String.valueOf(true));
+                            getSupportFragmentManager()
+                                    .beginTransaction()
+                                    .setCustomAnimations(R.anim.fade_in, R.anim.fade_out)
+                                    .replace(R.id.settingsContainer, flaggedAppsFragment)
+                                    .addToBackStack(null)
+                                    .commit();
+                            break;
                         default:
                             Log.d(TAG, "Error. Requested fragment: " + currentFragment);
                     }

@@ -5,7 +5,8 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@color/colorBlack">
 
 
     <ImageView
@@ -33,7 +34,7 @@
         app:layout_constraintStart_toStartOf="@+id/appIconImageview"
         app:layout_constraintTop_toBottomOf="@+id/appIconImageview"
         tools:text="TextView"
-        android:textColor="@color/colorWhite"/>
+        android:textColor="@color/colorGrey" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

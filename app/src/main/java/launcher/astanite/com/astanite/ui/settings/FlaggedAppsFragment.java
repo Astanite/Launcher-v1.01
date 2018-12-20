@@ -1,12 +1,14 @@
 package launcher.astanite.com.astanite.ui.settings;
 
 
-import android.content.Context;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.bumptech.glide.Glide;
@@ -34,6 +36,8 @@ public class FlaggedAppsFragment extends Fragment {
     private FlaggedAppsAdapter flaggedAppsAdapter;
     private View rootView;
     private FloatingActionButton fab_save;
+    private CardView cv_focus, cv_sleep, cv_leisure;
+    private ImageView ivFocus, ivSleep, ivLeisure;
 
     public FlaggedAppsFragment() {
         // Required empty public constructor
@@ -69,11 +73,23 @@ public class FlaggedAppsFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         rootView = view;
+        boolean isDist = false;
+        Bundle arguments = getArguments();
+        if (arguments != null) {
+            isDist = arguments.getBoolean("isDist");
+            arguments.putBoolean("isDist", false);
+        }
         RecyclerView flaggedAppsRecyclerview = view.findViewById(R.id.flaggedAppsRecyclerview);
-        CardView cv_focus = view.findViewById(R.id.cv_focus_mode),
-                cv_sleep = view.findViewById(R.id.cv_sleep_mode),
-                cv_leisure = view.findViewById(R.id.cv_leisure_mode);
+        cv_focus = view.findViewById(R.id.cv_focus_mode);
+        cv_sleep = view.findViewById(R.id.cv_sleep_mode);
+        cv_leisure = view.findViewById(R.id.cv_leisure_mode);
+        ivFocus = view.findViewById(R.id.iv_focus);
+        ivSleep = view.findViewById(R.id.iv_sleep);
+        ivLeisure = view.findViewById(R.id.iv_leisure);
+        setColors(Constants.MODE_FOCUS);
         fab_save = view.findViewById(R.id.fab_save);
+        LinearLayout mode_switcher = view.findViewById(R.id.ll_modes_switch);
+        if (!isDist) mode_switcher.setVisibility(View.VISIBLE);
 
         flaggedAppsAdapter = new FlaggedAppsAdapter(new ArrayList<>(), Glide.with(getContext()));
         GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 4);
@@ -81,17 +97,17 @@ public class FlaggedAppsFragment extends Fragment {
         flaggedAppsRecyclerview.setLayoutManager(layoutManager);
 
         cv_focus.setOnClickListener(view1 -> {
-            Log.d("cv_focus_clicked", String.valueOf(Constants.MODE_FOCUS));
+            setColors(Constants.MODE_FOCUS);
             settingsViewModel.currentFragment.setValue(Constants.FRAGMENT_FLAGGED_APPS);
             settingsViewModel.currentMode.setValue(Constants.MODE_FOCUS);
         });
         cv_leisure.setOnClickListener(view12 -> {
-            Log.d("cv_leisure_clicked", String.valueOf(Constants.MY_MODE));
+            setColors(Constants.MY_MODE);
             settingsViewModel.currentFragment.setValue(Constants.FRAGMENT_FLAGGED_APPS);
             settingsViewModel.currentMode.setValue(Constants.MY_MODE);
         });
         cv_sleep.setOnClickListener(view13 -> {
-            Log.d("cv_sleep_clicked", String.valueOf(Constants.MODE_SLEEP));
+            setColors(Constants.MODE_SLEEP);
             settingsViewModel.currentFragment.setValue(Constants.FRAGMENT_FLAGGED_APPS);
             settingsViewModel.currentMode.setValue(Constants.MODE_SLEEP);
         });
@@ -124,5 +140,35 @@ public class FlaggedAppsFragment extends Fragment {
                 Snackbar.make(rootView, "Select at least One App!", Snackbar.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void setColors(int modeFocus) {
+        switch (modeFocus){
+            case Constants.MODE_FOCUS:
+                cv_focus.setBackgroundTintMode(null);
+                ivFocus.setColorFilter(Color.argb(50, 255, 255,255));
+                cv_sleep.setBackgroundTintMode(PorterDuff.Mode.SRC_ATOP);
+                ivSleep.setColorFilter(Color.argb(127,0, 0, 0));
+                cv_leisure.setBackgroundTintMode(PorterDuff.Mode.SRC_ATOP);
+                ivLeisure.setColorFilter(Color.argb(127,0, 0, 0));
+                break;
+            case Constants.MODE_SLEEP:
+                cv_focus.setBackgroundTintMode(PorterDuff.Mode.SRC_ATOP);
+                ivFocus.setColorFilter(Color.argb(127,0, 0, 0));
+                cv_sleep.setBackgroundTintMode(null);
+                ivSleep.setColorFilter(Color.argb(50, 255, 255,255));
+                cv_leisure.setBackgroundTintMode(PorterDuff.Mode.SRC_ATOP);
+                ivLeisure.setColorFilter(Color.argb(127,0, 0, 0));
+                break;
+            case Constants.MY_MODE:
+                cv_focus.setBackgroundTintMode(PorterDuff.Mode.SRC_ATOP);
+                ivFocus.setColorFilter(Color.argb(127,0, 0, 0));
+                cv_sleep.setBackgroundTintMode(PorterDuff.Mode.SRC_ATOP);
+                ivSleep.setColorFilter(Color.argb(127,0, 0, 0));
+                cv_leisure.setBackgroundTintMode(null);
+                ivLeisure.setColorFilter(Color.argb(50, 255, 255,255));
+                break;
+
+        }
     }
 }

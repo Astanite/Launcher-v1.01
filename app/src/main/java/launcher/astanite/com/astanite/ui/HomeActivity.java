@@ -254,7 +254,6 @@ public class HomeActivity extends AppCompatActivity implements
                 .beginTransaction()
                 .setCustomAnimations(R.anim.fade_in, R.anim.fade_out)
                 .replace(R.id.fragment_container, penaltyFragment)
-                .addToBackStack(null)
                 .commit();
         mainViewModel.isPenaltyScreenOpen = true;
         allAppsButton.hide();
@@ -280,7 +279,6 @@ public class HomeActivity extends AppCompatActivity implements
                 .beginTransaction()
                 .setCustomAnimations(R.anim.enter_from_bottom, R.anim.exit_to_bottom)
                 .replace(R.id.fragment_container, timerFragment)
-                .addToBackStack(null)
                 .commit();
     }
 

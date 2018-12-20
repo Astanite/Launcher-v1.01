@@ -51,13 +51,8 @@ public class ModesListFragment extends Fragment {
             settingsViewModel.currentMode.setValue(Constants.MODE_NONE);
         });
         distSelection.setOnClickListener(view1 -> {
-            settingsViewModel.currentFragment.setValue(Constants.FRAGMENT_FLAGGED_APPS);
+            settingsViewModel.currentFragment.setValue(Constants.FRAGMENT_DISTRACTIVE_APPS);
             settingsViewModel.currentMode.setValue(Constants.DISTRACTIVE_APP);
-            getContext()
-                    .getSharedPreferences(Constants.SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE)
-                    .edit()
-                    .putBoolean("isDist", true)
-                    .apply();
         });
     }
 }
