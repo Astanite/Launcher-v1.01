@@ -103,4 +103,11 @@
     <string name="title_activity_popup_to_block">PopupToBlockActivity</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="default_intention">Your Intention here</string>
+    <string name="settings">Settings</string>
+    <string name="apps_selection">Apps Selection</string>
+    <string name="feedback">Feedback</string>
+    <string name="leisure">Leisure</string>
+    <string name="sleep">Sleep</string>
+    <string name="focus">Focus</string>
 </resources>

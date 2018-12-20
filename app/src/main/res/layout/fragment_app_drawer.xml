@@ -18,44 +18,32 @@
         android:padding="8dp"
         android:focusableInTouchMode="true">
 
-        <EditText
-            android:id="@+id/intentionEdittext"
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cv_intention"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:minHeight="50dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
-            android:padding="8dp"
-            android:enabled="true"
-            android:gravity="center"
-            android:hint="Your intention here"
-            android:background="@drawable/intention_edittext_background"
-            android:textAlignment="center"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
-            app:hintTextAppearance="@style/TextAppearance.MaterialComponents.Caption"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/appDrawerOptionsButton"
-            app:layout_constraintTop_toTopOf="parent"
-            android:elevation="4dp"/>
+            app:cardCornerRadius="17dp"
+            android:elevation="5dp">
 
-        <ImageButton
-            android:id="@+id/appDrawerOptionsButton"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_gravity="end|center"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="8dp"
-            android:background="@android:color/transparent"
-            android:src="@drawable/ic_menu"
-            android:tint="@android:color/darker_gray"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintDimensionRatio="1:1"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/intentionEdittext"
-            android:elevation="4dp"/>
+            <EditText
+                android:id="@+id/intentionEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/intention_edittext_background"
+                android:backgroundTint="#CCffffff"
+                android:drawableEnd="@drawable/ic_settings_black"
+                android:gravity="center"
+                android:hint="@string/default_intention"
+                android:padding="8dp"
+                android:textAlignment="center"
+                android:textColor="#414141"
+                android:textColorHint="#414141"
+                android:textSize="18sp" />
+        </androidx.cardview.widget.CardView>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.recyclerview.widget.RecyclerView

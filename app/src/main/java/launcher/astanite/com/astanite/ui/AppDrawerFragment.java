@@ -1,6 +1,7 @@
 package launcher.astanite.com.astanite.ui;
 
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -10,12 +11,14 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.PopupMenu;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.android.material.snackbar.Snackbar;
@@ -56,7 +59,6 @@ public class AppDrawerFragment extends Fragment {
     private AppsAdapter appsAdapter;
     private LinearLayoutManager layoutManager;
     private EditText intentionEditText;
-    private ImageButton appDrawerOptionsButton;
     private PopupMenu popupMenu;
     private int currentMode;
     private View root;
@@ -79,8 +81,6 @@ public class AppDrawerFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
-        Pair<List<AppInfo>, DiffUtil.DiffResult> seedPair = new Pair<>(Collections.emptyList(), null);
 
         if (!(getActivity() instanceof SettingsScreenListener) || !(getActivity() instanceof TimerScreenListener))
             throw new ClassCastException();
@@ -137,62 +137,31 @@ public class AppDrawerFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_app_drawer, container, false);
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         root = view;
         appsRecyclerView = view.findViewById(R.id.appsRecyclerView);
-        intentionEditText = view.findViewById(R.id.intentionEdittext);
-        appDrawerOptionsButton = view.findViewById(R.id.appDrawerOptionsButton);
+        intentionEditText = view.findViewById(R.id.intentionEditText);
 
         appsRecyclerView.setAdapter(appsAdapter);
         layoutManager = new GridLayoutManager(getContext(), 4);
         appsRecyclerView.setLayoutManager(layoutManager);
-        popupMenu = new PopupMenu(getContext(), appDrawerOptionsButton);
 
-        appDrawerOptionsButton.setOnClickListener(someView -> {
-            popupMenu = new PopupMenu(getContext(), appDrawerOptionsButton);
-            if (currentMode == Constants.MODE_NONE) {
-                inflateOutOfModeMenu();
-            } else {
-                inflateInModeMenu();
-            }
-            popupMenu.show();
-        });
-    }
+        intentionEditText.setOnTouchListener((v, event) -> {
+            final int DRAWABLE_LEFT = 0;
+            final int DRAWABLE_TOP = 1;
+            final int DRAWABLE_RIGHT = 2;
+            final int DRAWABLE_BOTTOM = 3;
 
-    private void inflateOutOfModeMenu() {
-        popupMenu.inflate(R.menu.out_of_mode_menu);
-        popupMenu.setOnMenuItemClickListener(menuItem -> {
-            switch (menuItem.getItemId()) {
-                case R.id.settings:
+            if(event.getAction() == MotionEvent.ACTION_DOWN) {
+                if(event.getRawX() >= (intentionEditText.getRight() - intentionEditText.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
                     settingsScreenListener.showSettings();
                     return true;
-                default:
-                    return true;
-            }
-        });
-    }
-
-    // inflating the menu options (settings in app drawer)
-    private void inflateInModeMenu() {
-        popupMenu.inflate(R.menu.in_mode_menu);
-        popupMenu.setOnMenuItemClickListener(menuItem -> {
-            if (menuItem.getItemId() == R.id.exitMode) {
-                //if user tries to exit current active mode
-                long currentTime = System.currentTimeMillis();
-                long enteredTime = mainViewModel.getTimeOfEnteringMode();
-                long delta = currentTime - enteredTime;
-                if (delta < mainViewModel.getModeTime() && delta != 0) {
-                    timerScreenListener.showTimer();
-                } else {
-                    getContext().stopService(new Intent(getContext(), BlockingAppService.class));
-                    mainViewModel.setCurrentMode(Constants.MODE_NONE);
-                    Log.d("Service ", "Stopped 2");
-                    Snackbar.make(root, "Exited mode", Snackbar.LENGTH_SHORT).show();
                 }
             }
-            return true;
+            return false;
         });
 
     }

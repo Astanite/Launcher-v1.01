@@ -15,7 +15,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:srcCompat="@tools:sample/avatars" />
+        tools:srcCompat="@tools:sample/avatars"
+        android:tint="@color/back_black"/>
 
     <TextView
         android:id="@+id/appNameTextview"
@@ -31,15 +32,8 @@
         app:layout_constraintEnd_toEndOf="@+id/appIconImageview"
         app:layout_constraintStart_toStartOf="@+id/appIconImageview"
         app:layout_constraintTop_toBottomOf="@+id/appIconImageview"
-        tools:text="TextView" />
+        tools:text="TextView"
+        android:textColor="@color/colorWhite"/>
 
-    <CheckBox
-        android:id="@+id/appCheckbox"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:checked="false"
-        android:elevation="4dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

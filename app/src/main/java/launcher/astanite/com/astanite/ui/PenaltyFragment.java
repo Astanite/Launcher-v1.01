@@ -5,6 +5,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -22,7 +23,10 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import launcher.astanite.com.astanite.R;
+import launcher.astanite.com.astanite.utils.Constants;
 import launcher.astanite.com.astanite.viewmodel.MainViewModel;
+
+import static android.content.Context.MODE_PRIVATE;
 
 /*
 CREATED BY UTSAV
@@ -156,9 +160,19 @@ public class PenaltyFragment extends Fragment implements AdapterView.OnItemSelec
             if (Objects.equals(intent.getAction(), Intent.ACTION_SCREEN_OFF)) {
                 Log.d("StackOverflow", "Screen Off");
                 getContext().stopService(new Intent(getContext(), BlockingAppService.class));
+                getContext().getSharedPreferences(Constants.SHARED_PREFERENCES_NAME, MODE_PRIVATE)
+                        .edit()
+                        .putString("last_mode", String.valueOf(getContext()
+                                .getSharedPreferences(Constants.SHARED_PREFERENCES_NAME, MODE_PRIVATE)
+                                .getInt(Constants.KEY_CURRENT_MODE, Constants.MODE_NONE)))
+                        .apply();
             } else if (Objects.equals(intent.getAction(), Intent.ACTION_SCREEN_ON)) {
-                Log.d("StackOverflow", "Screen On");
-                getContext().startService(new Intent(getContext(), BlockingAppService.class));
+                SharedPreferences shared = getContext().getSharedPreferences(Constants.SHARED_PREFERENCES_NAME, MODE_PRIVATE);
+                String check_last_mode = shared.getString("last_mode", "0");
+                if (!check_last_mode.equals("0")) {
+                    Log.d("StackOverflow", "Screen On");
+                    getContext().startService(new Intent(getContext(), BlockingAppService.class));
+                }
             }
         }
     }

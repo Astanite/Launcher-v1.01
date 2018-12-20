@@ -223,7 +223,6 @@ public class AppsAdapter extends RecyclerView.Adapter<AppsAdapter.ViewHolder> {
             generateRandomNum(newList.size());
             this.appsList = randomizeAppList(newList);
             for (int i = 0; i < appsList.size(); i++) {
-                if (i < 3) Log.d("distractive_random", String.valueOf(random[i]));
                 Log.d("randomized_apps", String.valueOf(appsList.get(i).packageName) + "  " + i);
             }
         } else {

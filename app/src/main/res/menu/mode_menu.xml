@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/focusMode"
+        android:title="Focus Mode" />
+    <item
+        android:id="@+id/sleepMode"
+        android:title="Sleep Mode" />
+    <item
+        android:id="@+id/leisureMode"
+        android:title="Leisure Mode" />
+</menu>

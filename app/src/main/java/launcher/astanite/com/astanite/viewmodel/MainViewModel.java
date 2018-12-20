@@ -42,6 +42,7 @@ public class MainViewModel extends AndroidViewModel {
     public List<String> myModeApps;
     public MutableLiveData<List<AppInfo>> currentModeApps = new MutableLiveData<>();
     public MutableLiveData<Boolean> isAppDrawerOpen = new MutableLiveData<>();
+    public MutableLiveData<Boolean> isAnalysisOpen = new MutableLiveData<>();
     public MutableLiveData<Integer> penaltyScreenTriggeredForMode = new MutableLiveData<>();
     public boolean isPenaltyScreenOpen = false;
 
@@ -61,6 +62,7 @@ public class MainViewModel extends AndroidViewModel {
         myModeApps = new ArrayList<>();
 
         isAppDrawerOpen.setValue(false);
+        isAnalysisOpen.setValue(false);
         compositeDisposable.add(Completable
                 .fromAction(() -> {
                     focusModeApps.addAll(sharedPreferences.getStringSet(Constants.KEY_FOCUS_APPS, new HashSet<>()));
