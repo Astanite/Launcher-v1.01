@@ -11,7 +11,7 @@
         android:name="android.permission.PACKAGE_USAGE_STATS"
         tools:ignore="ProtectedPermissions" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
-    <uses-permission android:name="TASKS"/>
+    <uses-permission android:name="TASKS" />
 
     <application
         android:allowBackup="true"
@@ -32,7 +32,9 @@
             <intent-filter>
                 <category android:name="android.intent.category.HOME" />
                 <category android:name="android.intent.category.DEFAULT" />
+
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -41,8 +43,7 @@
         <activity
             android:name=".ui.settings.SettingsActivity"
             android:configChanges="orientation"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.NoActionBar"/>
+            android:screenOrientation="portrait" />
 
         <!-- < Notification Blocking Service/> -->
         <service
@@ -54,23 +55,23 @@
             </intent-filter>
         </service>
 
-        <activity android:name=".ui.LoginActivity">
-        </activity>
+        <activity android:name=".ui.LoginActivity"></activity>
 
         <receiver android:name=".utils.BroadCastReceiver">
             <intent-filter>
-                <data android:scheme="package"/>
+                <data android:scheme="package" />
+
                 <action android:name="android.intent.action.PACKAGE_REMOVED" />
                 <action android:name="android.intent.action.PACKAGE_FULLY_REMOVED" />
                 <action android:name="android.intent.action.PACKAGE_ADDED" />
             </intent-filter>
         </receiver>
-              <service android:name=".ui.BlockingAppService">
+
+        <service android:name=".ui.BlockingAppService">
             <intent-filter>
                 <action android:name="android.intent.action.ACTION_SCREEN_ON" />
                 <action android:name="android.intent.action.ACTION_SCREEN_OFF" />
                 <action android:name="android.intent.action.ACTION_USER_PRESENT" />
-
             </intent-filter>
         </service>
 

@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@color/colorBlack">
 
     <TextView
         android:id="@+id/tv_app_selection"
@@ -14,53 +15,63 @@
         android:layout_marginBottom="10dp"
         android:drawablePadding="10dp"
         android:text="Apps Selection"
-        android:textSize="30sp" />
+        android:textSize="30sp"
+        android:textColor="@color/colorWhite"/>
 
     <View
         android:id="@+id/view"
         android:layout_width="match_parent"
         android:layout_height="0.8dp"
         android:layout_below="@id/tv_app_selection"
-        android:background="#000000" />
+        android:background="@android:color/white" />
 
-    <RelativeLayout
+    <LinearLayout
+        android:id="@+id/ll_modes_switch"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:layout_below="@id/view"
         android:layout_marginTop="5dp"
         android:gravity="center"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:visibility="gone">
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cv_focus_mode"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_marginStart="8dp"
+            android:layout_weight="1"
             android:clickable="true"
             android:focusable="true"
+            android:foreground="?android:attr/selectableItemBackground"
             app:cardBackgroundColor="@color/colorWhite"
-            app:cardCornerRadius="25dp">
+            app:cardCornerRadius="15dp">
 
             <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
-                <ImageView
-                    android:id="@+id/iv_focus"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:src="@drawable/ic_focus_mode" />
-
-                <TextView
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:layout_marginStart="5dp"
-                    android:layout_toRightOf="@id/iv_focus"
-                    android:text="@string/focus"
-                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
-                    android:textColor="@color/colorBlack" />
+                    android:layout_centerHorizontal="true"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/iv_focus"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:src="@drawable/ic_focus_mode" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:text="@string/focus"
+                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+                        android:textColor="@color/colorBlack" />
+                </LinearLayout>
+
             </RelativeLayout>
 
 
@@ -70,32 +81,37 @@
             android:id="@+id/cv_sleep_mode"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_marginStart="8dp"
+            android:layout_weight="1"
             android:clickable="true"
             android:focusable="true"
+            android:foreground="?android:attr/selectableItemBackground"
             app:cardBackgroundColor="@color/colorWhite"
-            app:cardCornerRadius="25dp">
+            app:cardCornerRadius="15dp">
 
             <RelativeLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <ImageView
-                    android:id="@+id/iv_sleep"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:src="@drawable/ic_sleep_mode" />
-
-                <TextView
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:layout_marginStart="5dp"
-                    android:layout_toRightOf="@id/iv_sleep"
-                    android:text="@string/sleep"
-                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
-                    android:textColor="@color/colorBlack" />
+                    android:layout_centerHorizontal="true"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/iv_sleep"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:src="@drawable/ic_sleep_mode" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:text="@string/sleep"
+                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+                        android:textColor="@color/colorBlack" />
+                </LinearLayout>
             </RelativeLayout>
 
 
@@ -105,38 +121,44 @@
             android:id="@+id/cv_leisure_mode"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_marginStart="8dp"
+            android:layout_weight="1"
             android:clickable="true"
             android:focusable="true"
+            android:foreground="?android:attr/selectableItemBackground"
             app:cardBackgroundColor="@color/colorWhite"
-            app:cardCornerRadius="25dp">
+            app:cardCornerRadius="15dp">
 
             <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
-                <ImageView
-                    android:id="@+id/iv_leisure"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:src="@drawable/ic_leisure_mode" />
-
-                <TextView
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:layout_marginStart="5dp"
-                    android:layout_toEndOf="@id/iv_leisure"
-                    android:text="@string/leisure"
-                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
-                    android:textColor="@color/colorBlack" />
+                    android:layout_centerHorizontal="true"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/iv_leisure"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:src="@drawable/ic_leisure_mode" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:text="@string/leisure"
+                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+                        android:textColor="@color/colorBlack" />
+                </LinearLayout>
             </RelativeLayout>
 
 
         </androidx.cardview.widget.CardView>
 
 
-    </RelativeLayout>
+    </LinearLayout>
 
 </RelativeLayout>

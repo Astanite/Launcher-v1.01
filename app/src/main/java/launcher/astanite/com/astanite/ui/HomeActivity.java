@@ -281,11 +281,11 @@ public class HomeActivity extends AppCompatActivity implements
     @Override
     protected void onStop() {
         super.onStop();
-       try {
-           unregisterReceiver(receiver);
-       }catch (IllegalArgumentException e){
-           e.printStackTrace();
-       }
+        try {
+            unregisterReceiver(receiver);
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        }
 
     }
 }

@@ -1,6 +1,7 @@
 package launcher.astanite.com.astanite.ui.settings;
 
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -43,16 +44,20 @@ public class ModesListFragment extends Fragment {
         RelativeLayout appSelection = view.findViewById(R.id.app_selection),
                 distSelection = view.findViewById(R.id.distractive_apps),
                 feedback = view.findViewById(R.id.feedback),
-                contactus = view.findViewById(R.id.contact_us);
+                contact_us = view.findViewById(R.id.contact_us);
 
-
-        appSelection.setOnClickListener(view0 ->{
+        appSelection.setOnClickListener(view0 -> {
             settingsViewModel.currentFragment.postValue(Constants.FRAGMENT_FLAGGED_APPS);
             settingsViewModel.currentMode.setValue(Constants.MODE_NONE);
         });
         distSelection.setOnClickListener(view1 -> {
             settingsViewModel.currentFragment.setValue(Constants.FRAGMENT_FLAGGED_APPS);
             settingsViewModel.currentMode.setValue(Constants.DISTRACTIVE_APP);
+            getContext()
+                    .getSharedPreferences(Constants.SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE)
+                    .edit()
+                    .putBoolean("isDist", true)
+                    .apply();
         });
     }
 }

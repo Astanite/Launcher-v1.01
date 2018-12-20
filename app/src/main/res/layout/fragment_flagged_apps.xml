@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.settings.FlaggedAppsFragment">
+    tools:context=".ui.settings.FlaggedAppsFragment"
+    >
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -15,16 +16,14 @@
             android:id="@+id/include"
             layout="@layout/app_selection"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"/>
+            android:layout_height="wrap_content"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/flaggedAppsRecyclerview"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="10dp"
-            android:layout_below="@id/include">
+            android:layout_below="@id/include"
+            android:background="@color/colorBlack">
 
         </androidx.recyclerview.widget.RecyclerView>
 

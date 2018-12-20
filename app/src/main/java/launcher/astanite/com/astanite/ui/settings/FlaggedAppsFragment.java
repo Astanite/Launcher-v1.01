@@ -1,14 +1,13 @@
 package launcher.astanite.com.astanite.ui.settings;
 
 
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import com.bumptech.glide.Glide;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -31,7 +30,6 @@ import launcher.astanite.com.astanite.utils.Constants;
 public class FlaggedAppsFragment extends Fragment {
 
     private static final String TAG = FlaggedAppsFragment.class.getSimpleName();
-
     private SettingsViewModel settingsViewModel;
     private FlaggedAppsAdapter flaggedAppsAdapter;
     private View rootView;
@@ -67,7 +65,6 @@ public class FlaggedAppsFragment extends Fragment {
     }
 
 
-
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -77,6 +74,7 @@ public class FlaggedAppsFragment extends Fragment {
                 cv_sleep = view.findViewById(R.id.cv_sleep_mode),
                 cv_leisure = view.findViewById(R.id.cv_leisure_mode);
         fab_save = view.findViewById(R.id.fab_save);
+
         flaggedAppsAdapter = new FlaggedAppsAdapter(new ArrayList<>(), Glide.with(getContext()));
         GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 4);
         flaggedAppsRecyclerview.setAdapter(flaggedAppsAdapter);
@@ -122,8 +120,8 @@ public class FlaggedAppsFragment extends Fragment {
                 List<AppInfo> flaggedApps = flaggedAppsAdapter.getCheckedApps();
                 settingsViewModel.saveFlaggedApps(flaggedApps);
                 Snackbar.make(rootView, "Flagged Apps updated!", Snackbar.LENGTH_SHORT).show();
-            }else {
-                Snackbar.make(rootView, "Select Flagged Apps!", Snackbar.LENGTH_SHORT).show();
+            } else {
+                Snackbar.make(rootView, "Select at least One App!", Snackbar.LENGTH_SHORT).show();
             }
         });
     }

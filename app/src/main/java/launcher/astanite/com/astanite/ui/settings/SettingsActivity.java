@@ -1,14 +1,15 @@
 package launcher.astanite.com.astanite.ui.settings;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.content.ContextCompat;
-import androidx.lifecycle.ViewModelProviders;
-import launcher.astanite.com.astanite.utils.Constants;
-import launcher.astanite.com.astanite.R;
-
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Window;
+import android.view.WindowManager;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+import androidx.lifecycle.ViewModelProviders;
+import launcher.astanite.com.astanite.R;
+import launcher.astanite.com.astanite.utils.Constants;
 
 public class SettingsActivity extends AppCompatActivity {
 
@@ -21,11 +22,11 @@ public class SettingsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_settings);
-        getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.colorPrimaryDark));
+        //Remove title bar
+        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 
-        Toolbar toolbar = findViewById(R.id.settingsToolbar);
-        setSupportActionBar(toolbar);
+        //set content view AFTER ABOVE sequence (to avoid crash)
+        this.setContentView(R.layout.activity_settings);
 
         settingsViewModel = ViewModelProviders
                 .of(this)

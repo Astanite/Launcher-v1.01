@@ -1,5 +1,6 @@
 package launcher.astanite.com.astanite.ui.settings;
 
+import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -50,27 +51,33 @@ public class FlaggedAppsAdapter extends RecyclerView.Adapter<FlaggedAppsAdapter.
     class ViewHolder extends RecyclerView.ViewHolder {
         private TextView appNameTextview;
         private ImageView appIconImageView;
-        private CheckBox appCheckbox;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             appNameTextview = itemView.findViewById(R.id.appNameTextview);
             appIconImageView = itemView.findViewById(R.id.appIconImageview);
-            appCheckbox = itemView.findViewById(R.id.appCheckbox);
         }
 
         public void bind(AppInfo app) {
             appNameTextview.setText(app.label);
             glide.load(app.icon).into(appIconImageView);
-            appCheckbox.setChecked(app.isChecked);
-            appCheckbox.setOnCheckedChangeListener((compoundButton, state) -> appsList.get(getAdapterPosition()).isChecked = state);
+            appIconImageView.setOnClickListener(someview -> {
+                if (appsList.get(getAdapterPosition()).isChecked) {
+                    appsList.get(getAdapterPosition()).isChecked = false;
+                    appIconImageView.setColorFilter(Color.argb(127,0, 0, 0));
+                } else {
+                    appsList.get(getAdapterPosition()).isChecked = true;
+                    appIconImageView.setColorFilter(Color.argb(50, 255, 255,255));
+                }
+
+            });
         }
     }
 
     public List<AppInfo> getCheckedApps() {
         Log.d(TAG, "Finding checked apps");
         List<AppInfo> filteredList = new ArrayList<>();
-        for (AppInfo app: this.appsList) {
+        for (AppInfo app : this.appsList) {
             if (app.isChecked) filteredList.add(app);
         }
         Log.d(TAG, "Checked apps: " + filteredList.size());

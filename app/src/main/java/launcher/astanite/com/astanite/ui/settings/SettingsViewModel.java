@@ -86,7 +86,7 @@ public class SettingsViewModel extends AndroidViewModel {
             appSet.add(appinfo.packageName);
         }
         Log.d(TAG, "Calculated set size: " + appSet.size());
-        String key;
+        String key = Constants.KEY_FOCUS_APPS;
         switch (currentMode.getValue()) {
             case Constants.MODE_FOCUS: key = Constants.KEY_FOCUS_APPS;
             sharedPreferences
@@ -113,7 +113,7 @@ public class SettingsViewModel extends AndroidViewModel {
                 key = Constants.KEY_DISTRACTIVE_APPS;  // distractive is not a mode simply setting the key and storing the data in shared preference below.
                 Log.d("DISTRACTIVE_APPS_SET", String.valueOf(appSet));
                 break;
-            default: throw new IllegalArgumentException("Invalid mode given for saving apps");
+           
         }
         Log.d(TAG, "Saving flagged apps for mode: " + key);
         sharedPreferences
