@@ -13,6 +13,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
+    <ImageView
+        android:id="@+id/iv_dataAnal"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_gravity="center|end"
+        android:src="@drawable/ic_navigate_next_black_24dp" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/allAppsButton"

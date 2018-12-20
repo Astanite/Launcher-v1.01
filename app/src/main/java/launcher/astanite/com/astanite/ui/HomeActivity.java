@@ -1,6 +1,5 @@
 package launcher.astanite.com.astanite.ui;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
@@ -10,7 +9,7 @@ import android.util.Log;
 import android.view.ContextMenu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -41,7 +40,9 @@ public class HomeActivity extends AppCompatActivity implements
     private MainViewModel mainViewModel;
     private HomeScreenFragment homeScreenFragment;
     private AppDrawerFragment appDrawerFragment;
+    private DataAnalysisFragment dataAnalysisFragment;
     private FloatingActionButton allAppsButton;
+    private ImageView ivDataAnal;
     private CoordinatorLayout rootView;
     private BroadCastReceiver receiver = new BroadCastReceiver(this);
 
@@ -70,6 +71,7 @@ public class HomeActivity extends AppCompatActivity implements
 
         Log.i("MYINFO", "Creating Home Activity");
         allAppsButton = findViewById(R.id.allAppsButton);
+        ivDataAnal = findViewById(R.id.iv_dataAnal);
         rootView = findViewById(R.id.rootView);
 
         IntentFilter filter = new IntentFilter();
@@ -87,6 +89,7 @@ public class HomeActivity extends AppCompatActivity implements
 
         homeScreenFragment = new HomeScreenFragment();
         appDrawerFragment = new AppDrawerFragment();
+        dataAnalysisFragment = new DataAnalysisFragment();
 
         if (savedInstanceState == null) {
             getSupportFragmentManager()
@@ -99,7 +102,10 @@ public class HomeActivity extends AppCompatActivity implements
             mainViewModel.isAppDrawerOpen.setValue(true);
             openAppDrawer();
         });
-
+        ivDataAnal.setOnClickListener(someView1 -> {
+            mainViewModel.isAnalysisOpen.setValue(true);
+            openDataAnalysis();
+        });
 
         mainViewModel.getCurrentMode()
                 .observe(this, mode -> {
@@ -133,7 +139,7 @@ public class HomeActivity extends AppCompatActivity implements
 
         homeScreenFragment = new HomeScreenFragment();
         appDrawerFragment = new AppDrawerFragment();
-
+        dataAnalysisFragment = new DataAnalysisFragment();
 
         allAppsButton.setOnClickListener(someView -> {
             mainViewModel.isAppDrawerOpen.setValue(true);
@@ -194,7 +200,8 @@ public class HomeActivity extends AppCompatActivity implements
                 .replace(R.id.fragment_container, appDrawerFragment)
                 .commit();
         allAppsButton.hide();
-//        allAppsButton.setVisibility(View.GONE);
+        ivDataAnal.setVisibility(View.GONE);
+
     }
 
     public void closeAppDrawer() {
@@ -204,22 +211,34 @@ public class HomeActivity extends AppCompatActivity implements
                 .replace(R.id.fragment_container, homeScreenFragment)
                 .commit();
         allAppsButton.show();
-//        allAppsButton.setVisibility(View.VISIBLE);
+        ivDataAnal.setVisibility(View.VISIBLE);
+
+    }
+    private void openDataAnalysis() {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .setCustomAnimations(R.anim.enter_from_left, R.anim.fast_fade_out)
+                .replace(R.id.fragment_container, dataAnalysisFragment)
+                .commit();
+        allAppsButton.hide();
+        ivDataAnal.setVisibility(View.GONE);
     }
 
     @Override
     public void onBackPressed() {
-        Log.i("MYINFO", "Back button pressed.");
         if (mainViewModel.isAppDrawerOpen.getValue()) {
             closeAppDrawer();
             mainViewModel.isAppDrawerOpen.setValue(false);
         } else if (mainViewModel.isPenaltyScreenOpen) {
             showHomeScreen();
             mainViewModel.isPenaltyScreenOpen = false;
-        } else {
-            // Do Nothing
+        }
+        if (mainViewModel.isAnalysisOpen.getValue()){
+            showHomeScreen();
+            mainViewModel.isAnalysisOpen.setValue(false);
         }
     }
+
 
     @Override
     public void showSettings() {
@@ -239,7 +258,7 @@ public class HomeActivity extends AppCompatActivity implements
                 .commit();
         mainViewModel.isPenaltyScreenOpen = true;
         allAppsButton.hide();
-//        allAppsButton.setVisibility(View.GONE);
+        ivDataAnal.setVisibility(View.GONE);
     }
 
     @Override
@@ -250,7 +269,8 @@ public class HomeActivity extends AppCompatActivity implements
                 .replace(R.id.fragment_container, homeScreenFragment)
                 .commit();
         allAppsButton.show();
-//        allAppsButton.setVisibility(View.VISIBLE);
+        ivDataAnal.setVisibility(View.VISIBLE);
+
     }
 
     @Override
@@ -262,20 +282,6 @@ public class HomeActivity extends AppCompatActivity implements
                 .replace(R.id.fragment_container, timerFragment)
                 .addToBackStack(null)
                 .commit();
-
-    }
-
-
-    // Unused Function
-    private void hideKeyboard(Activity activity) {
-        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
-        //Find the currently focused view, so we can grab the correct window token from it.
-        View view = activity.getCurrentFocus();
-        //If no view currently has focus, create a new one, just so we can grab a window token from it
-        if (view == null) {
-            view = new View(activity);
-        }
-        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
     @Override

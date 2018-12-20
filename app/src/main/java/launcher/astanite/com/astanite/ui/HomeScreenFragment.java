@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
@@ -75,6 +76,7 @@ public class HomeScreenFragment extends Fragment implements TextWatcher {
     private Animation fabOpen, fabClose, rotateForward, rotateBackward;
     private boolean isOpen = false;
     private CircleImageView ivExitFocus, ivExitSleep, ivExitLeisure;
+    private ImageView ivDataAnalysis ;
     private AppDrawerFragment.TimerScreenListener timerScreenListener;
     private AppDrawerFragment.SettingsScreenListener settingsScreenListener;
 
@@ -144,6 +146,7 @@ public class HomeScreenFragment extends Fragment implements TextWatcher {
         ivExitFocus = view.findViewById(R.id.exit_focus);
         ivExitLeisure = view.findViewById(R.id.exit_leisure);
         ivExitSleep = view.findViewById(R.id.exit_sleep);
+
 
         fabOpen = AnimationUtils.loadAnimation(getContext(), R.anim.fab_mode_open);
         fabClose = AnimationUtils.loadAnimation(getContext(), R.anim.fab_mode_close);
@@ -231,7 +234,6 @@ public class HomeScreenFragment extends Fragment implements TextWatcher {
 
         Intent i2 = packageManager.getLaunchIntentForPackage(Telephony.Sms.getDefaultSmsPackage(getContext()));
         messagingImageView.setOnClickListener(someView -> startActivity(i2));
-
 
     }
 
