@@ -8,6 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
+import java.util.Objects;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -18,6 +20,7 @@ import launcher.astanite.com.astanite.utils.Constants;
 public class ModesListFragment extends Fragment {
 
     private SettingsViewModel settingsViewModel;
+    private ContactusFragment contactusFragment ;
 
     public ModesListFragment() {
         // Required empty public constructor
@@ -29,6 +32,7 @@ public class ModesListFragment extends Fragment {
         settingsViewModel = ViewModelProviders
                 .of(getActivity())
                 .get(SettingsViewModel.class);
+        contactusFragment = new ContactusFragment() ;
     }
 
     @Override
@@ -54,5 +58,11 @@ public class ModesListFragment extends Fragment {
             settingsViewModel.currentFragment.setValue(Constants.FRAGMENT_DISTRACTIVE_APPS);
             settingsViewModel.currentMode.setValue(Constants.DISTRACTIVE_APP);
         });
+        contact_us.setOnClickListener(view2 -> Objects.requireNonNull(getActivity()).getSupportFragmentManager()
+                .beginTransaction()
+                .setCustomAnimations(R.anim.fade_in, R.anim.fade_out)
+                .replace(R.id.settingsContainer,contactusFragment)
+                .commit());
+
     }
 }

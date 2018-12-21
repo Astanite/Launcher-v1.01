@@ -54,7 +54,6 @@ public class SettingsActivity extends AppCompatActivity {
                                     .beginTransaction()
                                     .setCustomAnimations(R.anim.fade_in, R.anim.fade_out)
                                     .replace(R.id.settingsContainer, flaggedAppsFragment)
-                                    .addToBackStack(null)
                                     .commit();
                             break;
                         case Constants.FRAGMENT_DISTRACTIVE_APPS:
@@ -65,7 +64,6 @@ public class SettingsActivity extends AppCompatActivity {
                                     .beginTransaction()
                                     .setCustomAnimations(R.anim.fade_in, R.anim.fade_out)
                                     .replace(R.id.settingsContainer, flaggedAppsFragment)
-                                    .addToBackStack(null)
                                     .commit();
                             break;
                         default:
