@@ -81,6 +81,8 @@ public class PenaltyFragment extends Fragment implements AdapterView.OnItemSelec
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+
         np = (NumberPicker) view.findViewById(R.id.numberPicker1);
         npm = (NumberPicker) view.findViewById(R.id.numberPicker2);
         final Spinner spinner = (Spinner) view.findViewById(R.id.spinner);

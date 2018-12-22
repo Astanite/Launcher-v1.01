@@ -282,6 +282,8 @@ public class HomeActivity extends AppCompatActivity implements
                 .replace(R.id.fragment_container, timerFragment)
                 .addToBackStack(null)
                 .commit();
+        allAppsButton.hide();
+        ivDataAnal.setVisibility(View.GONE);
     }
 
     @Override

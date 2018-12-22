@@ -5,19 +5,167 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.TimerFragment"
-    android:background="@android:color/white">
+    android:background="#b3000000">
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/keypad"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent">
+
+
+        <ImageView
+            android:id="@+id/zero"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:src="@drawable/ic_number_zero_in_a_circle"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="20dp"/>
+
+        <ImageView
+            android:id="@+id/eight"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:src="@drawable/ic_number_eight_in_a_circle"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/zero"
+            android:layout_margin="10dp"/>
+
+        <ImageView
+            android:id="@+id/five"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:src="@drawable/ic_number_five_in_circular_button"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/eight"
+            android:layout_margin="10dp"/>
+
+        <ImageView
+            android:id="@+id/two"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:src="@drawable/ic_number_two_in_a_circle"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/five"
+            android:layout_margin="10dp"/>
+
+        <ImageView
+            android:id="@+id/six"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:src="@drawable/ic_number_six_in_a_circle"
+            app:layout_constraintLeft_toRightOf="@id/five"
+            app:layout_constraintBottom_toTopOf="@id/eight"
+            android:layout_margin="10dp"/>
+
+        <ImageView
+            android:id="@+id/three"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:src="@drawable/ic_number_three_in_a_circle"
+            app:layout_constraintLeft_toRightOf="@id/five"
+            app:layout_constraintBottom_toTopOf="@id/five"
+            android:layout_margin="10dp"/>
+
+        <ImageView
+            android:id="@+id/nine"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:src="@drawable/ic_number_nine_in_a_circle"
+            app:layout_constraintLeft_toRightOf="@id/eight"
+            app:layout_constraintBottom_toTopOf="@id/zero"
+            android:layout_margin="10dp"/>
+
+        <ImageView
+            android:id="@+id/seven"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:src="@drawable/ic_number_seven_in_a_circle"
+            app:layout_constraintRight_toLeftOf="@id/zero"
+            app:layout_constraintBottom_toTopOf="@id/zero"
+            android:layout_margin="10dp"/>
+
+        <ImageView
+            android:id="@+id/four"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:src="@drawable/ic_number_four_in_circular_button"
+            app:layout_constraintRight_toLeftOf="@id/eight"
+            app:layout_constraintBottom_toTopOf="@id/eight"
+            android:layout_margin="10dp"/>
+
+        <ImageView
+            android:id="@+id/one"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:src="@drawable/ic_number_one_in_a_circle"
+            app:layout_constraintRight_toLeftOf="@id/five"
+            app:layout_constraintBottom_toTopOf="@id/five"
+            android:layout_margin="10dp"/>
+
+        <ImageView
+            android:id="@+id/submit"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:src="@drawable/ic_check_circular_button"
+            app:layout_constraintLeft_toRightOf="@id/eight"
+            app:layout_constraintTop_toBottomOf="@id/eight"
+            android:layout_margin="10dp"/>
+
+        <ImageView
+            android:id="@+id/info"
+            android:src="@drawable/ic_information"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            app:layout_constraintRight_toLeftOf="@id/eight"
+            app:layout_constraintTop_toBottomOf="@id/eight"
+            android:layout_margin="10dp"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <TextView
-        android:id="@+id/timer"
+        android:id="@+id/tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="0s"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:text="24+(89-45)"
+        android:textColor="#ffffff"
+        android:textSize="40dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        android:textStyle="bold"
-        android:textSize="60dp" />
+        android:layout_marginTop="20dp"/>
+
+    <TextView
+        android:id="@+id/answerblanktv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textColor="#ffffff"
+        android:textSize="40dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="90dp"/>
+
+    <View
+        android:id="@+id/answerblank"
+        android:layout_width="120dp"
+        android:layout_height="4dp"
+        android:background="#ffffff"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="140dp"/>
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
