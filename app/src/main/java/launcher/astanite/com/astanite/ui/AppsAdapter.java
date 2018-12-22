@@ -2,10 +2,10 @@ package launcher.astanite.com.astanite.ui;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.graphics.ColorMatrix;
-import android.graphics.ColorMatrixColorFilter;
+import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -43,7 +43,7 @@ public class AppsAdapter extends RecyclerView.Adapter<AppsAdapter.ViewHolder> {
     private List<AppInfo> appsList;
     private RequestManager glide;
     private Context context;
-    private static int[] random ;
+    private static int[] random;
     private List<String> distractiveApps;
 
     AppsAdapter(List<AppInfo> AppsList, RequestManager glide, Context context) {
@@ -87,12 +87,13 @@ public class AppsAdapter extends RecyclerView.Adapter<AppsAdapter.ViewHolder> {
         random = new int[distractiveApps.size()];
         do {
             for (int i = 0; i < random.length; i++) {
-                random[i] = new Random().nextInt(totalApps-distractiveApps.size());
+                random[i] = new Random().nextInt(totalApps - distractiveApps.size());
             }
             Arrays.sort(random);
         } while (containDuplicates());
 
-        for (int i=0;i<distractiveApps.size();i++) Log.d("myrandom=", String.valueOf(random[i]));
+        for (int i = 0; i < distractiveApps.size(); i++)
+            Log.d("myrandom=", String.valueOf(random[i]));
     }
 
     static boolean containDuplicates() {
@@ -150,8 +151,11 @@ public class AppsAdapter extends RecyclerView.Adapter<AppsAdapter.ViewHolder> {
             glide.load(app.icon).into(appIconImageview);
             appNameTextview.setText(app.label);
             appItem.setOnClickListener(view -> {
-                context.startActivity(app.launchIntent);
-                storeTimeApps(getAdapterPosition());
+                if (app.label.equals("Phone"))
+                    context.startActivity(new Intent(Intent.ACTION_DIAL));
+                else
+                    context.startActivity(app.launchIntent);
+//                storeTimeApps(getAdapterPosition());
             });
 
             appItem.setOnLongClickListener(view -> {
@@ -190,7 +194,7 @@ public class AppsAdapter extends RecyclerView.Adapter<AppsAdapter.ViewHolder> {
     void updateAppsList(List<AppInfo> newList, int currentMode) {
         distractiveApps = new ArrayList<>();
         distractiveApps.addAll(context.getSharedPreferences(Constants.SHARED_PREFERENCES_NAME, MODE_PRIVATE).getStringSet(Constants.KEY_DISTRACTIVE_APPS, new HashSet<>()));
-        if (!distractiveApps.isEmpty() && currentMode==Constants.MODE_NONE) {
+        if (!distractiveApps.isEmpty() && currentMode == Constants.MODE_NONE) {
             for (int i = 0; i < newList.size(); i++)
                 Log.d("original_new_list", String.valueOf(newList.get(i).packageName) + " " + i);
             //get total distractive apps
@@ -228,7 +232,6 @@ public class AppsAdapter extends RecyclerView.Adapter<AppsAdapter.ViewHolder> {
         } else {
             this.appsList = newList;
         }
-
         notifyDataSetChanged();
     }
 
