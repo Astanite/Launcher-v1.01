@@ -138,7 +138,16 @@
             android:layout_height="match_parent"
             android:layout_marginStart="10dp"
             android:backgroundTint="#484848"
-            android:text="Send" />
+            android:text="Send"
+
+            />
+
+        <ProgressBar
+            android:id="@+id/pb"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:visibility="gone"/>
     </LinearLayout>
 
     <View
