@@ -89,7 +89,7 @@ public class FlaggedAppsFragment extends Fragment {
         setColors(Constants.MODE_FOCUS);
         fab_save = view.findViewById(R.id.fab_save);
         LinearLayout mode_switcher = view.findViewById(R.id.ll_modes_switch);
-        if (!isDist) mode_switcher.setVisibility(View.VISIBLE);
+        if (!isDist) mode_switcher.setVisibility(View.VISIBLE); // visibility of the view is set to gone in xml.
 
         flaggedAppsAdapter = new FlaggedAppsAdapter(new ArrayList<>(), Glide.with(getContext()));
         GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 4);

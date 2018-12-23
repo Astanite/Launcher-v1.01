@@ -34,7 +34,8 @@
         android:layout_below="@id/view"
         android:layout_marginTop="5dp"
         android:gravity="center"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:visibility="gone">
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cv_focus_mode"

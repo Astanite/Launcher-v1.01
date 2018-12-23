@@ -56,7 +56,7 @@
             </intent-filter>
         </service>
 
-        <activity android:name=".ui.LoginActivity"></activity>
+        <activity android:name=".ui.LoginActivity" />
 
         <receiver android:name=".utils.BroadCastReceiver">
             <intent-filter>
@@ -76,6 +76,7 @@
             </intent-filter>
         </service>
 
+        <activity android:name=".ui.IntroActivity"/>
     </application>
 
 </manifest>

@@ -18,8 +18,8 @@ import io.reactivex.Observable;
 import io.reactivex.Single;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
-import launcher.astanite.com.astanite.utils.Constants;
 import launcher.astanite.com.astanite.data.AppInfo;
+import launcher.astanite.com.astanite.utils.Constants;
 
 public class SettingsViewModel extends AndroidViewModel {
 
@@ -29,8 +29,8 @@ public class SettingsViewModel extends AndroidViewModel {
     private MutableLiveData<List<AppInfo>> allApps;
     private SharedPreferences sharedPreferences;
 
-    MutableLiveData<Integer> currentFragment;
-    MutableLiveData<Integer> currentMode;
+    public MutableLiveData<Integer> currentFragment;
+    public MutableLiveData<Integer> currentMode;
 
     public SettingsViewModel(Application application) {
         super(application);
@@ -82,38 +82,41 @@ public class SettingsViewModel extends AndroidViewModel {
     public void saveFlaggedApps(List<AppInfo> appsList) {
         Log.d(TAG, "Saving flagged apps");
         HashSet<String> appSet = new HashSet<>();
-        for (AppInfo appinfo: appsList) {
+        for (AppInfo appinfo : appsList) {
             appSet.add(appinfo.packageName);
         }
         Log.d(TAG, "Calculated set size: " + appSet.size());
         String key = Constants.KEY_FOCUS_APPS;
         switch (currentMode.getValue()) {
-            case Constants.MODE_FOCUS: key = Constants.KEY_FOCUS_APPS;
-            sharedPreferences
-                    .edit()
-                    .putBoolean("FocusApps", true)
-                    .apply();
-            Log.d("FOCUS_MODE_APPS_SET", String.valueOf(appSet));
-            break;
-            case Constants.MODE_SLEEP: key = Constants.KEY_SLEEP_APPS;
+            case Constants.MODE_FOCUS:
+                key = Constants.KEY_FOCUS_APPS;
+                sharedPreferences
+                        .edit()
+                        .putBoolean("FocusApps", true)
+                        .apply();
+                Log.d("FOCUS_MODE_APPS_SET", String.valueOf(appSet));
+                break;
+            case Constants.MODE_SLEEP:
+                key = Constants.KEY_SLEEP_APPS;
                 sharedPreferences
                         .edit()
                         .putBoolean("SleepApps", true)
                         .apply();
                 Log.d("SLEEP_MODE_APPS_SET", String.valueOf(appSet));
-            break;
-            case Constants.MY_MODE: key = Constants.KEY_MY_MODE_APPS;
+                break;
+            case Constants.MY_MODE:
+                key = Constants.KEY_MY_MODE_APPS;
                 sharedPreferences
                         .edit()
                         .putBoolean("LeisureApps", true)
                         .apply();
                 Log.d("MY_MODE_APPS_SET", String.valueOf(appSet));
-            break;
+                break;
             case Constants.DISTRACTIVE_APP:
                 key = Constants.KEY_DISTRACTIVE_APPS;  // distractive is not a mode simply setting the key and storing the data in shared preference below.
                 Log.d("DISTRACTIVE_APPS_SET", String.valueOf(appSet));
                 break;
-           
+
         }
         Log.d(TAG, "Saving flagged apps for mode: " + key);
         sharedPreferences

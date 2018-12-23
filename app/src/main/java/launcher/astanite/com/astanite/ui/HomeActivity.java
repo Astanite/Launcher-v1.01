@@ -63,7 +63,7 @@ public class HomeActivity extends AppCompatActivity implements
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 if (firebaseAuth.getCurrentUser() == null) {
                     //user not registered. Send it to Login Activity
-                    Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
+                    Intent intent = new Intent(HomeActivity.this, IntroActivity.class);
                     startActivity(intent);
                 }
             }
