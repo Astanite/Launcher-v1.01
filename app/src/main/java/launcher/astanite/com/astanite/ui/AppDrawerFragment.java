@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -17,7 +18,9 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.PopupMenu;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -59,13 +62,13 @@ public class AppDrawerFragment extends Fragment {
     private AppsAdapter appsAdapter;
     private LinearLayoutManager layoutManager;
     private EditText intentionEditText;
-    private PopupMenu popupMenu;
     private int currentMode;
     private View root;
     private SettingsScreenListener settingsScreenListener;
     private TimerScreenListener timerScreenListener;
     private SharedPreferences sharedPreferences;
-    private int modeForPenaltyScreen;
+    private ImageView[] icons ;
+    private TextView[] names ;
 
     public AppDrawerFragment() {
         // Required empty public constructor
@@ -144,6 +147,17 @@ public class AppDrawerFragment extends Fragment {
         root = view;
         appsRecyclerView = view.findViewById(R.id.appsRecyclerView);
         intentionEditText = view.findViewById(R.id.intentionEditText);
+        icons = new ImageView[4];
+        names = new TextView[4];
+        icons[0] = view.findViewById(R.id.icon1);
+        icons[1] = view.findViewById(R.id.icon2);
+        icons[2] = view.findViewById(R.id.icon3);
+        icons[3] = view.findViewById(R.id.icon4);
+        names[0] = view.findViewById(R.id.name1);
+        names[1] = view.findViewById(R.id.name2);
+        names[2] = view.findViewById(R.id.name3);
+        names[3] = view.findViewById(R.id.name4);
+        setFlaggedApps(); // primary apps of users.
 
         appsRecyclerView.setAdapter(appsAdapter);
         layoutManager = new GridLayoutManager(getContext(), 4);
@@ -163,6 +177,21 @@ public class AppDrawerFragment extends Fragment {
             }
             return false;
         });
+    }
+
+    private void setFlaggedApps() {
+        for (int i=0;i<4;i++){
+            try {
+            icons[i].setImageDrawable(getContext().getPackageManager().getApplicationIcon("com.whatsapp"));
+            names[i].setText((String) getContext().getApplicationContext()
+                        .getPackageManager()
+                        .getApplicationLabel(getContext().getPackageManager()
+                                .getApplicationInfo("com.whatsapp", PackageManager.GET_META_DATA)));
+            } catch (PackageManager.NameNotFoundException e) {
+                Log.d(TAG, "icon not found");
+                e.printStackTrace();
+            }
+        }
 
     }
 

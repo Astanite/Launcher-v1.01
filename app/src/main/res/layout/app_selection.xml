@@ -3,8 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:background="@color/colorBlack">
+    android:background="@color/colorBlack"
+    android:orientation="vertical">
 
     <TextView
         android:id="@+id/tv_app_selection"
@@ -15,15 +15,17 @@
         android:layout_marginBottom="10dp"
         android:drawablePadding="10dp"
         android:text="Apps Selection"
-        android:textSize="30sp"
-        android:textColor="@color/colorWhite"/>
+        android:textColor="#fdfdfd"
+        android:textSize="20dp"/>
 
     <View
         android:id="@+id/view"
         android:layout_width="match_parent"
         android:layout_height="0.8dp"
         android:layout_below="@id/tv_app_selection"
-        android:background="@android:color/white" />
+        android:background="@color/color_modes"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"/>
 
     <LinearLayout
         android:id="@+id/ll_modes_switch"
@@ -39,10 +41,13 @@
             android:id="@+id/cv_focus_mode"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="10dp"
             android:layout_weight="1"
             android:clickable="true"
             android:focusable="true"
             android:foreground="?android:attr/selectableItemBackground"
+            android:backgroundTint="@color/color_modes"
             app:cardBackgroundColor="@color/colorWhite"
             app:cardCornerRadius="15dp">
 
@@ -61,14 +66,17 @@
                         android:id="@+id/iv_focus"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
-                        android:src="@drawable/ic_focus_mode" />
+                        android:src="@drawable/ic_focus_mode"
+                        android:tint="@color/semi_black"/>
 
                     <TextView
+                        android:id="@+id/tv_focus_mode"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="5dp"
+                        android:layout_marginTop="5dp"
                         android:text="@string/focus"
-                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+                        android:textSize="15dp"
                         android:textColor="@color/colorBlack" />
                 </LinearLayout>
 
@@ -82,6 +90,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:backgroundTint="@color/color_modes"
             android:clickable="true"
             android:focusable="true"
             android:foreground="?android:attr/selectableItemBackground"
@@ -102,15 +113,18 @@
                         android:id="@+id/iv_sleep"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
-                        android:src="@drawable/ic_sleep_mode" />
+                        android:src="@drawable/ic_sleep_mode"
+                        android:tint="@color/semi_black" />
 
                     <TextView
+                        android:id="@+id/tv_sleep_mode"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="5dp"
+                        android:layout_marginTop="5dp"
                         android:text="@string/sleep"
-                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
-                        android:textColor="@color/colorBlack" />
+                        android:textColor="@color/colorBlack"
+                        android:textSize="15dp" />
                 </LinearLayout>
             </RelativeLayout>
 
@@ -121,7 +135,10 @@
             android:id="@+id/cv_leisure_mode"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="20dp"
             android:layout_weight="1"
+            android:backgroundTint="#afafaf"
             android:clickable="true"
             android:focusable="true"
             android:foreground="?android:attr/selectableItemBackground"
@@ -141,24 +158,23 @@
 
                     <ImageView
                         android:id="@+id/iv_leisure"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:src="@drawable/ic_leisure_mode" />
+                        android:layout_width="31dp"
+                        android:layout_height="31dp"
+                        android:src="@drawable/ic_leisure_mode"
+                        android:tint="@color/semi_black" />
 
                     <TextView
+                        android:id="@+id/tv_leisure_mode"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="5dp"
+                        android:layout_marginTop="5dp"
                         android:text="@string/leisure"
-                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
-                        android:textColor="@color/colorBlack" />
+                        android:textColor="@color/colorBlack"
+                        android:textSize="15dp" />
                 </LinearLayout>
             </RelativeLayout>
-
-
         </androidx.cardview.widget.CardView>
-
-
     </LinearLayout>
 
 </RelativeLayout>

@@ -5,12 +5,13 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.settings.FlaggedAppsFragment"
+
     >
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:ignore="UselessParent">
+        android:background="@color/colorBlack">
 
         <include
             android:id="@+id/include"
@@ -23,7 +24,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@id/include"
-            android:background="@color/colorBlack">
+            android:backgroundTint="@color/colorBlack"
+            android:layout_marginStart="20dp">
 
         </androidx.recyclerview.widget.RecyclerView>
 

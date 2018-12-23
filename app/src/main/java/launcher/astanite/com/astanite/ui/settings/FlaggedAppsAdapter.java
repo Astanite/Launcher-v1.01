@@ -63,11 +63,15 @@ public class FlaggedAppsAdapter extends RecyclerView.Adapter<FlaggedAppsAdapter.
             glide.load(app.icon).into(appIconImageView);
             appIconImageView.setOnClickListener(someview -> {
                 if (appsList.get(getAdapterPosition()).isChecked) {
+                    //App unchecked for mode
                     appsList.get(getAdapterPosition()).isChecked = false;
                     appIconImageView.setColorFilter(Color.argb(127,0, 0, 0));
+                    appNameTextview.setTextColor(Color.GRAY);
                 } else {
+                    // app checked for that mode
                     appsList.get(getAdapterPosition()).isChecked = true;
                     appIconImageView.setColorFilter(Color.argb(50, 255, 255,255));
+                    appNameTextview.setTextColor(Color.WHITE);
                 }
 
             });

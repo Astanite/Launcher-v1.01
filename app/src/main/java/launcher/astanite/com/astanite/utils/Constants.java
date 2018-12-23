@@ -26,8 +26,6 @@ public class Constants {
     public static final int FRAGMENT_MODES = 5;
     public static final int FRAGMENT_SETTINGS = 6;
     public static final int FRAGMENT_FLAGGED_APPS = 7;
+    public static final int FRAGMENT_DISTRACTIVE_APPS = 8;
 
-
-    public static final String ACTION_NOTIFICATION_SERVICE = "notif-service";
-    public static final int DRAW_OVER_OTHER_APP_PERMISSION = 101;
 }
