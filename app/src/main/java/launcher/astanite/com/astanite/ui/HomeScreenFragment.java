@@ -13,6 +13,8 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,9 +23,13 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.android.material.snackbar.Snackbar;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -32,8 +38,11 @@ import androidx.lifecycle.ViewModelProviders;
 import de.hdodenhof.circleimageview.CircleImageView;
 import io.reactivex.disposables.CompositeDisposable;
 import launcher.astanite.com.astanite.R;
+import launcher.astanite.com.astanite.data.AppInfo;
 import launcher.astanite.com.astanite.utils.Constants;
 import launcher.astanite.com.astanite.viewmodel.MainViewModel;
+
+import static android.content.Context.MODE_PRIVATE;
 
 public class HomeScreenFragment extends Fragment implements TextWatcher {
 
@@ -67,10 +76,13 @@ public class HomeScreenFragment extends Fragment implements TextWatcher {
     private CompositeDisposable compositeDisposable;
     private PackageManager packageManager;
     private View rootview;
-    private ImageView dialerImageView;
-    private ImageView messagingImageView;
+    private ImageView ImageView1;
+    private ImageView ImageView2;
+    private ImageView ImageView3;
+    private ImageView ImageView4;
     private PenaltyScreenListener penaltyScreenListener;
     private SharedPreferences sharedPreferences;
+    public List<AppInfo> homeScreenApps = new ArrayList<>();
 
     private CircleImageView iv_Mode, iv_FocusMode, iv_LeisureMode, iv_SleepMode;
     private Animation fabOpen, fabClose, rotateForward, rotateBackward;
@@ -92,6 +104,103 @@ public class HomeScreenFragment extends Fragment implements TextWatcher {
         sharedPreferences = this.getActivity().getSharedPreferences(Constants.SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
     }
 
+    public void setHomeScreenApps()
+    {
+        int size = homeScreenApps.size();
+        SharedPreferences.Editor editor = getContext().getSharedPreferences(Constants.SHARED_PREFERENCES_NAME, MODE_PRIVATE).edit();
+        if(size>0) {
+            ImageView1.setImageDrawable(homeScreenApps.get(0).icon);
+            ImageView1.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent launchIntent = new Intent(homeScreenApps.get(0).launchIntent);
+                    startActivity(launchIntent);
+                }
+            });
+            ImageView1.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v)
+                {
+                    editor.putString("packageName",homeScreenApps.get(0).packageName);
+                    editor.apply();
+                    registerForContextMenu(ImageView1);
+                    return false;
+                }
+            });
+            if (size > 1) {
+                ImageView2.setImageDrawable(homeScreenApps.get(1).icon);
+                ImageView2.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent launchIntent = new Intent(homeScreenApps.get(1).launchIntent);
+                        startActivity(launchIntent);
+                    }
+                });
+                ImageView2.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View v)
+                    {
+                        editor.putString("packageName",homeScreenApps.get(1).packageName);
+                        editor.apply();
+                        registerForContextMenu(ImageView2);
+                        return false;
+                    }
+                });
+                if (size > 2) {
+                    ImageView3.setImageDrawable(homeScreenApps.get(2).icon);
+                    ImageView3.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent launchIntent = new Intent(homeScreenApps.get(2).launchIntent);
+                            startActivity(launchIntent);
+                        }
+                    });
+                    ImageView3.setOnLongClickListener(new View.OnLongClickListener() {
+                        @Override
+                        public boolean onLongClick(View v)
+                        {
+                            editor.putString("packageName",homeScreenApps.get(2).packageName);
+                            editor.apply();
+                            registerForContextMenu(ImageView3);
+                            return false;
+                        }
+                    });
+                    if (size > 3) {
+                        ImageView4.setImageDrawable(homeScreenApps.get(3).icon);
+                        ImageView4.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Intent launchIntent = new Intent(homeScreenApps.get(3).launchIntent);
+                                startActivity(launchIntent);
+                            }
+                        });
+                        ImageView4.setOnLongClickListener(new View.OnLongClickListener() {
+                            @Override
+                            public boolean onLongClick(View v)
+                            {
+                                editor.putString("packageName",homeScreenApps.get(3).packageName);
+                                editor.apply();
+                                registerForContextMenu(ImageView4);
+                                return false;
+                            }
+                        });
+                    }
+                }
+            }
+        }
+        registerForContextMenu(ImageView1);
+        registerForContextMenu(ImageView2);
+        registerForContextMenu(ImageView3);
+        registerForContextMenu(ImageView4);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
+    {
+        super.onCreateOptionsMenu(menu,inflater);
+        inflater.inflate(R.menu.options_on_long_press_home_screen, menu);
+    }
+
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -108,8 +217,8 @@ public class HomeScreenFragment extends Fragment implements TextWatcher {
                 .getCurrentMode()
                 .observe(this, mode -> {
                     if (mode != Constants.MODE_NONE) {
-                        messagingImageView.setVisibility(View.GONE);
-                        dialerImageView.setVisibility(View.GONE);
+                        ImageView1.setVisibility(View.GONE);
+                        ImageView2.setVisibility(View.GONE);
                     }
                 });
         this.settingsScreenListener = (AppDrawerFragment.SettingsScreenListener) getActivity();
@@ -135,8 +244,11 @@ public class HomeScreenFragment extends Fragment implements TextWatcher {
 
         intentionEditText = view.findViewById(R.id.intentionEditText);
         intentionEditText.setText("");
-        dialerImageView = view.findViewById(R.id.dialerImageView);
-        messagingImageView = view.findViewById(R.id.messagingImageView);
+        ImageView1 = view.findViewById(R.id.ImageView1);
+        ImageView2 = view.findViewById(R.id.ImageView2);
+        ImageView3 = view.findViewById(R.id.ImageView3);
+        ImageView4 = view.findViewById(R.id.ImageView4);
+        rootview = view;
         iv_Mode = view.findViewById(R.id.iv_modes);
         //entering mode buttons
         iv_FocusMode = view.findViewById(R.id.iv_focus_mode);
@@ -147,6 +259,10 @@ public class HomeScreenFragment extends Fragment implements TextWatcher {
         ivExitLeisure = view.findViewById(R.id.exit_leisure);
         ivExitSleep = view.findViewById(R.id.exit_sleep);
 
+        ImageView1.setVisibility(view.INVISIBLE);
+        ImageView2.setVisibility(view.INVISIBLE);
+        ImageView3.setVisibility(view.INVISIBLE);
+        ImageView4.setVisibility(view.INVISIBLE);
 
         fabOpen = AnimationUtils.loadAnimation(getContext(), R.anim.fab_mode_open);
         fabClose = AnimationUtils.loadAnimation(getContext(), R.anim.fab_mode_close);
@@ -216,24 +332,86 @@ public class HomeScreenFragment extends Fragment implements TextWatcher {
             }
             return false;
         });
-        //setting phone and messages icons and click listeners
-        Drawable dialerIcon = null;
-        Drawable smsIcon = null;
-        try {
-            dialerIcon = getDialerIcon();
-            smsIcon = packageManager.getApplicationIcon(Telephony.Sms.getDefaultSmsPackage(getContext()));
-        } catch (PackageManager.NameNotFoundException e) {
-            Log.d(TAG, "Unable to load icons for dialer/sms");
+        SharedPreferences prefs = getContext().getSharedPreferences(Constants.SHARED_PREFERENCES_NAME, MODE_PRIVATE);
+        int removedAppIndex = 3;
+        String removedPackageName = prefs.getString("removedPackageName","");
+        int numberOfHomescreenApps = prefs.getInt("homeScreenApps",-1);
+        Toast.makeText(getContext(),Integer.toString(homeScreenApps.size()),Toast.LENGTH_LONG);
+        if(removedPackageName.compareTo("")!=0)
+        {
+            for(int i = 0; i < numberOfHomescreenApps; i++)
+            {
+                if(homeScreenApps.get(i).packageName.compareTo(removedPackageName)==0)
+                {
+                    removedAppIndex = i;
+                    break;
+                }
+            }
+            for(int i = removedAppIndex; i < numberOfHomescreenApps; i++)
+            {
+                SharedPreferences.Editor editor = getContext().getSharedPreferences(Constants.SHARED_PREFERENCES_NAME, MODE_PRIVATE).edit();
+                String tempPackageName = prefs.getString("HomeApp"+Integer.toString(i+2),"");
+                editor.putString("HomeApp"+Integer.toString(i+1),tempPackageName);
+                editor.apply();
+            }
+            SharedPreferences.Editor editor = getContext().getSharedPreferences(Constants.SHARED_PREFERENCES_NAME, MODE_PRIVATE).edit();
+            editor.putString("removedPackageName","");
+            editor.apply();
         }
-
-        Glide.with(this).load(smsIcon).into(messagingImageView);
-        Glide.with(this).load(dialerIcon).into(dialerImageView);
-
-        Intent i1 = getDialerIntent();
-        dialerImageView.setOnClickListener(someView -> startActivity(i1));
-
-        Intent i2 = packageManager.getLaunchIntentForPackage(Telephony.Sms.getDefaultSmsPackage(getContext()));
-        messagingImageView.setOnClickListener(someView -> startActivity(i2));
+        homeScreenApps.clear();
+        if(numberOfHomescreenApps > 0)
+        {
+            AppInfo appInfo = new AppInfo();
+            appInfo.packageName = prefs.getString("HomeApp1","");
+            try {
+                appInfo.icon = packageManager.getApplicationIcon(appInfo.packageName);
+            } catch (PackageManager.NameNotFoundException e) {
+                e.printStackTrace();
+            }
+            appInfo.launchIntent = packageManager.getLaunchIntentForPackage(appInfo.packageName);
+            homeScreenApps.add(appInfo);
+            ImageView1.setVisibility(view.VISIBLE);
+            if(numberOfHomescreenApps > 1)
+            {
+                AppInfo appInfo2 = new AppInfo();
+                appInfo2.packageName = prefs.getString("HomeApp2","");
+                try {
+                    appInfo2.icon = packageManager.getApplicationIcon(appInfo2.packageName);
+                } catch (PackageManager.NameNotFoundException e) {
+                    e.printStackTrace();
+                }
+                appInfo2.launchIntent = packageManager.getLaunchIntentForPackage(appInfo2.packageName);
+                homeScreenApps.add(appInfo2);
+                ImageView2.setVisibility(view.VISIBLE);
+                if(numberOfHomescreenApps > 2)
+                {
+                    AppInfo appInfo3 = new AppInfo();
+                    appInfo3.packageName = prefs.getString("HomeApp3","");
+                    try {
+                        appInfo3.icon = packageManager.getApplicationIcon(appInfo3.packageName);
+                    } catch (PackageManager.NameNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                    appInfo3.launchIntent = packageManager.getLaunchIntentForPackage(appInfo3.packageName);
+                    homeScreenApps.add(appInfo3);
+                    ImageView3.setVisibility(view.VISIBLE);
+                    if(numberOfHomescreenApps > 3)
+                    {
+                        AppInfo appInfo4 = new AppInfo();
+                        appInfo4.packageName = prefs.getString("HomeApp4","");
+                        try {
+                            appInfo4.icon = packageManager.getApplicationIcon(appInfo4.packageName);
+                        } catch (PackageManager.NameNotFoundException e) {
+                            e.printStackTrace();
+                        }
+                        appInfo4.launchIntent = packageManager.getLaunchIntentForPackage(appInfo4.packageName);
+                        homeScreenApps.add(appInfo4);
+                        ImageView4.setVisibility(view.VISIBLE);
+                    }
+                }
+            }
+        }
+        setHomeScreenApps();
 
     }
 

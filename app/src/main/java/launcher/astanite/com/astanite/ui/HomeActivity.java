@@ -3,8 +3,10 @@ package launcher.astanite.com.astanite.ui;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.MenuItem;
@@ -19,6 +21,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
 import launcher.astanite.com.astanite.R;
 import launcher.astanite.com.astanite.ui.settings.SettingsActivity;
@@ -30,7 +34,7 @@ public class HomeActivity extends AppCompatActivity implements
         AppDrawerFragment.SettingsScreenListener,
         HomeScreenFragment.PenaltyScreenListener,
         PenaltyFragment.HomeScreenListener,
-        BroadCastReceiver.SendToMainActivity,
+        BroadCastReceiver.SendToHomeActivity,
         AppDrawerFragment.TimerScreenListener {
 
     private FirebaseAuth mAuth;
@@ -45,6 +49,7 @@ public class HomeActivity extends AppCompatActivity implements
     private ImageView ivDataAnal;
     private CoordinatorLayout rootView;
     private BroadCastReceiver receiver = new BroadCastReceiver(this);
+    private boolean AppDrawerStateOpen = false;
 
     @Override
     protected void onStart() {
@@ -79,7 +84,8 @@ public class HomeActivity extends AppCompatActivity implements
         filter.addAction(Intent.ACTION_PACKAGE_REMOVED);
         filter.addAction(Intent.ACTION_PACKAGE_FULLY_REMOVED);
         filter.addAction(Intent.ACTION_PACKAGE_ADDED);
-        registerReceiver(receiver, filter);
+        registerReceiver(new BroadCastReceiver(this), filter);
+        registerReceiver(new BroadCastReceiver(this), filter);
 
         mainViewModel = ViewModelProviders
                 .of(this)
@@ -96,6 +102,7 @@ public class HomeActivity extends AppCompatActivity implements
                     .beginTransaction()
                     .replace(R.id.fragment_container, homeScreenFragment, "HomeScreenFragment")
                     .commit();
+            getSupportFragmentManager().executePendingTransactions();
         }
 
         allAppsButton.setOnClickListener(someView -> {
@@ -129,64 +136,102 @@ public class HomeActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void sendToMainActivity() {
+    public void sendToHomeActivity() {
         refreshAllData();
     }
 
     public void refreshAllData() {
-        closeAppDrawer();
         mainViewModel.getResolveInfoList(this);
-
-        homeScreenFragment = new HomeScreenFragment();
-        appDrawerFragment = new AppDrawerFragment();
-        dataAnalysisFragment = new DataAnalysisFragment();
-
-        allAppsButton.setOnClickListener(someView -> {
-            mainViewModel.isAppDrawerOpen.setValue(true);
-            openAppDrawer();
-        });
-
-
-        mainViewModel.getCurrentMode()
-                .observe(this, mode -> {
-                    String snackbarMessage;
-                    switch (mode) {
-                        case Constants.MODE_FOCUS:
-                            snackbarMessage = "Switched to Focus mode. Notifications Blocked.";
-                            Snackbar.make(rootView, snackbarMessage, Snackbar.LENGTH_SHORT).show();
-                            break;
-                        case Constants.MODE_SLEEP:
-                            snackbarMessage = "Switched to Sleep mode. Notifications Blocked.";
-                            Snackbar.make(rootView, snackbarMessage, Snackbar.LENGTH_SHORT).show();
-                            break;
-                        case Constants.MY_MODE:
-                            snackbarMessage = "Switched to My Mode. Notifications Blocked.";
-                            Snackbar.make(rootView, snackbarMessage, Snackbar.LENGTH_SHORT).show();
-                            break;
-
-                    }
-                });
-
     }
 
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
-        getMenuInflater().inflate(R.menu.options_on_long_press_app, menu);
+        if(AppDrawerStateOpen == true)
+            getMenuInflater().inflate(R.menu.options_on_long_press_app_drawer, menu);
+        else
+            getMenuInflater().inflate(R.menu.options_on_long_press_home_screen, menu);
     }
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
+        SharedPreferences prefs = getSharedPreferences(Constants.SHARED_PREFERENCES_NAME, MODE_PRIVATE);
+        String packageName = prefs.getString("packageName", "Default Package Name");
+        int homeScreenApps;
         switch (item.getItemId()) {
             case R.id.uninstall:
                 Intent intent1 = new Intent(Intent.ACTION_DELETE);
-                SharedPreferences prefs = getSharedPreferences(Constants.SHARED_PREFERENCES_NAME, MODE_PRIVATE);
-                String packageName = prefs.getString("packageName", "Default Package Name");
                 intent1.setData(Uri.parse("package:" + packageName));
                 startActivity(intent1);
+                closeAppDrawer();
                 return true;
             case R.id.addToHomeScreen:
-                Toast.makeText(getApplicationContext(), "Option2", Toast.LENGTH_LONG).show();
+                homeScreenApps = prefs.getInt("homeScreenApps", -1);
+                SharedPreferences.Editor editor = getSharedPreferences(Constants.SHARED_PREFERENCES_NAME, MODE_PRIVATE).edit();
+                switch (homeScreenApps) {
+                    case 1:
+                        editor.putString("HomeApp2", packageName);
+                        editor.putInt("homeScreenApps", 2);
+                        editor.apply();
+                        try {
+                            Toast.makeText(this, "Added " + getPackageManager().getApplicationLabel(getPackageManager().getApplicationInfo(packageName, 0)), Toast.LENGTH_SHORT).show();
+                        } catch (PackageManager.NameNotFoundException e) {
+                            e.printStackTrace();
+                        }
+                        break;
+                    case 2:
+                        editor.putString("HomeApp3", packageName);
+                        editor.putInt("homeScreenApps", 3);
+                        editor.apply();
+                        try {
+                            Toast.makeText(this, "Added " + getPackageManager().getApplicationLabel(getPackageManager().getApplicationInfo(packageName, 0)), Toast.LENGTH_SHORT).show();
+                        } catch (PackageManager.NameNotFoundException e) {
+                            e.printStackTrace();
+                        }
+                        break;
+                    case 3:
+                        editor.putString("HomeApp4", packageName);
+                        editor.putInt("homeScreenApps", 4);
+                        editor.apply();
+                        try {
+                            Toast.makeText(this, "Added " + getPackageManager().getApplicationLabel(getPackageManager().getApplicationInfo(packageName, 0)), Toast.LENGTH_SHORT).show();
+                        } catch (PackageManager.NameNotFoundException e) {
+                            e.printStackTrace();
+                        }
+                        break;
+                    case 4:
+                        Toast.makeText(this, "Homescreen is full", Toast.LENGTH_LONG).show();
+                        break;
+                    default:
+                        editor.putString("HomeApp1", packageName);
+                        editor.putInt("homeScreenApps", 1);
+                        editor.apply();
+                        try {
+                            Toast.makeText(this, "Added " + getPackageManager().getApplicationLabel(getPackageManager().getApplicationInfo(packageName, 0)), Toast.LENGTH_SHORT).show();
+                        } catch (PackageManager.NameNotFoundException e) {
+                            e.printStackTrace();
+                        }
+                        break;
+                }
+                return true;
+            case R.id.appInfo:
+                Intent intent2 = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                intent2.setData(Uri.parse("package:" + packageName));
+                startActivity(intent2);
+                return true;
+            case R.id.removeFromHomeScreen:
+                int homeScreenApps2 = prefs.getInt("homeScreenApps",-1);
+                SharedPreferences.Editor editor2 = getSharedPreferences(Constants.SHARED_PREFERENCES_NAME, MODE_PRIVATE).edit();
+                editor2.putInt("homeScreenApps",homeScreenApps2 - 1);
+                editor2.putString("removedPackageName",packageName);
+                editor2.apply();
+
+                Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+                if (currentFragment instanceof HomeScreenFragment) {
+                    FragmentTransaction fragTransaction =   getSupportFragmentManager().beginTransaction();
+                    fragTransaction.detach(currentFragment);
+                    fragTransaction.attach(currentFragment);
+                    fragTransaction.commit();}
                 return true;
             default:
                 return super.onContextItemSelected(item);
@@ -194,22 +239,26 @@ public class HomeActivity extends AppCompatActivity implements
     }
 
     private void openAppDrawer() {
+        AppDrawerStateOpen = true;
         getSupportFragmentManager()
                 .beginTransaction()
                 .setCustomAnimations(R.anim.enter_from_bottom, R.anim.fade_out)
                 .replace(R.id.fragment_container, appDrawerFragment)
                 .commit();
+        getSupportFragmentManager().executePendingTransactions();
         allAppsButton.hide();
         ivDataAnal.setVisibility(View.GONE);
 
     }
 
     public void closeAppDrawer() {
+        AppDrawerStateOpen = false;
         getSupportFragmentManager()
                 .beginTransaction()
                 .setCustomAnimations(R.anim.exit_to_bottom, R.anim.fade_out)
                 .replace(R.id.fragment_container, homeScreenFragment)
                 .commit();
+        getSupportFragmentManager().executePendingTransactions();
         allAppsButton.show();
         ivDataAnal.setVisibility(View.VISIBLE);
 
@@ -220,6 +269,7 @@ public class HomeActivity extends AppCompatActivity implements
                 .setCustomAnimations(R.anim.enter_from_left, R.anim.fast_fade_out)
                 .replace(R.id.fragment_container, dataAnalysisFragment)
                 .commit();
+        getSupportFragmentManager().executePendingTransactions();
         allAppsButton.hide();
         ivDataAnal.setVisibility(View.GONE);
     }
@@ -255,6 +305,7 @@ public class HomeActivity extends AppCompatActivity implements
                 .setCustomAnimations(R.anim.fade_in, R.anim.fade_out)
                 .replace(R.id.fragment_container, penaltyFragment)
                 .commit();
+        getSupportFragmentManager().executePendingTransactions();
         mainViewModel.isPenaltyScreenOpen = true;
         allAppsButton.hide();
         ivDataAnal.setVisibility(View.GONE);
@@ -267,6 +318,7 @@ public class HomeActivity extends AppCompatActivity implements
                 .setCustomAnimations(R.anim.fade_in, R.anim.exit_to_bottom)
                 .replace(R.id.fragment_container, homeScreenFragment)
                 .commit();
+        getSupportFragmentManager().executePendingTransactions();
         allAppsButton.show();
         ivDataAnal.setVisibility(View.VISIBLE);
 
@@ -280,6 +332,7 @@ public class HomeActivity extends AppCompatActivity implements
                 .setCustomAnimations(R.anim.enter_from_bottom, R.anim.exit_to_bottom)
                 .replace(R.id.fragment_container, timerFragment)
                 .commit();
+        getSupportFragmentManager().executePendingTransactions();
         allAppsButton.hide();
         ivDataAnal.setVisibility(View.GONE);
     }

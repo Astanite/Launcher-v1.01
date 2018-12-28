@@ -6,14 +6,14 @@ import android.content.Intent;
 
 public class BroadCastReceiver extends BroadcastReceiver
 {
-    SendToMainActivity mListener;
+    SendToHomeActivity mListener;
 
     @SuppressWarnings("unused")
     public BroadCastReceiver()
     {
     }
 
-    public BroadCastReceiver(SendToMainActivity mListener)
+    public BroadCastReceiver(SendToHomeActivity mListener)
     {
         this.mListener = mListener;
     }
@@ -21,11 +21,12 @@ public class BroadCastReceiver extends BroadcastReceiver
     @Override
     public void onReceive(Context context, Intent intent)
     {
-            mListener.sendToMainActivity();
+        if(mListener!=null)
+            mListener.sendToHomeActivity();
     }
 
-    public interface SendToMainActivity
+    public interface SendToHomeActivity
     {
-        void sendToMainActivity();
+        void sendToHomeActivity();
     }
 }

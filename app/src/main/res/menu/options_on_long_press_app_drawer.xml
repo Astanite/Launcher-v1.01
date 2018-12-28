@@ -6,4 +6,7 @@
     <item
         android:id="@+id/addToHomeScreen"
         android:title="Add To Home Screen" />
+    <item
+        android:id="@+id/appInfo"
+        android:title="App Info" />
 </menu>
