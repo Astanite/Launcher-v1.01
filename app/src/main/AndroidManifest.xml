@@ -68,6 +68,14 @@
             </intent-filter>
         </receiver>
 
+        <receiver
+            android:name=".ui.DataReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.DATE_CHANGED" />
+            </intent-filter>
+        </receiver>
+
         <service android:name=".ui.BlockingAppService">
             <intent-filter>
                 <action android:name="android.intent.action.ACTION_SCREEN_ON" />

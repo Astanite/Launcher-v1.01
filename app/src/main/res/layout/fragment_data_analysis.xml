@@ -1,14 +1,158 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.DataAnalysisFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:src="#b3000000" />
 
-</FrameLayout>
+    <ImageView
+        android:id="@+id/photo"
+        android:layout_width="85dp"
+        android:layout_height="85dp"
+        android:src="@drawable/user"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="20dp"/>
+
+    <TextView
+        android:id="@+id/username"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="USERNAME"
+        android:textColor="#ffffff"
+        android:textAllCaps="true"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/photo"
+        android:layout_marginTop="10dp"
+        android:textSize="12dp"/>
+
+    <TextView
+        android:id="@+id/score"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="70"
+        android:textColor="#ffffff"
+        android:textAllCaps="true"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/username"
+        app:layout_constraintBottom_toTopOf="@id/analysis_label"
+        android:layout_marginBottom="30dp"
+        android:textSize="80dp"/>
+
+    <ImageView
+        android:id="@+id/uparrow"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:src="@drawable/uparrow"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/username"
+        app:layout_constraintBottom_toTopOf="@id/analysis_label"
+        android:layout_marginBottom="55dp"
+        android:layout_marginLeft="130dp" />
+
+    <ImageView
+        android:id="@+id/downarrow"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:src="@drawable/downarrow"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/uparrow"
+        android:layout_marginTop="0dp"
+        android:layout_marginLeft="130dp" />
+
+    <TextView
+        android:id="@+id/scorelabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="EFFICIENCY SCORE"
+        android:textColor="#ffffff"
+        android:textAllCaps="true"
+        android:textAlignment="center"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/username"
+        app:layout_constraintBottom_toTopOf="@id/analysis_label"
+        android:layout_marginTop="65dp"
+        android:textSize="12dp"/>
+
+    <TextView
+        android:id="@+id/analysis_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="seven-day analysis"
+        android:textColor="#ffffff"
+        android:textAllCaps="true"
+        android:textAlignment="center"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/parralel"
+        android:layout_marginBottom="10dp"
+        android:textSize="16dp"/>
+
+    <ImageView
+        android:id="@+id/info"
+        android:src="@drawable/ic_info_outline_black_24dp"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="25dp"
+        android:layout_marginRight="25dp" />
+
+    <ImageView
+        android:id="@+id/parralel"
+        android:layout_width="match_parent"
+        android:layout_height="31dp"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp"
+        android:src="@drawable/parralel"
+        app:layout_constraintBottom_toTopOf="@id/graphholder"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginBottom="-10dp"/>
+
+    <com.db.chart.view.LineChartView
+        android:id="@+id/linecharttotal"
+        android:layout_width="400dp"
+        android:layout_height="240dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginRight="15dp"
+        android:layout_marginBottom="30dp"/>
+
+    <com.db.chart.view.LineChartView
+        android:id="@+id/linechartflag"
+        android:layout_width="400dp"
+        android:layout_height="200dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginRight="15dp"
+        android:layout_marginBottom="30dp"/>
+
+    <ImageView
+        android:id="@+id/graphholder"
+        android:layout_width="3000dp"
+        android:layout_height="200dp"
+        android:src="@drawable/graphholder"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginRight="15dp"
+        android:layout_marginBottom="43dp"/>
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

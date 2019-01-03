@@ -25,6 +25,7 @@ android {
 dependencies {
     def lifecycle_version = "2.0.0"
     implementation project(":SeekArc_library")
+    implementation 'com.diogobernardino:williamchart:2.5.0'
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'androidx.appcompat:appcompat:1.0.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.0-alpha2'
