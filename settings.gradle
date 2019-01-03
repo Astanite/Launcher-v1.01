@@ -1,1 +1,2 @@
-include ':app'
+include ':app', ':SeekArc_library'
+project(':SeekArc_library').projectDir = new File('libs/SeekArc_library')

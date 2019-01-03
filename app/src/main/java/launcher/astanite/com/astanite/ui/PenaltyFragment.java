@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,7 +16,11 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.NumberPicker;
+import android.widget.SeekBar;
 import android.widget.Spinner;
+import android.widget.TextView;
+
+import com.triggertrap.seekarc.SeekArc;
 
 import java.util.Objects;
 
@@ -32,7 +37,7 @@ import static android.content.Context.MODE_PRIVATE;
 CREATED BY UTSAV
  */
 
-public class PenaltyFragment extends Fragment implements AdapterView.OnItemSelectedListener {
+public class PenaltyFragment extends Fragment {
 
     private static final String TAG = PenaltyFragment.class.getSimpleName();
 
@@ -40,10 +45,11 @@ public class PenaltyFragment extends Fragment implements AdapterView.OnItemSelec
         void showHomeScreen();
     }
 
-    private static NumberPicker np, npm;
+    SeekArc seekArc;
+    SeekBar seekBar;
+    ImageView play;
+    int hrs, mins, exitl;
     private int modeForPenaltyScreen;
-    private int hrs, mins;
-    private int pen;
 
     private MainViewModel mainViewModel;
     private HomeScreenListener homeScreenListener;
@@ -82,17 +88,99 @@ public class PenaltyFragment extends Fragment implements AdapterView.OnItemSelec
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        seekArc = view.findViewById(R.id.seekArc);
+        seekBar = view.findViewById(R.id.seekbar);
+        final TextView duration = view.findViewById(R.id.duration);
+        final TextView level = view.findViewById(R.id.ExitBarrierlevel);
 
-        np = (NumberPicker) view.findViewById(R.id.numberPicker1);
-        npm = (NumberPicker) view.findViewById(R.id.numberPicker2);
-        final Spinner spinner = (Spinner) view.findViewById(R.id.spinner);
-        ImageView b = (ImageView) view.findViewById(R.id.enterModeButton);
-        b.setOnClickListener(v -> {
-            hrs = np.getValue();
-            mins = npm.getValue();
+        int defaultcolor = Color.parseColor("#b3ffffff");
+        int progresscolor = Color.parseColor("#ffffff");
+
+        play = view.findViewById(R.id.enter);
+
+        seekArc.setArcColor(defaultcolor);
+        seekArc.setProgressColor(progresscolor);
+        seekArc.setArcWidth(10);
+        seekArc.setProgressWidth(10);
+        seekArc.setProgress(getarc());
+
+        int defp = getarc()*360;
+        defp = defp/100;
+
+        int h = defp/60;
+        defp = defp%60;
+
+        String temp = Integer.toString(h) + " h : " + Integer.toString(defp) + " m";
+        duration.setText(temp);
+
+        seekBar.setProgress(getbar());
+        level.setText(Integer.toString(getbar()));
+
+        seekArc.setOnSeekArcChangeListener(new SeekArc.OnSeekArcChangeListener() {
+            @Override
+            public void onProgressChanged(SeekArc seekArc, int i, boolean b) {
+                int m = i*360;
+                m = m/100;
+
+                int h = m/60;
+                m = m%60;
+
+                String temp = Integer.toString(h) + " h : " + Integer.toString(m) + " m";
+                Log.e("TAG", temp);
+                duration.setText(temp);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekArc seekArc) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekArc seekArc) {
+                savearc(seekArc.getProgress());
+            }
+        });
+
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                String temp = Integer.toString(progress);
+                level.setText(temp);
+
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                savebar(seekBar.getProgress());
+            }
+        });
+
+
+        play.setOnClickListener(v -> {
+            int temparc = seekArc.getProgress();
+            mins = temparc*360;
+            mins = mins/100;
+
+            hrs = mins/60;
+            mins = mins%60;
+
+            int tempbar = seekBar.getProgress();
+            exitl = tempbar/14;
+
+
+
+            Log.e("Time", Integer.toString(hrs) + ':' + Integer.toString(mins) );
+            Log.e("Penalty",Integer.toString(exitl));
+
+            savedesired(exitl);
+
             mainViewModel.setCurrentMode(modeForPenaltyScreen);
             mainViewModel.setModeTime(hrs, mins);
-            mainViewModel.setPenalty(pen);
             homeScreenListener.showHomeScreen();
             //Write the code for starting a service to block not allowed apps
             Log.d("Service started", " Again");
@@ -106,45 +194,6 @@ public class PenaltyFragment extends Fragment implements AdapterView.OnItemSelec
             getContext().startService(new Intent(getContext(), BlockingAppService.class));
         });
 
-        np.setMaxValue(5);
-        np.setMinValue(0);
-        np.setWrapSelectorWheel(false);
-
-        npm.setMaxValue(59);
-        npm.setMinValue(0);
-        npm.setWrapSelectorWheel(false);
-
-        // Create an ArrayAdapter using the string array and a default spinner layout
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
-                R.array.penaltyops, R.layout.spinner_item);
-        // Specify the layout to use when the list of choices appears
-        adapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
-        // Apply the adapter to the spinner
-        spinner.setAdapter(adapter);
-
-        spinner.setOnItemSelectedListener(this);
-    }
-
-    @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-        switch (position) {
-            case 0:
-                pen = 1;
-                break;
-            case 1:
-                pen = 2;
-                break;
-            case 2:
-                pen = 5;
-                break;
-
-        }
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> parent) {
-        pen = 2;
     }
 
     @Override
@@ -177,5 +226,46 @@ public class PenaltyFragment extends Fragment implements AdapterView.OnItemSelec
                 }
             }
         }
+    }
+
+    public void savearc(int arc)
+    {
+        SharedPreferences sharedpref = getContext().getSharedPreferences("penalty", Context.MODE_PRIVATE);
+
+        SharedPreferences.Editor editor = sharedpref.edit();
+        editor.putInt("arc", arc);
+        editor.apply();
+    }
+
+    public void savebar(int bar)
+    {
+        SharedPreferences sharedpref = getContext().getSharedPreferences("penalty", Context.MODE_PRIVATE);
+
+        SharedPreferences.Editor editor = sharedpref.edit();
+        editor.putInt("bar", bar);
+        editor.apply();
+    }
+
+    public void savedesired(int desired)
+    {
+        SharedPreferences sharedpref = getContext().getSharedPreferences("difficulty", Context.MODE_PRIVATE);
+
+        SharedPreferences.Editor editor = sharedpref.edit();
+        editor.putInt("getdesired", desired);
+        editor.apply();
+    }
+
+    public int getarc()
+    {
+        SharedPreferences sharedpref = getContext().getSharedPreferences("penalty", Context.MODE_PRIVATE);
+        int temp = sharedpref.getInt("arc",40);
+        return temp;
+    }
+
+    public int getbar()
+    {
+        SharedPreferences sharedpref = getContext().getSharedPreferences("penalty", Context.MODE_PRIVATE);
+        int temp = sharedpref.getInt("bar",70);
+        return temp;
     }
 }

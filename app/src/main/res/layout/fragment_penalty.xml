@@ -1,114 +1,107 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.PenaltyFragment">
+    xmlns:seekarc="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.PenaltyFragment"
+    android:background="#b3000000">
 
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scaleType="centerCrop"
-        android:src="@drawable/cbbb" />
+    <com.triggertrap.seekarc.SeekArc
+        android:id="@+id/seekArc"
+        android:layout_width="260dp"
+        android:layout_height="260dp"
+        android:layout_gravity="center"
+        android:padding="30dp"
+        seekarc:rotation="0"
+        seekarc:max = "100"
+        seekarc:thumb = "@drawable/ic_adjust_black_24dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/seekbar"
+        android:layout_marginTop="0dp"/>
 
-    <ImageView
-        android:id="@+id/enterModeButton"
-        android:layout_width="150dp"
-        android:layout_height="70dp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="450dp"
-        android:src="@drawable/entermode"
-        android:text="Enter Mode" />
+    <SeekBar
+        android:id="@+id/seekbar"
+        android:layout_width="210dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/seekArc"
+        app:layout_constraintBottom_toTopOf="@id/enter"
+        android:layout_marginTop="0dp"
+        android:thumb="@drawable/ic_adjust_black_24dp"
+        android:progressTint="#ffffff"
+        android:progressBackgroundTint="#b3ffffff" />
 
     <TextView
-        android:layout_width="match_parent"
+        android:id="@+id/mode_duration_label"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
-        android:text="Enter  Time"
-        android:textAlignment="center"
-
-        android:textColor="#FFFFFF"
-        android:textSize="24dp"
-        android:textStyle="bold" />
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_marginTop="85dp">
-
-        <NumberPicker
-            android:id="@+id/numberPicker1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="110dp"
-            android:theme="@style/CustomNP"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <NumberPicker
-            android:id="@+id/numberPicker2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="110dp"
-            android:theme="@style/CustomNP"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=":"
-            android:textColor="#FFFFFF"
-            android:textSize="30dp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="150dp"
-            android:text="h"
-            android:textColor="#FFFFFF"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="120dp"
-            android:text="m"
-            android:textColor="#FFFFFF"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.5" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
+        android:text="Mode Duration"
+        android:textAllCaps="true"
+        android:textSize="14dp"
+        android:textColor="#ffffff"
+        app:layout_constraintTop_toTopOf="@id/seekArc"
+        app:layout_constraintBottom_toBottomOf="@id/seekArc"
+        app:layout_constraintLeft_toLeftOf="@id/seekArc"
+        app:layout_constraintRight_toRightOf="@id/seekArc"
+        android:layout_marginBottom="30dp"/>
 
     <TextView
-        android:layout_width="match_parent"
+        android:id="@+id/duration"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="300dp"
-        android:text="Choose  Penalty"
-        android:textAlignment="center"
-        android:textColor="#FFFFFF"
-        android:textSize="24dp"
-        android:textStyle="bold" />
+        android:text="0 h : 00 m"
+        android:textSize="14dp"
+        android:textColor="#ffffff"
+        app:layout_constraintTop_toTopOf="@id/seekArc"
+        app:layout_constraintBottom_toBottomOf="@id/seekArc"
+        app:layout_constraintLeft_toLeftOf="@id/seekArc"
+        app:layout_constraintRight_toRightOf="@id/seekArc"
+        android:layout_marginTop="30dp"/>
 
-    <Spinner
-        android:id="@+id/spinner"
-        android:layout_width="200dp"
-        android:layout_height="50dp"
-        android:theme="@style/CustomNP"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="350dp" />
+    <TextView
+        android:id="@+id/ExitBarrierlabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Exit Barrier: "
+        android:textAllCaps="true"
+        android:textSize="14dp"
+        android:textColor="#ffffff"
+        app:layout_constraintTop_toBottomOf="@id/seekbar"
+        app:layout_constraintLeft_toLeftOf="@id/seekArc"
+        app:layout_constraintRight_toRightOf="@id/seekArc"
+        android:layout_marginTop="5dp"/>
+
+    <TextView
+        android:id="@+id/ExitBarrierlevel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="50"
+        android:textAllCaps="true"
+        android:textSize="14dp"
+        android:textColor="#ffffff"
+        app:layout_constraintTop_toBottomOf="@id/seekbar"
+        app:layout_constraintLeft_toRightOf="@id/ExitBarrierlabel"
+        android:layout_marginTop="5dp"/>
 
 
-</RelativeLayout>
+    <ImageView
+        android:id="@+id/enter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_add788e0169bab7e41376cc7f8c0e5d8"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/seekbar"
+        android:layout_marginTop="20dp"/>
+
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
