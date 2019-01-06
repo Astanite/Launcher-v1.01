@@ -347,4 +347,20 @@ public class HomeActivity extends AppCompatActivity implements
         }
 
     }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (mainViewModel.isAppDrawerOpen.getValue()) {
+            closeAppDrawer();
+            mainViewModel.isAppDrawerOpen.setValue(false);
+        } else if (mainViewModel.isPenaltyScreenOpen) {
+            showHomeScreen();
+            mainViewModel.isPenaltyScreenOpen = false;
+        }
+        if (mainViewModel.isAnalysisOpen.getValue()){
+            showHomeScreen();
+            mainViewModel.isAnalysisOpen.setValue(false);
+        }
+    }
 }
