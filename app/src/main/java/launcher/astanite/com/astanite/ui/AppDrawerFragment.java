@@ -160,6 +160,15 @@ public class AppDrawerFragment extends Fragment implements TextWatcher {
         layoutManager = new GridLayoutManager(getContext(), 4);
         appsRecyclerView.setLayoutManager(layoutManager);
 
+        intentionEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus)
+                    intentionEditText.setHint("");
+                else
+                    intentionEditText.setHint(R.string.default_intention);
+            }
+        });
+
         intentionEditText.setOnTouchListener((v, event) -> {
             final int DRAWABLE_LEFT = 0;
             final int DRAWABLE_TOP = 1;

@@ -39,8 +39,9 @@
                 android:hint="@string/default_intention"
                 android:padding="8dp"
                 android:textAlignment="center"
-                android:textColor="#414141"
-                android:textColorHint="#777777"
+                android:textColor="#878787"
+                android:textColorHint="#878787"
+                android:maxLength="30"
                 android:textSize="18sp" />
         </androidx.cardview.widget.CardView>
 

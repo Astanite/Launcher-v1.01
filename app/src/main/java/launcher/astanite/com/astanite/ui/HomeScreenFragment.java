@@ -271,6 +271,15 @@ public class HomeScreenFragment extends Fragment implements TextWatcher {
         rotateBackward = AnimationUtils.loadAnimation(getContext(), R.anim.mode_rotate_backward);
         rootview = view;
 
+        intentionEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus)
+                    intentionEditText.setHint("");
+                else
+                    intentionEditText.setHint(R.string.default_intention);
+            }
+        });
+
         //entering different mode
         iv_Mode.setOnClickListener(view1 -> animateFab());
         iv_FocusMode.setOnClickListener(view2 -> {
