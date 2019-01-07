@@ -45,7 +45,25 @@ import launcher.astanite.com.astanite.data.AppInfo;
 import launcher.astanite.com.astanite.utils.Constants;
 import launcher.astanite.com.astanite.viewmodel.MainViewModel;
 
-public class AppDrawerFragment extends Fragment {
+public class AppDrawerFragment extends Fragment implements TextWatcher {
+
+    @Override
+    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+    }
+
+    @Override
+    public void onTextChanged(CharSequence s, int start, int before, int count) {
+        sharedPreferences.edit()
+                .putString(Constants.KEY_INTENTION, intentionEditText.getText().toString())
+                .apply();
+        Log.d("upd Home", sharedPreferences.getString(Constants.KEY_INTENTION, ""));
+    }
+
+    @Override
+    public void afterTextChanged(Editable s) {
+
+    }
 
     interface SettingsScreenListener {
         void showSettings();
@@ -96,8 +114,7 @@ public class AppDrawerFragment extends Fragment {
                 .of(getActivity())
                 .get(MainViewModel.class);
 
-        //Setting up intention in App drawer from MainViewModel
-        intentionEditText.setText(sharedPreferences.getString(Constants.KEY_INTENTION, ""));
+
 
         mainViewModel.getCurrentMode()
                 .observe(this, mode -> this.currentMode = mode);
@@ -109,28 +126,7 @@ public class AppDrawerFragment extends Fragment {
                     appsAdapter.updateAppsList(appInfos, currentMode);
                 });
 
-        //updating the intention on text change
-        // in editText
-        intentionEditText.addTextChangedListener(new TextWatcher() {
 
-            @Override
-            public void afterTextChanged(Editable s) {
-            }
-
-            @Override
-            public void beforeTextChanged(CharSequence s, int start,
-                                          int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start,
-                                      int before, int count) {
-                //updating intention in SharedPreference directly
-                sharedPreferences.edit()
-                        .putString(Constants.KEY_INTENTION, intentionEditText.getText().toString())
-                        .apply();
-            }
-        });
     }
 
     @Override
@@ -147,6 +143,7 @@ public class AppDrawerFragment extends Fragment {
         root = view;
         appsRecyclerView = view.findViewById(R.id.appsRecyclerView);
         intentionEditText = view.findViewById(R.id.intentionEditText);
+        intentionEditText.setText("");
         icons = new ImageView[4];
         names = new TextView[4];
         icons[0] = view.findViewById(R.id.icon1);
@@ -198,7 +195,22 @@ public class AppDrawerFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        intentionEditText.setText(sharedPreferences.getString(Constants.KEY_INTENTION, ""));
+        Log.d("update intention", intentionEditText.getText().toString());
+        intentionEditText.setEnabled(true);
         InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Activity.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(root.getWindowToken(), 0);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        intentionEditText.setEnabled(false);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        intentionEditText.addTextChangedListener(this);
     }
 }
