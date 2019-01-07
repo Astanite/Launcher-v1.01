@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#80ffffff"
+    android:background="#bfffffff"
     tools:context=".ui.AppDrawerFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -40,7 +40,7 @@
                 android:padding="8dp"
                 android:textAlignment="center"
                 android:textColor="#414141"
-                android:textColorHint="#414141"
+                android:textColorHint="#777777"
                 android:textSize="18sp" />
         </androidx.cardview.widget.CardView>
 
