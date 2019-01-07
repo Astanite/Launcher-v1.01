@@ -40,39 +40,35 @@
         android:layout_gravity="right"
         android:layout_marginTop="20dp"
         android:backgroundTint="@color/semi_black"
-        app:cardCornerRadius="37dp">
+        app:cardCornerRadius="30dp">
 
         <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:app="http://schemas.android.com/apk/res-auto"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:layout_margin="7dp">
+            android:layout_gravity="right">
 
             <RelativeLayout
                 android:id="@+id/ll_modes"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-                <de.hdodenhof.circleimageview.CircleImageView
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
-                    android:padding="3dp"
-                    android:src="@drawable/ic_float_pink" />
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="-8dp">
 
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/iv_modes"
                     android:layout_width="60dp"
                     android:layout_height="60dp"
-                    android:src="@drawable/ic_black" />
+                    android:padding="3dp"
+                    android:alpha="0.6"
+                    android:src="@drawable/ringblue" />
 
                 <ProgressBar
                     android:id="@+id/pb_stats"
                     style="?android:progressBarStyleHorizontal"
                     android:layout_width="60dp"
                     android:layout_height="60dp"
-                    android:padding="2dp"
-                    android:progress="80"
+                    android:padding="5dp"
+                    android:progress="0"
                     android:progressDrawable="@drawable/circle" />
 
             </RelativeLayout>
