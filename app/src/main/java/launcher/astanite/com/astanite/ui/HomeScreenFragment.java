@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.ColorMatrix;
+import android.graphics.ColorMatrixColorFilter;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.provider.Telephony;
@@ -106,6 +108,15 @@ public class HomeScreenFragment extends Fragment implements TextWatcher {
 
     public void setHomeScreenApps()
     {
+
+        ColorMatrix colorMatrix = new ColorMatrix();
+        colorMatrix.setSaturation(0.3f);
+        ColorMatrixColorFilter filter = new ColorMatrixColorFilter(colorMatrix);
+        ImageView1.setColorFilter(filter);
+        ImageView2.setColorFilter(filter);
+        ImageView3.setColorFilter(filter);
+        ImageView4.setColorFilter(filter);
+
         int size = homeScreenApps.size();
         SharedPreferences.Editor editor = getContext().getSharedPreferences(Constants.SHARED_PREFERENCES_NAME, MODE_PRIVATE).edit();
         if(size>0) {

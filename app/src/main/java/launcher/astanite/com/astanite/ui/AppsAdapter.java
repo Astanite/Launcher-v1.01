@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.ColorMatrix;
+import android.graphics.ColorMatrixColorFilter;
 import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -149,6 +151,12 @@ public class AppsAdapter extends RecyclerView.Adapter<AppsAdapter.ViewHolder> {
 
         void bindValues(AppInfo app, Context context) {
             glide.load(app.icon).into(appIconImageview);
+
+            ColorMatrix colorMatrix = new ColorMatrix();
+            colorMatrix.setSaturation(0.1f);
+            ColorMatrixColorFilter filter = new ColorMatrixColorFilter(colorMatrix);
+            appIconImageview.setColorFilter(filter);
+
             appNameTextview.setText(app.label);
             appItem.setOnClickListener(view -> {
                 if (app.label.equals("Phone"))
