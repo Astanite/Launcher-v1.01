@@ -22,6 +22,7 @@ import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -58,6 +59,8 @@ public class AppsAdapter extends RecyclerView.Adapter<AppsAdapter.ViewHolder> {
         List<AppInfo> newAppsList = new ArrayList<>(appsList.size());
         int i = 0;
         //this loop will run distractiveApps().size times
+
+        Collections.shuffle(distractiveApps);
 
         while (i < distractiveApps.size()) {
             if (i == 0) newAppsList.addAll(appsList.subList(0, random[0]));
