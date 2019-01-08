@@ -318,33 +318,63 @@ public class HomeScreenFragment extends Fragment implements TextWatcher {
         iv_Mode.setOnClickListener(view1 -> animateFab());
         iv_FocusMode.setOnClickListener(view2 -> {
             animateFab();
-            if (mainViewModel.getCurrentMode().getValue() == Constants.MODE_NONE) {
+
+            int currmode = mainViewModel.getCurrentMode().getValue();
+            if (currmode == Constants.MODE_NONE) {
                 setClickable(mainViewModel.getCurrentMode().getValue());
                 penaltyScreenListener.showPenaltyScreen(Constants.MODE_FOCUS);
             } else {
-                setClickable(mainViewModel.getCurrentMode().getValue());
-                Snackbar.make(view, "You're already in another mode", Snackbar.LENGTH_SHORT).show();
+
+                if(currmode == Constants.MODE_FOCUS)
+                {
+                    ivExitFocus.performClick();
+                    ivExitFocus.setVisibility(View.GONE);
+                }
+                else {
+                    setClickable(mainViewModel.getCurrentMode().getValue());
+                    Snackbar.make(view, "You're already in another mode", Snackbar.LENGTH_SHORT).show();
+                }
             }
 
         });
         iv_SleepMode.setOnClickListener(view3 -> {
             animateFab();
-            if (mainViewModel.getCurrentMode().getValue() == Constants.MODE_NONE) {
+
+            int currmode = mainViewModel.getCurrentMode().getValue();
+            if (currmode == Constants.MODE_NONE) {
                 setClickable(mainViewModel.getCurrentMode().getValue());
                 penaltyScreenListener.showPenaltyScreen(Constants.MODE_SLEEP);
             } else {
-                setClickable(mainViewModel.getCurrentMode().getValue());
-                Snackbar.make(view, "You're already in another mode", Snackbar.LENGTH_SHORT).show();
+
+                if(currmode == Constants.MODE_SLEEP)
+                {
+                    ivExitSleep.performClick();
+                    ivExitSleep.setVisibility(View.GONE);
+                }
+                else {
+                    setClickable(mainViewModel.getCurrentMode().getValue());
+                    Snackbar.make(view, "You're already in another mode", Snackbar.LENGTH_SHORT).show();
+                }
             }
         });
         iv_LeisureMode.setOnClickListener(view4 -> {
             animateFab();
-            if (mainViewModel.getCurrentMode().getValue() == Constants.MODE_NONE) {
+
+            int currmode = mainViewModel.getCurrentMode().getValue();
+            if (currmode == Constants.MODE_NONE) {
                 setClickable(mainViewModel.getCurrentMode().getValue());
                 penaltyScreenListener.showPenaltyScreen(Constants.MY_MODE);
             } else {
-                setClickable(mainViewModel.getCurrentMode().getValue());
-                Snackbar.make(view, "You're already in another mode", Snackbar.LENGTH_SHORT).show();
+
+                if(currmode == Constants.MY_MODE)
+                {
+                    ivExitLeisure.performClick();
+                    ivExitLeisure.setVisibility(View.GONE);
+                }
+                else {
+                    setClickable(mainViewModel.getCurrentMode().getValue());
+                    Snackbar.make(view, "You're already in another mode", Snackbar.LENGTH_SHORT).show();
+                }
             }
         });
         //if user wants to exit current active mode.
