@@ -274,6 +274,17 @@ public class HomeActivity extends AppCompatActivity implements
         ivDataAnal.setVisibility(View.GONE);
     }
 
+    private void closeDataAnalysis() {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .setCustomAnimations(R.anim.fade_in, R.anim.exit_to_left)
+                .replace(R.id.fragment_container, homeScreenFragment)
+                .commit();
+        getSupportFragmentManager().executePendingTransactions();
+        allAppsButton.show();
+        ivDataAnal.setVisibility(View.VISIBLE);
+    }
+
     @Override
     public void onBackPressed() {
         if (mainViewModel.isAppDrawerOpen.getValue()) {
@@ -284,7 +295,7 @@ public class HomeActivity extends AppCompatActivity implements
             mainViewModel.isPenaltyScreenOpen = false;
         }
         if (mainViewModel.isAnalysisOpen.getValue()){
-            showHomeScreen();
+            closeDataAnalysis();
             mainViewModel.isAnalysisOpen.setValue(false);
         }
     }
