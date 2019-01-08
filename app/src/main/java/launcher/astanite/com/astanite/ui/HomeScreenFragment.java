@@ -230,6 +230,8 @@ public class HomeScreenFragment extends Fragment implements TextWatcher {
                     if (mode != Constants.MODE_NONE) {
                         ImageView1.setVisibility(View.GONE);
                         ImageView2.setVisibility(View.GONE);
+                        ImageView3.setVisibility(View.GONE);
+                        ImageView4.setVisibility(View.GONE);
                     }
                 });
         this.settingsScreenListener = (AppDrawerFragment.SettingsScreenListener) getActivity();
