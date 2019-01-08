@@ -232,6 +232,27 @@ public class HomeScreenFragment extends Fragment implements TextWatcher {
                         ImageView2.setVisibility(View.GONE);
                         ImageView3.setVisibility(View.GONE);
                         ImageView4.setVisibility(View.GONE);
+
+                        if(mode == Constants.MODE_FOCUS)
+                        {
+                            //iv_FocusMode.setAlpha(0.4f);
+                            iv_LeisureMode.setAlpha(0.4f);
+                            iv_SleepMode.setAlpha(0.4f);
+                        }
+                        else
+                            if (mode == Constants.MODE_SLEEP)
+                            {
+                                iv_FocusMode.setAlpha(0.4f);
+                                iv_LeisureMode.setAlpha(0.4f);
+                                //iv_SleepMode.setAlpha(0.4f);
+                            }
+                            else
+                                if(mode == Constants.MY_MODE)
+                                {
+                                    iv_FocusMode.setAlpha(0.4f);
+                                  //  iv_LeisureMode.setAlpha(0.4f);
+                                    iv_SleepMode.setAlpha(0.4f);
+                                }
                     }
                 });
         this.settingsScreenListener = (AppDrawerFragment.SettingsScreenListener) getActivity();
@@ -330,14 +351,17 @@ public class HomeScreenFragment extends Fragment implements TextWatcher {
         ivExitFocus.setOnClickListener(view5 -> {
             ExitMode(view);
             animateFab();
+            changesaturation();
         });
         ivExitSleep.setOnClickListener(view6 -> {
             ExitMode(view);
             animateFab();
+            changesaturation();
         });
         ivExitLeisure.setOnClickListener(view7 -> {
             ExitMode(view);
             animateFab();
+            changesaturation();
         });
 
         intentionEditText.setOnTouchListener((v, event) -> {
@@ -536,6 +560,8 @@ public class HomeScreenFragment extends Fragment implements TextWatcher {
             else if (Constants.MY_MODE == currMode)
                 ivExitLeisure.setVisibility(View.GONE);
 
+            //Code fragment responsible for mode transitions
+
             isOpen = false;
         } else {
             iv_Mode.startAnimation(rotateBackward);
@@ -557,5 +583,45 @@ public class HomeScreenFragment extends Fragment implements TextWatcher {
                 ivExitLeisure.setVisibility(View.VISIBLE);
             isOpen = true;
         }
+    }
+
+    private void changesaturation(){
+        iv_FocusMode.setAlpha(1f);
+        iv_LeisureMode.setAlpha(1f);
+        iv_SleepMode.setAlpha(1f);
+
+        int size = homeScreenApps.size();
+
+        if(size==1)
+        {
+            ImageView1.setVisibility(View.VISIBLE);
+            ImageView2.setVisibility(View.INVISIBLE);
+            ImageView3.setVisibility(View.INVISIBLE);
+            ImageView4.setVisibility(View.INVISIBLE);
+        }
+        else
+            if(size==2)
+            {
+                ImageView1.setVisibility(View.VISIBLE);
+                ImageView2.setVisibility(View.VISIBLE);
+                ImageView3.setVisibility(View.INVISIBLE);
+                ImageView4.setVisibility(View.INVISIBLE);
+            }
+            else
+                if(size==3)
+                {
+                    ImageView1.setVisibility(View.VISIBLE);
+                    ImageView2.setVisibility(View.VISIBLE);
+                    ImageView3.setVisibility(View.VISIBLE);
+                    ImageView4.setVisibility(View.INVISIBLE);
+                }
+                else
+                    if(size==4)
+                    {
+                        ImageView1.setVisibility(View.VISIBLE);
+                        ImageView2.setVisibility(View.VISIBLE);
+                        ImageView3.setVisibility(View.VISIBLE);
+                        ImageView4.setVisibility(View.VISIBLE);
+                    }
     }
 }
