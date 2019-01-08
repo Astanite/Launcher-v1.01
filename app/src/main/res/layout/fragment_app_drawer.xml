@@ -26,7 +26,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:elevation="5dp"
-            app:cardCornerRadius="17dp">
+            app:cardCornerRadius="20dp">
 
             <EditText
                 android:id="@+id/intentionEditText"
@@ -37,7 +37,7 @@
                 android:drawableEnd="@drawable/ic_settings_black"
                 android:gravity="center"
                 android:hint="@string/default_intention"
-                android:padding="8dp"
+                android:padding="10dp"
                 android:textAlignment="center"
                 android:textColor="#878787"
                 android:textColorHint="#878787"

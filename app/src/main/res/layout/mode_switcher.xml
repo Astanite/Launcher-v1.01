@@ -13,7 +13,8 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        app:cardCornerRadius="17dp"
+        app:cardCornerRadius="20dp"
+        android:alpha="0.8"
         android:elevation="5dp">
 
         <EditText
@@ -25,10 +26,10 @@
             android:drawableEnd="@drawable/ic_settings_black"
             android:gravity="center"
             android:hint="@string/default_intention"
-            android:padding="8dp"
+            android:padding="10dp"
             android:textAlignment="center"
-            android:textColor="#878787"
-            android:textColorHint="#878787"
+            android:textColor="#636363"
+            android:textColorHint="#636363"
             android:maxLength="30"
             android:textSize="18sp" />
     </androidx.cardview.widget.CardView>
