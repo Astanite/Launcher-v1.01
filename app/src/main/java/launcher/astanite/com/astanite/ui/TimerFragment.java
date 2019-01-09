@@ -489,5 +489,12 @@ public class TimerFragment extends Fragment {
                 .apply();
         (getContext()).stopService(new Intent(getContext(), BlockingAppService.class));
         homeScreenListener.showHomeScreen();
+
+        HomeScreenFragment.progressBar.setProgress(0);
+        HomeScreenFragment.ImageView1.setVisibility(View.VISIBLE);
+        HomeScreenFragment.ImageView2.setVisibility(View.VISIBLE);
+        HomeScreenFragment.ImageView3.setVisibility(View.VISIBLE);
+        HomeScreenFragment.ImageView4.setVisibility(View.VISIBLE);
+
     }
 }

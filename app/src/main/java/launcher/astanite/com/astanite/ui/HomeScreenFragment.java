@@ -25,6 +25,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -74,14 +75,15 @@ public class HomeScreenFragment extends Fragment implements TextWatcher {
     private static final String TAG = HomeScreenFragment.class.getSimpleName();
 
     private EditText intentionEditText;
+    public static ProgressBar progressBar;
     private MainViewModel mainViewModel;
     private CompositeDisposable compositeDisposable;
     private PackageManager packageManager;
     private View rootview;
-    private ImageView ImageView1;
-    private ImageView ImageView2;
-    private ImageView ImageView3;
-    private ImageView ImageView4;
+    public static ImageView ImageView1;
+    public static ImageView ImageView2;
+    public static ImageView ImageView3;
+    public static ImageView ImageView4;
     private PenaltyScreenListener penaltyScreenListener;
     private SharedPreferences sharedPreferences;
     public List<AppInfo> homeScreenApps = new ArrayList<>();
@@ -305,6 +307,8 @@ public class HomeScreenFragment extends Fragment implements TextWatcher {
         rotateBackward = AnimationUtils.loadAnimation(getContext(), R.anim.mode_rotate_backward);
         rootview = view;
 
+        progressBar = view.findViewById(R.id.pb_stats);
+
         intentionEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus)
@@ -501,6 +505,7 @@ public class HomeScreenFragment extends Fragment implements TextWatcher {
             getContext().stopService(new Intent(getContext(), BlockingAppService.class));
             mainViewModel.setCurrentMode(Constants.MODE_NONE);
             Snackbar.make(view, "Exited mode", Snackbar.LENGTH_SHORT).show();
+            progressBar.setProgress(0);
         }
     }
 
@@ -535,6 +540,12 @@ public class HomeScreenFragment extends Fragment implements TextWatcher {
         intentionEditText.setText(sharedPreferences.getString(Constants.KEY_INTENTION, ""));
         Log.d("update intention", intentionEditText.getText().toString());
         intentionEditText.setEnabled(true);
+
+        if(mainViewModel.getCurrentMode().getValue() != 0)
+        {
+            Log.e("PROGRESS", Integer.toString(calculateprogress()) );
+            progressBar.setProgress(calculateprogress());
+        }
     }
 
     @Override
@@ -653,5 +664,25 @@ public class HomeScreenFragment extends Fragment implements TextWatcher {
                         ImageView3.setVisibility(View.VISIBLE);
                         ImageView4.setVisibility(View.VISIBLE);
                     }
+    }
+
+    public int calculateprogress() {
+        int x;
+        long ctime = System.currentTimeMillis();
+        long dtime = mainViewModel.getTimeOfEnteringMode();
+        long delta = mainViewModel.getModeTime();
+
+        long diff = ctime-dtime;
+
+        if(diff>delta)
+        {
+            return 100;
+        }
+        else
+        {
+            float flag = 100*diff/delta;
+            int temp = Math.round(flag);
+            return temp;
+        }
     }
 }
