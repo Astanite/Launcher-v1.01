@@ -11,10 +11,14 @@ import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 
 import launcher.astanite.com.astanite.datatype.Analytes;
 import launcher.astanite.com.astanite.datatype.Data;
+import launcher.astanite.com.astanite.utils.Constants;
+
+import static android.content.Context.MODE_PRIVATE;
 
 public class DataReceiver extends BroadcastReceiver {
 
@@ -27,8 +31,7 @@ public class DataReceiver extends BroadcastReceiver {
         Log.e("TAG", "onReceive: " );
 
         flagapp = new ArrayList<>();
-        flagapp.add("com.whatsapp");
-        flagapp.add("com.google.android.youtube");
+        flagapp.addAll(context.getSharedPreferences(Constants.SHARED_PREFERENCES_NAME, MODE_PRIVATE).getStringSet(Constants.KEY_DISTRACTIVE_APPS, new HashSet<>()));
 
         predict(context);
     }
