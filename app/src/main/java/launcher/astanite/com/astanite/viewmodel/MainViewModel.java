@@ -45,6 +45,7 @@ public class MainViewModel extends AndroidViewModel {
     public MutableLiveData<Boolean> isAnalysisOpen = new MutableLiveData<>();
     public MutableLiveData<Integer> penaltyScreenTriggeredForMode = new MutableLiveData<>();
     public boolean isPenaltyScreenOpen = false;
+    public boolean isTimerOpen = false;
 
     public MainViewModel(Application application) {
         super(application);

@@ -300,6 +300,11 @@ public class HomeActivity extends AppCompatActivity implements
             closeDataAnalysis();
             mainViewModel.isAnalysisOpen.setValue(false);
         }
+        if(mainViewModel.isTimerOpen)
+        {
+            showHomeScreen();
+            mainViewModel.isTimerOpen = false;
+        }
     }
 
 
@@ -346,6 +351,7 @@ public class HomeActivity extends AppCompatActivity implements
                 .replace(R.id.fragment_container, timerFragment)
                 .commit();
         getSupportFragmentManager().executePendingTransactions();
+        mainViewModel.isTimerOpen = true;
         allAppsButton.hide();
         ivDataAnal.setVisibility(View.GONE);
     }
@@ -374,6 +380,11 @@ public class HomeActivity extends AppCompatActivity implements
         if (mainViewModel.isAnalysisOpen.getValue()){
             showHomeScreen();
             mainViewModel.isAnalysisOpen.setValue(false);
+        }
+        if(mainViewModel.isTimerOpen)
+        {
+            showHomeScreen();
+            mainViewModel.isTimerOpen = false;
         }
     }
 }
