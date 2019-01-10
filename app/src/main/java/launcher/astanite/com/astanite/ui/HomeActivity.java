@@ -3,6 +3,7 @@ package launcher.astanite.com.astanite.ui;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
@@ -174,6 +175,7 @@ public class HomeActivity extends AppCompatActivity implements
                     case 1:
                         editor.putString("HomeApp2", packageName);
                         editor.putInt("homeScreenApps", 2);
+                        editor.putString("Ha2label", packtoapp(packageName));
                         editor.apply();
                         try {
                             Toast.makeText(this, "Added " + getPackageManager().getApplicationLabel(getPackageManager().getApplicationInfo(packageName, 0)), Toast.LENGTH_SHORT).show();
@@ -184,6 +186,7 @@ public class HomeActivity extends AppCompatActivity implements
                     case 2:
                         editor.putString("HomeApp3", packageName);
                         editor.putInt("homeScreenApps", 3);
+                        editor.putString("Ha3label", packtoapp(packageName));
                         editor.apply();
                         try {
                             Toast.makeText(this, "Added " + getPackageManager().getApplicationLabel(getPackageManager().getApplicationInfo(packageName, 0)), Toast.LENGTH_SHORT).show();
@@ -194,6 +197,7 @@ public class HomeActivity extends AppCompatActivity implements
                     case 3:
                         editor.putString("HomeApp4", packageName);
                         editor.putInt("homeScreenApps", 4);
+                        editor.putString("Ha4label", packtoapp(packageName));
                         editor.apply();
                         try {
                             Toast.makeText(this, "Added " + getPackageManager().getApplicationLabel(getPackageManager().getApplicationInfo(packageName, 0)), Toast.LENGTH_SHORT).show();
@@ -207,6 +211,7 @@ public class HomeActivity extends AppCompatActivity implements
                     default:
                         editor.putString("HomeApp1", packageName);
                         editor.putInt("homeScreenApps", 1);
+                        editor.putString("Ha1label", packtoapp(packageName));
                         editor.apply();
                         try {
                             Toast.makeText(this, "Added " + getPackageManager().getApplicationLabel(getPackageManager().getApplicationInfo(packageName, 0)), Toast.LENGTH_SHORT).show();
@@ -386,5 +391,17 @@ public class HomeActivity extends AppCompatActivity implements
             showHomeScreen();
             mainViewModel.isTimerOpen = false;
         }
+    }
+
+    public String packtoapp(String pname) {
+        PackageManager pm = getApplicationContext().getPackageManager();
+        ApplicationInfo ai;
+        try {
+            ai = pm.getApplicationInfo( pname, 0);
+        } catch (final PackageManager.NameNotFoundException e) {
+            ai = null;
+        }
+        String applicationName = (String) (ai != null ? pm.getApplicationLabel(ai) : "(unknown)");
+        return applicationName;
     }
 }

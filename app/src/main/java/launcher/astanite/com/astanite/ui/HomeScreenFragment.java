@@ -126,8 +126,19 @@ public class HomeScreenFragment extends Fragment implements TextWatcher {
             ImageView1.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent launchIntent = new Intent(homeScreenApps.get(0).launchIntent);
-                    startActivity(launchIntent);
+
+                    //new
+                    SharedPreferences prefs = getContext().getSharedPreferences(Constants.SHARED_PREFERENCES_NAME, MODE_PRIVATE);
+                    String label = prefs.getString("Ha1label", " ");
+
+                    if (label.equals("Phone"))
+                        startActivity(new Intent(Intent.ACTION_DIAL));
+                    else
+                        startActivity(homeScreenApps.get(0).launchIntent);
+
+                    //old
+                    /*Intent launchIntent = new Intent(homeScreenApps.get(0).launchIntent);
+                    startActivity(launchIntent);*/
                 }
             });
             ImageView1.setOnLongClickListener(new View.OnLongClickListener() {
@@ -145,8 +156,18 @@ public class HomeScreenFragment extends Fragment implements TextWatcher {
                 ImageView2.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent launchIntent = new Intent(homeScreenApps.get(1).launchIntent);
-                        startActivity(launchIntent);
+                        //new
+                        SharedPreferences prefs = getContext().getSharedPreferences(Constants.SHARED_PREFERENCES_NAME, MODE_PRIVATE);
+                        String label = prefs.getString("Ha2label", " ");
+
+                        if (label.equals("Phone"))
+                            startActivity(new Intent(Intent.ACTION_DIAL));
+                        else
+                            startActivity(homeScreenApps.get(1).launchIntent);
+
+                        //old
+                    /*Intent launchIntent = new Intent(homeScreenApps.get(1).launchIntent);
+                    startActivity(launchIntent);*/
                     }
                 });
                 ImageView2.setOnLongClickListener(new View.OnLongClickListener() {
@@ -164,8 +185,17 @@ public class HomeScreenFragment extends Fragment implements TextWatcher {
                     ImageView3.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            Intent launchIntent = new Intent(homeScreenApps.get(2).launchIntent);
-                            startActivity(launchIntent);
+                            SharedPreferences prefs = getContext().getSharedPreferences(Constants.SHARED_PREFERENCES_NAME, MODE_PRIVATE);
+                            String label = prefs.getString("Ha3label", " ");
+
+                            if (label.equals("Phone"))
+                                startActivity(new Intent(Intent.ACTION_DIAL));
+                            else
+                                startActivity(homeScreenApps.get(2).launchIntent);
+
+                            //old
+                    /*Intent launchIntent = new Intent(homeScreenApps.get(2).launchIntent);
+                    startActivity(launchIntent);*/
                         }
                     });
                     ImageView3.setOnLongClickListener(new View.OnLongClickListener() {
@@ -183,8 +213,17 @@ public class HomeScreenFragment extends Fragment implements TextWatcher {
                         ImageView4.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                Intent launchIntent = new Intent(homeScreenApps.get(3).launchIntent);
-                                startActivity(launchIntent);
+                                SharedPreferences prefs = getContext().getSharedPreferences(Constants.SHARED_PREFERENCES_NAME, MODE_PRIVATE);
+                                String label = prefs.getString("Ha4label", " ");
+
+                                if (label.equals("Phone"))
+                                    startActivity(new Intent(Intent.ACTION_DIAL));
+                                else
+                                    startActivity(homeScreenApps.get(3).launchIntent);
+
+                                //old
+                    /*Intent launchIntent = new Intent(homeScreenApps.get(3).launchIntent);
+                    startActivity(launchIntent);*/
                             }
                         });
                         ImageView4.setOnLongClickListener(new View.OnLongClickListener() {
