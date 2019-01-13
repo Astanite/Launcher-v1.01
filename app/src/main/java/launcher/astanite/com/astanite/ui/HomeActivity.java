@@ -231,6 +231,7 @@ public class HomeActivity extends AppCompatActivity implements
                 SharedPreferences.Editor editor2 = getSharedPreferences(Constants.SHARED_PREFERENCES_NAME, MODE_PRIVATE).edit();
                 editor2.putInt("homeScreenApps",homeScreenApps2 - 1);
                 editor2.putString("removedPackageName",packageName);
+                editor2.putString("removedLabel", packtoapp(packageName));
                 editor2.apply();
 
                 Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);

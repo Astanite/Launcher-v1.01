@@ -4,6 +4,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.util.Log;
 
@@ -44,6 +46,7 @@ public class BroadCastReceiver extends BroadcastReceiver
         updatefocus(context, apps);
         updateleisure(context, apps);
         updatesleep(context, apps);
+        updatehome(context, apps);
 
     }
     public interface SendToHomeActivity
@@ -179,5 +182,47 @@ public class BroadCastReceiver extends BroadcastReceiver
         Log.e("Apparentnew", Integer.toString(dnewapp.size()));
         context.getSharedPreferences(Constants.SHARED_PREFERENCES_NAME, MODE_PRIVATE).edit().putStringSet(Constants.KEY_SLEEP_APPS, dnewapp).apply();
         Log.e("New", Integer.toString(context.getSharedPreferences(Constants.SHARED_PREFERENCES_NAME, MODE_PRIVATE).getStringSet(Constants.KEY_SLEEP_APPS, new HashSet<>()).size()));
+    }
+
+    private void updatehome (Context context, List<ResolveInfo> apps)
+    {
+        SharedPreferences prefs = context.getSharedPreferences(Constants.SHARED_PREFERENCES_NAME, MODE_PRIVATE);
+        SharedPreferences.Editor editor2 = context.getSharedPreferences(Constants.SHARED_PREFERENCES_NAME, MODE_PRIVATE).edit();
+
+        int homeScreenApps2 = prefs.getInt("homeScreenApps",-1);
+
+        for(int i =0; i<homeScreenApps2; i++)
+        {
+            boolean flag = false;
+            String temp = prefs.getString("HomeApp" + Integer.toString(i+1), "");
+
+            for(int j =0; j<apps.size(); j++)
+            {
+                if(temp.equals(apps.get(j).activityInfo.packageName))
+                {
+                    flag = true;
+                }
+            }
+
+            if(flag == false)
+            {
+                editor2.putInt("homeScreenApps",homeScreenApps2 - 1);
+                editor2.putString("removedPackageName",temp);
+                editor2.putString("removedLabel", packtoapp(temp,context));
+                editor2.apply();
+            }
+        }
+    }
+
+    public String packtoapp(String pname, Context context) {
+        PackageManager pm = context.getApplicationContext().getPackageManager();
+        ApplicationInfo ai;
+        try {
+            ai = pm.getApplicationInfo( pname, 0);
+        } catch (final PackageManager.NameNotFoundException e) {
+            ai = null;
+        }
+        String applicationName = (String) (ai != null ? pm.getApplicationLabel(ai) : "(unknown)");
+        return applicationName;
     }
 }

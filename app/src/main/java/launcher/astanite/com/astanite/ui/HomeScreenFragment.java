@@ -471,10 +471,13 @@ public class HomeScreenFragment extends Fragment implements TextWatcher {
                 SharedPreferences.Editor editor = getContext().getSharedPreferences(Constants.SHARED_PREFERENCES_NAME, MODE_PRIVATE).edit();
                 String tempPackageName = prefs.getString("HomeApp"+Integer.toString(i+2),"");
                 editor.putString("HomeApp"+Integer.toString(i+1),tempPackageName);
+                String tempLabel = prefs.getString("Ha" + Integer.toString(i+2) + "label","");
+                editor.putString("Ha" + Integer.toString(i+1) + "label", tempLabel);
                 editor.apply();
             }
             SharedPreferences.Editor editor = getContext().getSharedPreferences(Constants.SHARED_PREFERENCES_NAME, MODE_PRIVATE).edit();
             editor.putString("removedPackageName","");
+            editor.putString("removedLabel", "");
             editor.apply();
         }
         homeScreenApps.clear();
