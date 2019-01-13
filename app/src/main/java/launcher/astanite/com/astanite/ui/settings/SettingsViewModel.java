@@ -76,6 +76,7 @@ public class SettingsViewModel extends AndroidViewModel {
     }
 
     public LiveData<List<AppInfo>> getAllApps() {
+
         return allApps;
     }
 

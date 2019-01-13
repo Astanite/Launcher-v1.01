@@ -1,5 +1,7 @@
 package launcher.astanite.com.astanite.ui.settings;
 
+import android.app.Application;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -103,5 +105,6 @@ public class FlaggedAppsAdapter extends RecyclerView.Adapter<FlaggedAppsAdapter.
     public void updateList(List<AppInfo> appsList) {
         this.appsList = appsList;
         notifyDataSetChanged();
+        Log.e("Changed", "Changed");
     }
 }

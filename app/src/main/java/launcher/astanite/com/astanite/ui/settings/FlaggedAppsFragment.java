@@ -1,8 +1,11 @@
 package launcher.astanite.com.astanite.ui.settings;
 
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.graphics.SweepGradient;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,7 +19,9 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -57,7 +62,8 @@ public class FlaggedAppsFragment extends Fragment {
                 .get(SettingsViewModel.class);
         settingsViewModel.getAllApps()
                 .observe(this, newList -> {
-                    flaggedAppsAdapter.updateList(newList);
+
+                    updateinterimlist(newList);
                 });
     }
 
@@ -100,16 +106,19 @@ public class FlaggedAppsFragment extends Fragment {
             setColors(Constants.MODE_FOCUS);
             settingsViewModel.currentFragment.setValue(Constants.FRAGMENT_FLAGGED_APPS);
             settingsViewModel.currentMode.setValue(Constants.MODE_FOCUS);
+            updateinterimlist(settingsViewModel.getAllApps().getValue());
         });
         cv_leisure.setOnClickListener(view12 -> {
             setColors(Constants.MY_MODE);
             settingsViewModel.currentFragment.setValue(Constants.FRAGMENT_FLAGGED_APPS);
             settingsViewModel.currentMode.setValue(Constants.MY_MODE);
+            updateinterimlist(settingsViewModel.getAllApps().getValue());
         });
         cv_sleep.setOnClickListener(view13 -> {
             setColors(Constants.MODE_SLEEP);
             settingsViewModel.currentFragment.setValue(Constants.FRAGMENT_FLAGGED_APPS);
             settingsViewModel.currentMode.setValue(Constants.MODE_SLEEP);
+            updateinterimlist(settingsViewModel.getAllApps().getValue());
         });
 
         flaggedAppsRecyclerview.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -170,5 +179,40 @@ public class FlaggedAppsFragment extends Fragment {
                 break;
 
         }
+    }
+
+    public void updateinterimlist(List<AppInfo> appslist)
+    {
+        String key = Constants.KEY_FOCUS_APPS;
+        switch (settingsViewModel.currentMode.getValue())
+        {
+            case Constants.MODE_FOCUS:
+                key = Constants.KEY_FOCUS_APPS;
+                break;
+            case Constants.MODE_SLEEP:
+                key = Constants.KEY_SLEEP_APPS;
+                break;
+            case Constants.MY_MODE:
+                key = Constants.KEY_MY_MODE_APPS;
+                break;
+            case Constants.DISTRACTIVE_APP:
+                key = Constants.KEY_DISTRACTIVE_APPS;
+                break;
+        }
+
+        SharedPreferences prefs = getContext().getSharedPreferences(Constants.SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
+        Set<String> hashSet = prefs.getStringSet(key, new HashSet<>());
+
+            for(int j=0; j<appslist.size(); j++)
+            {
+                if(hashSet.contains(appslist.get(j).packageName))
+                {
+                    appslist.get(j).isChecked = true;
+                }
+                else appslist.get(j).isChecked = false;
+
+            }
+
+        flaggedAppsAdapter.updateList(appslist);
     }
 }
