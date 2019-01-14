@@ -580,13 +580,38 @@ public class HomeScreenFragment extends Fragment implements TextWatcher {
         super.onResume();
         //updating the intention from shared preference
         intentionEditText.setText(sharedPreferences.getString(Constants.KEY_INTENTION, ""));
-        Log.d("update intention", intentionEditText.getText().toString());
         intentionEditText.setEnabled(true);
 
         if(mainViewModel.getCurrentMode().getValue() != 0)
         {
-            Log.e("PROGRESS", Integer.toString(calculateprogress()) );
             progressBar.setProgress(calculateprogress());
+        }
+
+        int apparentMode = mainViewModel.getCurrentMode().getValue();
+        int actualMode = sharedPreferences.getInt(Constants.KEY_CURRENT_MODE, Constants.MODE_NONE);
+
+        if(apparentMode!=actualMode)
+        {
+            Log.e("Mode", "triggered ");
+
+            switch (apparentMode)
+            {
+                case Constants.MODE_SLEEP:
+                    mainViewModel.setModeTime(0,0);
+                    ivExitSleep.performClick();
+                    ivExitSleep.setVisibility(View.GONE);
+                    break;
+                case Constants.MODE_FOCUS:
+                    mainViewModel.setModeTime(0,0);
+                    ivExitFocus.performClick();
+                    ivExitFocus.setVisibility(View.GONE);
+                    break;
+                case Constants.MY_MODE:
+                    mainViewModel.setModeTime(0,0);
+                    ivExitLeisure.performClick();
+                    ivExitLeisure.setVisibility(View.GONE);
+                    break;
+            }
         }
     }
 
@@ -674,6 +699,8 @@ public class HomeScreenFragment extends Fragment implements TextWatcher {
         iv_SleepMode.setAlpha(1f);
 
         int size = homeScreenApps.size();
+
+        Log.e("Triggered" , Integer.toString(size));
 
         if(size==1)
         {
