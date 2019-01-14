@@ -157,23 +157,23 @@ public class FlaggedAppsFragment extends Fragment {
                 cv_focus.setBackgroundTintMode(null);
                 ivFocus.setColorFilter(Color.argb(50, 255, 255,255));
                 cv_sleep.setBackgroundTintMode(PorterDuff.Mode.SRC_ATOP);
-                ivSleep.setColorFilter(Color.argb(127,0, 0, 0));
+                ivSleep.setColorFilter(Color.argb(80,0, 0, 0));
                 cv_leisure.setBackgroundTintMode(PorterDuff.Mode.SRC_ATOP);
-                ivLeisure.setColorFilter(Color.argb(127,0, 0, 0));
+                ivLeisure.setColorFilter(Color.argb(80,0, 0, 0));
                 break;
             case Constants.MODE_SLEEP:
                 cv_focus.setBackgroundTintMode(PorterDuff.Mode.SRC_ATOP);
-                ivFocus.setColorFilter(Color.argb(127,0, 0, 0));
+                ivFocus.setColorFilter(Color.argb(80,0, 0, 0));
                 cv_sleep.setBackgroundTintMode(null);
                 ivSleep.setColorFilter(Color.argb(50, 255, 255,255));
                 cv_leisure.setBackgroundTintMode(PorterDuff.Mode.SRC_ATOP);
-                ivLeisure.setColorFilter(Color.argb(127,0, 0, 0));
+                ivLeisure.setColorFilter(Color.argb(80,0, 0, 0));
                 break;
             case Constants.MY_MODE:
                 cv_focus.setBackgroundTintMode(PorterDuff.Mode.SRC_ATOP);
-                ivFocus.setColorFilter(Color.argb(127,0, 0, 0));
+                ivFocus.setColorFilter(Color.argb(80,0, 0, 0));
                 cv_sleep.setBackgroundTintMode(PorterDuff.Mode.SRC_ATOP);
-                ivSleep.setColorFilter(Color.argb(127,0, 0, 0));
+                ivSleep.setColorFilter(Color.argb(80,0, 0, 0));
                 cv_leisure.setBackgroundTintMode(null);
                 ivLeisure.setColorFilter(Color.argb(50, 255, 255,255));
                 break;

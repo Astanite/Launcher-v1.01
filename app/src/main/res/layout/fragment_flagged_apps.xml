@@ -25,7 +25,8 @@
             android:layout_height="match_parent"
             android:layout_below="@id/include"
             android:backgroundTint="@color/colorBlack"
-            android:layout_marginStart="20dp">
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="15dp">
 
         </androidx.recyclerview.widget.RecyclerView>
 
@@ -37,6 +38,8 @@
             android:layout_margin="16dp"
             android:src="@drawable/ic_save"
             android:layout_alignParentBottom="true"
+            android:tint="#000000"
+            android:backgroundTint="#afafaf"
             app:fabSize="normal"
             android:layout_alignParentRight="true" />
     </RelativeLayout>

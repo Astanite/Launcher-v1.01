@@ -12,9 +12,9 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="15dp"
         android:drawablePadding="10dp"
-        android:text="Apps Selection"
+        android:text="Apps selection"
         android:textColor="#fdfdfd"
         android:textSize="20dp"/>
 
@@ -32,7 +32,8 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_below="@id/view"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="-5dp"
         android:gravity="center"
         android:orientation="horizontal"
         android:visibility="gone">
