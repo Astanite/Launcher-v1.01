@@ -62,7 +62,7 @@ public class ContactusFragment extends Fragment {
             if (name.equals("")) {
                 Toast.makeText(getContext(), "Enter your name", Toast.LENGTH_SHORT).show();
             } else if (email.equals("")) {
-                Toast.makeText(getContext(), "Enter your Email", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Enter your Phone Number", Toast.LENGTH_SHORT).show();
             } else if (message.equals("")) {
                 Toast.makeText(getContext(), "Enter your message", Toast.LENGTH_SHORT).show();
             } else {
