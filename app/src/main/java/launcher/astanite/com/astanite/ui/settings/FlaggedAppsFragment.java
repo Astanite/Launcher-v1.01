@@ -32,6 +32,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import launcher.astanite.com.astanite.R;
 import launcher.astanite.com.astanite.data.AppInfo;
+import launcher.astanite.com.astanite.data.MyApplication;
 import launcher.astanite.com.astanite.utils.Constants;
 
 public class FlaggedAppsFragment extends Fragment {
@@ -92,7 +93,6 @@ public class FlaggedAppsFragment extends Fragment {
         ivFocus = view.findViewById(R.id.iv_focus);
         ivSleep = view.findViewById(R.id.iv_sleep);
         ivLeisure = view.findViewById(R.id.iv_leisure);
-        setColors(Constants.MODE_FOCUS);
         fab_save = view.findViewById(R.id.fab_save);
         LinearLayout mode_switcher = view.findViewById(R.id.ll_modes_switch);
         if (!isDist) mode_switcher.setVisibility(View.VISIBLE); // visibility of the view is set to gone in xml.
@@ -149,6 +149,17 @@ public class FlaggedAppsFragment extends Fragment {
                 Snackbar.make(rootView, "Select at least One App!", Snackbar.LENGTH_SHORT).show();
             }
         });
+
+        int tempkey = ((MyApplication) getActivity().getApplication()).getSettingsmode();
+
+        if (tempkey == Constants.MODE_NONE)
+        {
+            setColors(Constants.MODE_FOCUS);
+        }
+        else
+        {
+            setColors(tempkey);
+        }
     }
 
     private void setColors(int modeFocus) {

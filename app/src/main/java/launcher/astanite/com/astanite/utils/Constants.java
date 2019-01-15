@@ -28,4 +28,9 @@ public class Constants {
     public static final int FRAGMENT_FLAGGED_APPS = 7;
     public static final int FRAGMENT_DISTRACTIVE_APPS = 8;
 
+    public static final int SETTINGS_NORMAL = 0;
+    public static final int SETTINGS_FOCUS = 1;
+    public static final int SETTINGS_SLEEP = 2;
+    public static final int SETTINGS_LEISURE = 3;
+
 }

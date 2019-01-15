@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProviders;
 import launcher.astanite.com.astanite.R;
+import launcher.astanite.com.astanite.data.MyApplication;
 import launcher.astanite.com.astanite.utils.Constants;
 
 public class SettingsActivity extends AppCompatActivity {
@@ -32,7 +33,14 @@ public class SettingsActivity extends AppCompatActivity {
         flaggedAppsFragment = new FlaggedAppsFragment();
         ModesListFragment modesListFragment = new ModesListFragment();
 
-        if (savedInstanceState == null) {
+        int tempKey = ((MyApplication) this.getApplication()).getSettingsmode();
+
+        if(tempKey != Constants.MODE_NONE)
+        {
+            settingsViewModel.currentFragment.postValue(Constants.FRAGMENT_FLAGGED_APPS);
+            settingsViewModel.currentMode.setValue(tempKey);
+        }
+        else if (savedInstanceState == null) {
             // 0 for ModesList Fragment
             // 1 for Settings Fragment
             // 2 for FlaggedAppsFragment

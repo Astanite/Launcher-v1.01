@@ -42,6 +42,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import launcher.astanite.com.astanite.R;
 import launcher.astanite.com.astanite.data.AppInfo;
+import launcher.astanite.com.astanite.data.MyApplication;
 import launcher.astanite.com.astanite.utils.Constants;
 import launcher.astanite.com.astanite.viewmodel.MainViewModel;
 
@@ -177,6 +178,7 @@ public class AppDrawerFragment extends Fragment implements TextWatcher {
 
             if(event.getAction() == MotionEvent.ACTION_DOWN) {
                 if(event.getRawX() >= (intentionEditText.getRight() - intentionEditText.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
+                    ((MyApplication) getActivity().getApplication()).setSettingsmode(Constants.MODE_NONE);
                     settingsScreenListener.showSettings();
                     return true;
                 }

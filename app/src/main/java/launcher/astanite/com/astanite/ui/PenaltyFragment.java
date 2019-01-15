@@ -1,6 +1,7 @@
 package launcher.astanite.com.astanite.ui;
 
 
+import android.app.Application;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -28,6 +29,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import launcher.astanite.com.astanite.R;
+import launcher.astanite.com.astanite.data.MyApplication;
+import launcher.astanite.com.astanite.ui.settings.SettingsActivity;
 import launcher.astanite.com.astanite.utils.Constants;
 import launcher.astanite.com.astanite.viewmodel.MainViewModel;
 
@@ -92,6 +95,7 @@ public class PenaltyFragment extends Fragment {
         seekBar = view.findViewById(R.id.seekbar);
         final TextView duration = view.findViewById(R.id.duration);
         final TextView level = view.findViewById(R.id.ExitBarrierlevel);
+        final ImageView editMode = view.findViewById(R.id.edit);
 
         int defaultcolor = Color.parseColor("#b3ffffff");
         int progresscolor = Color.parseColor("#ffffff");
@@ -192,6 +196,16 @@ public class PenaltyFragment extends Fragment {
             getContext().registerReceiver(mScreenReceiver, filter);
 
             getContext().startService(new Intent(getContext(), BlockingAppService.class));
+        });
+
+        editMode.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                int key = 0;
+                ((MyApplication) getActivity().getApplication()).setSettingsmode(modeForPenaltyScreen);
+                startActivity(new Intent(getContext(),SettingsActivity.class));
+            }
         });
 
     }

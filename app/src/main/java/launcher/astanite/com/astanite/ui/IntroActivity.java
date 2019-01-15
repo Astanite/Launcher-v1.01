@@ -131,7 +131,7 @@ public class IntroActivity extends AppCompatActivity {
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 if (firebaseAuth.getCurrentUser() != null) {
                     FirebaseUser currentUser = firebaseAuth.getCurrentUser();
-                    Toast.makeText(IntroActivity.this, "Hello " + currentUser.getDisplayName(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(IntroActivity.this, "Welcome " + currentUser.getDisplayName() + '!', Toast.LENGTH_SHORT).show();
                     mlogin.setVisibility(View.GONE);
                     //Login successful now move to homeActivity
                     Intent intent = new Intent(IntroActivity.this, HomeActivity.class);

@@ -1,5 +1,10 @@
 package launcher.astanite.com.astanite.ui;
 
+import android.Manifest;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
@@ -10,6 +15,7 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.ContextMenu;
+import android.view.ContextThemeWrapper;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -19,11 +25,13 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.security.Permission;
 import java.util.Calendar;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
@@ -73,6 +81,11 @@ public class HomeActivity extends AppCompatActivity implements
                     //user not registered. Send it to Login Activity
                     Intent intent = new Intent(HomeActivity.this, IntroActivity.class);
                     startActivity(intent);
+                }
+                else
+                {
+                    Log.e("permission time?", "Yess ");
+
                 }
             }
         };

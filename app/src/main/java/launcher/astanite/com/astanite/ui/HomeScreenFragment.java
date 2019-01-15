@@ -1,7 +1,11 @@
 package launcher.astanite.com.astanite.ui;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -14,6 +18,7 @@ import android.telecom.TelecomManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -36,12 +41,14 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import de.hdodenhof.circleimageview.CircleImageView;
 import io.reactivex.disposables.CompositeDisposable;
 import launcher.astanite.com.astanite.R;
 import launcher.astanite.com.astanite.data.AppInfo;
+import launcher.astanite.com.astanite.data.MyApplication;
 import launcher.astanite.com.astanite.utils.Constants;
 import launcher.astanite.com.astanite.viewmodel.MainViewModel;
 
@@ -445,6 +452,7 @@ public class HomeScreenFragment extends Fragment implements TextWatcher {
 
             if (event.getAction() == MotionEvent.ACTION_DOWN) {
                 if (event.getRawX() >= (intentionEditText.getRight() - intentionEditText.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
+                    ((MyApplication) getActivity().getApplication()).setSettingsmode(Constants.MODE_NONE);
                     settingsScreenListener.showSettings();
                     return true;
                 }
@@ -581,6 +589,23 @@ public class HomeScreenFragment extends Fragment implements TextWatcher {
         //updating the intention from shared preference
         intentionEditText.setText(sharedPreferences.getString(Constants.KEY_INTENTION, ""));
         intentionEditText.setEnabled(true);
+
+        if(ContextCompat.checkSelfPermission(getContext(), Manifest.permission.PACKAGE_USAGE_STATS)!=PackageManager.PERMISSION_GRANTED);
+        {
+            Log.e("permission time?", "Ask for it");
+            final AlertDialog alertDialog = new AlertDialog.Builder(new ContextThemeWrapper(getContext(), R.style.Dtheme)).create();
+            alertDialog.setTitle("Astanite Analytics");
+            alertDialog.setIcon(R.drawable.ic_poll_black_24dp);
+            alertDialog.setMessage("This segment helps you understand your smartphone usage pattern.\n\nBlue segment: Total time spent on device\nYellow segment: Time spent on flagged apps\n\nEfficiency score: represents how efficiently you used your smartphone yesterday; calculated based on time spent and frequency of using various apps\n\n*Statistics refresh at midnight everyday");
+            alertDialog.setButton(Dialog.BUTTON_POSITIVE, "Got it!", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    alertDialog.cancel();
+                }
+            });
+
+            alertDialog.show();
+        }
 
         if(mainViewModel.getCurrentMode().getValue() != 0)
         {
