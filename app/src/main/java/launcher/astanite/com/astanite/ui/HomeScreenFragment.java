@@ -3,16 +3,19 @@ package launcher.astanite.com.astanite.ui;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.app.AppOpsManager;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.provider.Telephony;
 import android.telecom.TelecomManager;
 import android.text.Editable;
@@ -590,17 +593,18 @@ public class HomeScreenFragment extends Fragment implements TextWatcher {
         intentionEditText.setText(sharedPreferences.getString(Constants.KEY_INTENTION, ""));
         intentionEditText.setEnabled(true);
 
-        if(ContextCompat.checkSelfPermission(getContext(), Manifest.permission.PACKAGE_USAGE_STATS)!=PackageManager.PERMISSION_GRANTED);
+        if(!isAccessGranted())
         {
             Log.e("permission time?", "Ask for it");
             final AlertDialog alertDialog = new AlertDialog.Builder(new ContextThemeWrapper(getContext(), R.style.Dtheme)).create();
-            alertDialog.setTitle("Astanite Analytics");
-            alertDialog.setIcon(R.drawable.ic_poll_black_24dp);
-            alertDialog.setMessage("This segment helps you understand your smartphone usage pattern.\n\nBlue segment: Total time spent on device\nYellow segment: Time spent on flagged apps\n\nEfficiency score: represents how efficiently you used your smartphone yesterday; calculated based on time spent and frequency of using various apps\n\n*Statistics refresh at midnight everyday");
-            alertDialog.setButton(Dialog.BUTTON_POSITIVE, "Got it!", new DialogInterface.OnClickListener() {
+            alertDialog.setTitle("Permission required");
+            alertDialog.setIcon(R.drawable.ic_security_black_24dp);
+            alertDialog.setMessage("Astanite needs Usage Access for efficient performance.");
+            alertDialog.setCancelable(false);
+            alertDialog.setButton(Dialog.BUTTON_POSITIVE, "PERMIT", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    alertDialog.cancel();
+                    startActivity(new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS));
                 }
             });
 
@@ -777,6 +781,23 @@ public class HomeScreenFragment extends Fragment implements TextWatcher {
             float flag = 100*diff/delta;
             int temp = Math.round(flag);
             return temp;
+        }
+    }
+
+    private boolean isAccessGranted() {
+        try {
+            PackageManager packageManager = getContext().getPackageManager();
+            ApplicationInfo applicationInfo = packageManager.getApplicationInfo(getContext().getPackageName(), 0);
+            AppOpsManager appOpsManager = (AppOpsManager) getContext().getSystemService(Context.APP_OPS_SERVICE);
+            int mode = 0;
+            if (android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.KITKAT) {
+                mode = appOpsManager.checkOpNoThrow(AppOpsManager.OPSTR_GET_USAGE_STATS,
+                        applicationInfo.uid, applicationInfo.packageName);
+            }
+            return (mode == AppOpsManager.MODE_ALLOWED);
+
+        } catch (PackageManager.NameNotFoundException e) {
+            return false;
         }
     }
 }
