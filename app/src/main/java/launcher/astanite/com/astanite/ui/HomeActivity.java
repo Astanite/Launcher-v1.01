@@ -57,7 +57,7 @@ public class HomeActivity extends AppCompatActivity implements
     private AppDrawerFragment appDrawerFragment;
     private DataAnalysisFragment dataAnalysisFragment;
     private FloatingActionButton allAppsButton;
-    private ImageView ivDataAnal;
+    public static ImageView ivDataAnal;
     private CoordinatorLayout rootView;
     private BroadCastReceiver receiver = new BroadCastReceiver(this);
     private boolean AppDrawerStateOpen = false;

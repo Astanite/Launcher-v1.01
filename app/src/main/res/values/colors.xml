@@ -10,6 +10,7 @@
     <color name="back_black">#99000000</color>
     <color name="colorGrey">#848484</color>
     <color name="color_modes">#afafaf</color>
+    <color name="transparent">#00000000</color>
 
 
 </resources>

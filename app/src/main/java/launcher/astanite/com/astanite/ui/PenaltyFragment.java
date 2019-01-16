@@ -102,6 +102,8 @@ public class PenaltyFragment extends Fragment {
 
         play = view.findViewById(R.id.enter);
 
+        boolean modeInstall = getContext().getSharedPreferences(Constants.SHARED_PREFERENCES_NAME, MODE_PRIVATE).getBoolean("modeInstall", true);
+
         seekArc.setArcColor(defaultcolor);
         seekArc.setProgressColor(progresscolor);
         seekArc.setArcWidth(10);
@@ -207,6 +209,12 @@ public class PenaltyFragment extends Fragment {
                 startActivity(new Intent(getContext(),SettingsActivity.class));
             }
         });
+
+        if(modeInstall)
+        {
+            getContext().getSharedPreferences(Constants.SHARED_PREFERENCES_NAME, MODE_PRIVATE).edit().putBoolean("modeInstall",false).apply();
+            Log.e("Guide", "onViewCreated: ");
+        }
 
     }
 

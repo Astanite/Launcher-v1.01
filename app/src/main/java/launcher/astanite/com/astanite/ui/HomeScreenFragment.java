@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.graphics.drawable.Drawable;
@@ -37,6 +38,8 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.getkeepsafe.taptargetview.TapTarget;
+import com.getkeepsafe.taptargetview.TapTargetSequence;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
@@ -97,6 +100,9 @@ public class HomeScreenFragment extends Fragment implements TextWatcher {
     private PenaltyScreenListener penaltyScreenListener;
     private SharedPreferences sharedPreferences;
     public List<AppInfo> homeScreenApps = new ArrayList<>();
+
+    public AlertDialog alertDialog;
+    public TapTargetSequence targetSequence, targetSequence2;
 
     private CircleImageView iv_Mode, iv_FocusMode, iv_LeisureMode, iv_SleepMode;
     private Animation fabOpen, fabClose, rotateForward, rotateBackward;
@@ -584,6 +590,8 @@ public class HomeScreenFragment extends Fragment implements TextWatcher {
     public void onPause() {
         super.onPause();
         intentionEditText.setEnabled(false);
+        if(alertDialog!=null)
+        alertDialog.cancel();
     }
 
     @Override
@@ -596,7 +604,7 @@ public class HomeScreenFragment extends Fragment implements TextWatcher {
         if(!isAccessGranted())
         {
             Log.e("permission time?", "Ask for it");
-            final AlertDialog alertDialog = new AlertDialog.Builder(new ContextThemeWrapper(getContext(), R.style.Dtheme)).create();
+            alertDialog = new AlertDialog.Builder(new ContextThemeWrapper(getContext(), R.style.Dtheme)).create();
             alertDialog.setTitle("Permission required");
             alertDialog.setIcon(R.drawable.ic_security_black_24dp);
             alertDialog.setMessage("Astanite needs Usage Access for efficient performance.");
@@ -609,6 +617,85 @@ public class HomeScreenFragment extends Fragment implements TextWatcher {
             });
 
             alertDialog.show();
+        }
+        else
+        {
+            boolean homeInstall1 = getContext().getSharedPreferences(Constants.SHARED_PREFERENCES_NAME, MODE_PRIVATE).getBoolean("homeInstall1", true);
+            if(homeInstall1)
+            {
+                if(targetSequence==null) {
+                    TapTarget tIntention = TapTarget.forView(intentionEditText, "Objective", "You'll see this every time you unlock your phone. Astanite will keep you focused on your objective!")
+                            .cancelable(false).dimColor(R.color.colorBlack).tintTarget(false).outerCircleAlpha(0f)
+                            .outerCircleColor(R.color.colorBlack).targetCircleColor(R.color.transparent).titleTextSize(25)
+                            .descriptionTextSize(16).titleTextColor(R.color.colorWhite).descriptionTextColor(R.color.colorWhite)
+                            .descriptionTextAlpha(0.9f);
+
+                    TapTarget tAnalytics = TapTarget.forView(HomeActivity.ivDataAnal, "Analytics", "Astanite helps you understand your smartphone usage pattern, so that you can develop better smartphone habits.")
+                            .cancelable(false).dimColor(R.color.colorBlack).tintTarget(false).outerCircleAlpha(0f)
+                            .outerCircleColor(R.color.colorBlack).targetCircleColor(R.color.transparent).titleTextSize(25)
+                            .descriptionTextSize(16).titleTextColor(R.color.colorWhite).descriptionTextColor(R.color.colorWhite)
+                            .descriptionTextAlpha(0.9f);
+
+                    targetSequence = new TapTargetSequence(getActivity()).targets(tIntention, tAnalytics)
+                            .listener(new TapTargetSequence.Listener() {
+                                @Override
+                                public void onSequenceFinish() {
+                                    getContext().getSharedPreferences(Constants.SHARED_PREFERENCES_NAME, MODE_PRIVATE).edit().putBoolean("homeInstall1", false).apply();
+                                }
+
+                                @Override
+                                public void onSequenceStep(TapTarget lastTarget, boolean targetClicked) {
+                                    if (lastTarget == tAnalytics) {
+                                        HomeActivity.ivDataAnal.performClick();
+                                    }
+                                }
+
+                                @Override
+                                public void onSequenceCanceled(TapTarget lastTarget) {
+
+                                }
+                            });
+
+                    targetSequence.start();
+                }
+            }
+            else if(getContext().getSharedPreferences(Constants.SHARED_PREFERENCES_NAME, MODE_PRIVATE).getBoolean("homeInstall2", true))
+            {
+                if(targetSequence2==null) {
+                    TapTarget tmodes = TapTarget.forView(iv_Mode, "Modes", "Astanite encourage you to leave all the distractions behind and do the things you love the most.")
+                            .cancelable(false).dimColor(R.color.colorBlack).tintTarget(false).outerCircleAlpha(0f)
+                            .outerCircleColor(R.color.colorBlack).targetCircleColor(R.color.transparent).titleTextSize(25)
+                            .descriptionTextSize(16).titleTextColor(R.color.colorWhite).descriptionTextColor(R.color.colorWhite)
+                            .descriptionTextAlpha(0.9f);
+
+                    TapTarget tmodes2 = TapTarget.forView(iv_Mode, "Tailored for you!", "Customize Focus, Sleep and Leisure Mode according to what you need.")
+                            .cancelable(false).dimColor(R.color.colorBlack).tintTarget(false).outerCircleAlpha(0f)
+                            .outerCircleColor(R.color.colorBlack).targetCircleColor(R.color.transparent).titleTextSize(25)
+                            .descriptionTextSize(16).titleTextColor(R.color.colorWhite).descriptionTextColor(R.color.colorWhite)
+                            .descriptionTextAlpha(0.9f);
+
+                    targetSequence2 = new TapTargetSequence(getActivity()).targets(tmodes, tmodes2)
+                            .listener(new TapTargetSequence.Listener() {
+                                @Override
+                                public void onSequenceFinish() {
+                                    getContext().getSharedPreferences(Constants.SHARED_PREFERENCES_NAME, MODE_PRIVATE).edit().putBoolean("homeInstall2", false).apply();
+                                    Toast.makeText(getContext(), "You're ready to go!", Toast.LENGTH_LONG);
+                                }
+
+                                @Override
+                                public void onSequenceStep(TapTarget lastTarget, boolean targetClicked) {
+                                    iv_Mode.performClick();
+                                }
+
+                                @Override
+                                public void onSequenceCanceled(TapTarget lastTarget) {
+
+                                }
+                            });
+
+                    targetSequence2.start();
+                }
+            }
         }
 
         if(mainViewModel.getCurrentMode().getValue() != 0)
