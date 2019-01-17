@@ -25,14 +25,18 @@ import android.widget.TextView;
 import com.db.chart.model.LineSet;
 import com.db.chart.util.Tools;
 import com.db.chart.view.LineChartView;
+import com.getkeepsafe.taptargetview.TapTarget;
+import com.getkeepsafe.taptargetview.TapTargetView;
 
 import launcher.astanite.com.astanite.R;
+import launcher.astanite.com.astanite.utils.Constants;
 import launcher.astanite.com.astanite.viewmodel.MainViewModel;
 
 public class DataAnalysisFragment extends Fragment {
 
     private MainViewModel mainViewModel;
     LineChartView flagchart, totalchart;
+    ImageView info;
 
 
     public DataAnalysisFragment() {
@@ -112,7 +116,7 @@ public class DataAnalysisFragment extends Fragment {
 
         flagchart.show();
 
-        ImageView info = view.findViewById(R.id.info);
+        info = view.findViewById(R.id.info);
 
         info.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -131,6 +135,16 @@ public class DataAnalysisFragment extends Fragment {
                 alertDialog.show();
             }
         });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if(getContext().getSharedPreferences(Constants.SHARED_PREFERENCES_NAME,Context.MODE_PRIVATE).getBoolean("analInstall",true))
+        {
+            info.performClick();
+        }
     }
 
     public void output()

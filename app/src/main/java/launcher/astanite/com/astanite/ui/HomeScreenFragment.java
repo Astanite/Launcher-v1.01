@@ -679,7 +679,7 @@ public class HomeScreenFragment extends Fragment implements TextWatcher {
                                 @Override
                                 public void onSequenceFinish() {
                                     getContext().getSharedPreferences(Constants.SHARED_PREFERENCES_NAME, MODE_PRIVATE).edit().putBoolean("homeInstall2", false).apply();
-                                    Toast.makeText(getContext(), "You're ready to go!", Toast.LENGTH_LONG);
+                                    Toast.makeText(getContext(), "You're ready to go!", Toast.LENGTH_LONG).show();
                                 }
 
                                 @Override
