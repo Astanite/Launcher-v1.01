@@ -3,14 +3,19 @@ package launcher.astanite.com.astanite.ui;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -24,6 +29,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.getkeepsafe.taptargetview.TapTarget;
+import com.getkeepsafe.taptargetview.TapTargetView;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
@@ -211,6 +218,23 @@ public class AppDrawerFragment extends Fragment implements TextWatcher {
         intentionEditText.setEnabled(true);
         InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Activity.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(root.getWindowToken(), 0);
+
+        if(getContext().getSharedPreferences(Constants.SHARED_PREFERENCES_NAME,Context.MODE_PRIVATE).getBoolean("AppdrawerInstall",true))
+        {
+            final AlertDialog alertDialog = new AlertDialog.Builder(new ContextThemeWrapper(getContext(), R.style.Dtheme)).create();
+            alertDialog.setTitle("App Drawer");
+            alertDialog.setIcon(R.drawable.ic_assignment_turned_in_black_24dp);
+            alertDialog.setMessage("Astanite tones down icon saturation level and scrambles the flagged apps, letting you be without distractions!");
+            alertDialog.setButton(Dialog.BUTTON_POSITIVE, "Got it!", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    alertDialog.cancel();
+                }
+            });
+
+            alertDialog.show();
+            getContext().getSharedPreferences(Constants.SHARED_PREFERENCES_NAME,Context.MODE_PRIVATE).edit().putBoolean("AppdrawerInstall",false).apply();
+        }
     }
 
     @Override
