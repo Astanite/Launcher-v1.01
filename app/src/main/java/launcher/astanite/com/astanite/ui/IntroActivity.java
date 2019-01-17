@@ -7,6 +7,8 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -38,11 +40,7 @@ import launcher.astanite.com.astanite.ui.settings.SettingsViewModel;
 import launcher.astanite.com.astanite.utils.Constants;
 
 public class IntroActivity extends AppCompatActivity {
-
-    private ViewPager mViewPager;
-    private SectionsPagerAdapter mSectionsPagerAdapter;
-    private CardView mlogin;
-    private ImageView mDot1, mDot2, mDot3, mDot4;
+    private ImageView mlogin;
 
     private FirebaseAuth mAuth;
     private static final int RC_SIGN_IN = 9001;
@@ -59,53 +57,9 @@ public class IntroActivity extends AppCompatActivity {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_intro);
 
-        mSectionsPagerAdapter = new SectionsPagerAdapter(this, getSupportFragmentManager());
-        mViewPager = findViewById(R.id.intro_pager);
-        mViewPager.setAdapter(mSectionsPagerAdapter);
 
-        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
-            }
 
-            @Override
-            public void onPageSelected(int position) {
-
-                switch (position) {
-                    case 0:
-                        mDot1.setImageResource(R.drawable.intro_dot_selected);
-                        mDot2.setImageResource(R.drawable.intro_dot_default);
-                        mDot3.setImageResource(R.drawable.intro_dot_default);
-                        mDot4.setImageResource(R.drawable.intro_dot_default);
-                        break;
-                    case 1:
-                        mDot2.setImageResource(R.drawable.intro_dot_selected);
-                        mDot1.setImageResource(R.drawable.intro_dot_default);
-                        mDot3.setImageResource(R.drawable.intro_dot_default);
-                        mDot4.setImageResource(R.drawable.intro_dot_default);
-                        break;
-                    case 2:
-                        mDot3.setImageResource(R.drawable.intro_dot_selected);
-                        mDot1.setImageResource(R.drawable.intro_dot_default);
-                        mDot2.setImageResource(R.drawable.intro_dot_default);
-                        mDot4.setImageResource(R.drawable.intro_dot_default);
-                        break;
-                    case 3:
-                        mDot4.setImageResource(R.drawable.intro_dot_selected);
-                        mDot1.setImageResource(R.drawable.intro_dot_default);
-                        mDot3.setImageResource(R.drawable.intro_dot_default);
-                        mDot2.setImageResource(R.drawable.intro_dot_default);
-                        break;
-                }
-
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        });
         mlogin = findViewById(R.id.cv_google_login);
         mlogin.setOnClickListener(v -> {
             signIn();
@@ -158,66 +112,9 @@ public class IntroActivity extends AppCompatActivity {
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
 
-        mDot1 = findViewById(R.id.dot1);
-        mDot2 = findViewById(R.id.dot2);
-        mDot3 = findViewById(R.id.dot3);
-        mDot4 = findViewById(R.id.dot4);
-
         settingsViewModel = ViewModelProviders
                 .of(this)
                 .get(SettingsViewModel.class);
-    }
-
-    @Override
-    public void onBackPressed() {
-        if (mViewPager.getCurrentItem() == 0) {
-            super.onBackPressed();
-        } else {
-            mViewPager.setCurrentItem(mViewPager.getCurrentItem() - 1);
-        }
-    }
-
-    private class SectionsPagerAdapter extends FragmentPagerAdapter {
-        private Context mContext;
-
-        public SectionsPagerAdapter(Context context, FragmentManager fm) {
-            super(fm);
-            this.mContext = context;
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            Fragment fragment = new IntroFragment();
-            Bundle bundle = new Bundle();
-
-            switch (position) {
-
-                case 0:
-                    bundle.putString("image", "intro/ic_contact_us.png");
-                    bundle.putString("description", "lorem ipsum dummy text 1");
-                    break;
-                case 1:
-                    bundle.putString("image", "intro/ic_contact_us.png");
-                    bundle.putString("description", "lorem ipsum dummy text 2");
-                    break;
-                case 2:
-                    bundle.putString("image", "intro/ic_contact_us.png");
-                    bundle.putString("description", "lorem ipsum dummy text 3");
-                    break;
-                case 3:
-                    bundle.putString("image", "intro/ic_contact_us.png");
-                    bundle.putString("description", "lorem ipsum dummy text 4");
-                    break;
-            }
-            fragment.setArguments(bundle);
-
-            return fragment;
-        }
-
-        @Override
-        public int getCount() {
-            return 4;
-        }
     }
 
     private void signIn() {
