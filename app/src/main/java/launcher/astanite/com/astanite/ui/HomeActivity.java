@@ -36,6 +36,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
 import launcher.astanite.com.astanite.R;
+import launcher.astanite.com.astanite.data.MyApplication;
 import launcher.astanite.com.astanite.ui.settings.SettingsActivity;
 import launcher.astanite.com.astanite.utils.BroadCastReceiver;
 import launcher.astanite.com.astanite.utils.Constants;
@@ -393,8 +394,15 @@ public class HomeActivity extends AppCompatActivity implements
             closeAppDrawer();
             mainViewModel.isAppDrawerOpen.setValue(false);
         } else if (mainViewModel.isPenaltyScreenOpen) {
-            showHomeScreen();
-            mainViewModel.isPenaltyScreenOpen = false;
+            if(((MyApplication)getApplication()).getPenaltymode() == false)
+            {
+                showHomeScreen();
+                mainViewModel.isPenaltyScreenOpen = false;
+            }
+            else
+            {
+                ((MyApplication)getApplication()).setPenaltymode(false);
+            }
         }
         if (mainViewModel.isAnalysisOpen.getValue()){
             showHomeScreen();

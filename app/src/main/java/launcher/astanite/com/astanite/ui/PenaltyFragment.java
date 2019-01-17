@@ -208,6 +208,7 @@ public class PenaltyFragment extends Fragment {
 
                 int key = 0;
                 ((MyApplication) getActivity().getApplication()).setSettingsmode(modeForPenaltyScreen);
+                ((MyApplication) getActivity().getApplication()).setPenaltymode(true);
                 startActivity(new Intent(getContext(),SettingsActivity.class));
             }
         });
@@ -235,7 +236,7 @@ public class PenaltyFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-        mainViewModel.penaltyScreenTriggeredForMode.setValue(0);
+        //mainViewModel.penaltyScreenTriggeredForMode.setValue(0);
     }
 
 
