@@ -21,6 +21,8 @@ import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.getkeepsafe.taptargetview.TapTarget;
+import com.getkeepsafe.taptargetview.TapTargetView;
 import com.triggertrap.seekarc.SeekArc;
 
 import java.util.Objects;
@@ -213,7 +215,19 @@ public class PenaltyFragment extends Fragment {
         if(modeInstall)
         {
             getContext().getSharedPreferences(Constants.SHARED_PREFERENCES_NAME, MODE_PRIVATE).edit().putBoolean("modeInstall",false).apply();
-            Log.e("Guide", "onViewCreated: ");
+            TapTargetView.showFor(getActivity(),
+                    TapTarget.forView(editMode, "App Selection", "Select the apps you absolutely need in this mode")
+                            .cancelable(false).dimColor(R.color.colorBlack).tintTarget(false).outerCircleAlpha(0f)
+                            .outerCircleColor(R.color.colorBlack).targetCircleColor(R.color.colorGrey).titleTextSize(25)
+                            .descriptionTextSize(16).titleTextColor(R.color.colorWhite).descriptionTextColor(R.color.colorWhite)
+                            .descriptionTextAlpha(0.9f),
+                    new TapTargetView.Listener() {
+                        @Override
+                        public void onTargetClick(TapTargetView view) {
+                            super.onTargetClick(view);
+                            editMode.performClick();
+                        }
+                    });
         }
 
     }

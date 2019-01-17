@@ -144,6 +144,7 @@ public class DataAnalysisFragment extends Fragment {
         if(getContext().getSharedPreferences(Constants.SHARED_PREFERENCES_NAME,Context.MODE_PRIVATE).getBoolean("analInstall",true))
         {
             info.performClick();
+            getContext().getSharedPreferences(Constants.SHARED_PREFERENCES_NAME,Context.MODE_PRIVATE).edit().putBoolean("analInstall",false).apply();
         }
     }
 
