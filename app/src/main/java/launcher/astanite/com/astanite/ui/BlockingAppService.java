@@ -27,9 +27,9 @@ public class BlockingAppService extends Service {
     private Handler handler = new Handler();
     private Runnable myrunnable;
     private SharedPreferences sp;
-    private List<String> focusModeApps;
-    private List<String> sleepModeApps;
-    private List<String> leisureModeApps;
+    //private List<String> focusModeApps;
+    //private List<String> sleepModeApps;
+    //private List<String> leisureModeApps;
     private List<String> setCurrentMode;
 
     @Override
@@ -47,6 +47,9 @@ public class BlockingAppService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         sp = getSharedPreferences(Constants.SHARED_PREFERENCES_NAME, MODE_PRIVATE);
+        int curr_mode = sp.getInt(Constants.KEY_CURRENT_MODE, Constants.MODE_NONE);
+        setActiveModeButton(curr_mode);
+        setCurrentMode.add("launcher.astanite.com.astanite");
         if (sp.getInt(Constants.KEY_CURRENT_MODE, Constants.MODE_NONE) != 0) {
             handler.postDelayed(myrunnable = new Runnable() {
                 @Override
@@ -90,15 +93,21 @@ public class BlockingAppService extends Service {
         }
 
         Log.e("TAG", "Current App in foreground is: " + currentApp);
-        focusModeApps = new ArrayList<>(sp.getStringSet(Constants.KEY_FOCUS_APPS, new HashSet<>()));
-        sleepModeApps = new ArrayList<>(sp.getStringSet(Constants.KEY_SLEEP_APPS, new HashSet<>()));
-        leisureModeApps = new ArrayList<>(sp.getStringSet(Constants.KEY_MY_MODE_APPS, new HashSet<>()));
 
-        int curr_mode = sp.getInt(Constants.KEY_CURRENT_MODE, Constants.MODE_NONE);
+        if (!setCurrentMode.contains(currentApp)) {
+            Intent launchIntent = getPackageManager().getLaunchIntentForPackage("launcher.astanite.com.astanite");
+            if (launchIntent != null) {
+                startActivity(launchIntent);
+            }
+            //focusModeApps = new ArrayList<>(sp.getStringSet(Constants.KEY_FOCUS_APPS, new HashSet<>()));
+            //sleepModeApps = new ArrayList<>(sp.getStringSet(Constants.KEY_SLEEP_APPS, new HashSet<>()));
+            //leisureModeApps = new ArrayList<>(sp.getStringSet(Constants.KEY_MY_MODE_APPS, new HashSet<>()));
+
+        /*int curr_mode = sp.getInt(Constants.KEY_CURRENT_MODE, Constants.MODE_NONE);
         setActiveModeButton(curr_mode);
-        setCurrentMode.add("launcher.astanite.com.astanite");
+        setCurrentMode.add("launcher.astanite.com.astanite");*/
 
-        int check_count = 0;
+        /*int check_count = 0;
         for (String focus : setCurrentMode) {
             //if package name matches, no problem
             //else execute below code
@@ -115,23 +124,25 @@ public class BlockingAppService extends Service {
                     startActivity(launchIntent);//null pointer check in case package name was not found
                 }
             }
+        }*/
         }
     }
 
-    public void setActiveModeButton(int newMode) {
+    public void setActiveModeButton ( int newMode){
         switch (newMode) {
             case Constants.MODE_FOCUS:
-                setCurrentMode = focusModeApps;
+                setCurrentMode = new ArrayList<>(sp.getStringSet(Constants.KEY_FOCUS_APPS, new HashSet<>()));
                 break;
             case Constants.MODE_SLEEP:
-                setCurrentMode = sleepModeApps;
+                setCurrentMode = new ArrayList<>(sp.getStringSet(Constants.KEY_SLEEP_APPS, new HashSet<>()));
                 break;
             case Constants.MY_MODE:
-                setCurrentMode = leisureModeApps;
+                setCurrentMode = new ArrayList<>(sp.getStringSet(Constants.KEY_MY_MODE_APPS, new HashSet<>()));
                 break;
             default:
-                setCurrentMode = focusModeApps;
+                setCurrentMode = new ArrayList<>(sp.getStringSet(Constants.KEY_FOCUS_APPS, new HashSet<>()));
                 break;
         }
     }
+
 }

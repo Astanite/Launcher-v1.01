@@ -59,7 +59,7 @@ public class PenaltyFragment extends Fragment {
 
     private MainViewModel mainViewModel;
     private HomeScreenListener homeScreenListener;
-    private ScreenOnOffReceiver mScreenReceiver;
+    //private ScreenOnOffReceiver mScreenReceiver;
 
     public PenaltyFragment() {
         // Required empty public constructor
@@ -194,11 +194,11 @@ public class PenaltyFragment extends Fragment {
             //Write the code for starting a service to block not allowed apps
             Log.d("Service started", " Again");
 
-            mScreenReceiver = new ScreenOnOffReceiver();
-            IntentFilter filter = new IntentFilter();
-            filter.addAction(Intent.ACTION_SCREEN_OFF);
-            filter.addAction(Intent.ACTION_SCREEN_ON);
-            getContext().registerReceiver(mScreenReceiver, filter);
+           // mScreenReceiver = new ScreenOnOffReceiver();
+            //IntentFilter filter = new IntentFilter();
+            //filter.addAction(Intent.ACTION_SCREEN_OFF);
+            //filter.addAction(Intent.ACTION_SCREEN_ON);
+            //getContext().registerReceiver(mScreenReceiver, filter);
 
             getContext().startService(new Intent(getContext(), BlockingAppService.class));
         });
@@ -242,7 +242,7 @@ public class PenaltyFragment extends Fragment {
     }
 
 
-    public class ScreenOnOffReceiver extends BroadcastReceiver {
+    /*public class ScreenOnOffReceiver extends BroadcastReceiver {
 
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -265,7 +265,7 @@ public class PenaltyFragment extends Fragment {
                 }
             }
         }
-    }
+    }*/
 
     public void savearc(int arc)
     {
