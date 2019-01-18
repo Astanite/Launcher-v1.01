@@ -208,7 +208,7 @@ public class TimerFragment extends Fragment {
                 final AlertDialog alertDialog = new AlertDialog.Builder(new ContextThemeWrapper( getContext(), R.style.Dtheme)).create();
                 alertDialog.setTitle("Exit Barrier");
                 alertDialog.setIcon(R.drawable.ic_access_time_black_24dp);
-                alertDialog.setMessage("Go Back Kiddo");
+                alertDialog.setMessage("Are you sure you want to exit?");
                 alertDialog.setButton(Dialog.BUTTON_POSITIVE, "Got it!", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {

@@ -63,7 +63,7 @@ public class IntroActivity extends AppCompatActivity {
         mlogin = findViewById(R.id.cv_google_login);
         mlogin.setOnClickListener(v -> {
             signIn();
-            Toast.makeText(this, "Please Wait!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Please Wait!", Toast.LENGTH_LONG).show();
 //            settingsViewModel.currentFragment.setValue(Constants.FRAGMENT_DISTRACTIVE_APPS);
 //            settingsViewModel.currentMode.setValue(Constants.DISTRACTIVE_APP);
 //            Bundle argument = new Bundle();
@@ -106,7 +106,7 @@ public class IntroActivity extends AppCompatActivity {
                 .enableAutoManage(this, new GoogleApiClient.OnConnectionFailedListener() {
                     @Override
                     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-                        Toast.makeText(IntroActivity.this, "Login Error!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(IntroActivity.this, "Please try again", Toast.LENGTH_LONG).show();
                     }
                 })
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
@@ -146,8 +146,8 @@ public class IntroActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             mlogin.setVisibility(View.GONE);
                         } else {
-                            Toast.makeText(IntroActivity.this, "Authentication failed.",
-                                    Toast.LENGTH_SHORT).show();
+                            Toast.makeText(IntroActivity.this, "Please try again.",
+                                    Toast.LENGTH_LONG).show();
                         }
                     }
                 });
