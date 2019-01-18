@@ -2,6 +2,7 @@ package launcher.astanite.com.astanite.ui.settings;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
@@ -33,6 +34,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import launcher.astanite.com.astanite.R;
 import launcher.astanite.com.astanite.data.AppInfo;
 import launcher.astanite.com.astanite.data.MyApplication;
+import launcher.astanite.com.astanite.ui.HomeActivity;
 import launcher.astanite.com.astanite.utils.Constants;
 
 public class FlaggedAppsFragment extends Fragment {
@@ -144,7 +146,9 @@ public class FlaggedAppsFragment extends Fragment {
                 Log.d(TAG, "Save menu option clicked");
                 List<AppInfo> flaggedApps = flaggedAppsAdapter.getCheckedApps();
                 settingsViewModel.saveFlaggedApps(flaggedApps);
-                Snackbar.make(rootView, "Flagged Apps updated!", Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(rootView, "Flagged Apps updated!", Snackbar.LENGTH_LONG).show();
+
+                startActivity(new Intent(getActivity(), HomeActivity.class));
             } else {
                 Snackbar.make(rootView, "Select at least One App!", Snackbar.LENGTH_SHORT).show();
             }
