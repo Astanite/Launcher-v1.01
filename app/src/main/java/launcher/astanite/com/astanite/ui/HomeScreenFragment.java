@@ -701,27 +701,28 @@ public class HomeScreenFragment extends Fragment implements TextWatcher {
             }
             else
             {
-                if(!isMyLauncherDefault())
-                {
                     if(getContext().getSharedPreferences(Constants.SHARED_PREFERENCES_NAME, MODE_PRIVATE).getBoolean("homeDefault", true)) {
-                        Log.e("goodcheck", "onResume: ");
-                        alertDialog = new AlertDialog.Builder(new ContextThemeWrapper(getContext(), R.style.Dtheme)).create();
-                        alertDialog.setTitle("Default home");
-                        alertDialog.setIcon(R.drawable.ic_security_black_24dp);
-                        alertDialog.setMessage("We recommend you to enable Astanite as your defualt Home App for the best experience. \n\nYou can always switch back to your current home app in settings :)");
-                        alertDialog.setCancelable(false);
-                        alertDialog.setButton(Dialog.BUTTON_POSITIVE, "Enable", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                startActivity(new Intent(Settings.ACTION_HOME_SETTINGS));
-                            }
-                        });
 
-                        alertDialog.show();
+                        if(isMyLauncherDefault()==false) {
+                            Log.e("goodcheck", "onResume: ");
 
-                        getContext().getSharedPreferences(Constants.SHARED_PREFERENCES_NAME, MODE_PRIVATE).edit().putBoolean("homeDefault", false).apply();
+                            alertDialog = new AlertDialog.Builder(new ContextThemeWrapper(getContext(), R.style.Dtheme)).create();
+                            alertDialog.setTitle("Default home");
+                            alertDialog.setIcon(R.drawable.ic_security_black_24dp);
+                            alertDialog.setMessage("We recommend you to enable Astanite as your defualt Home App for the best experience. \n\nYou can always switch back to your current home app in settings :)");
+                            alertDialog.setCancelable(false);
+                            alertDialog.setButton(Dialog.BUTTON_POSITIVE, "Enable", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    startActivity(new Intent(Settings.ACTION_HOME_SETTINGS));
+                                }
+                            });
+
+                            alertDialog.show();
+
+                            getContext().getSharedPreferences(Constants.SHARED_PREFERENCES_NAME, MODE_PRIVATE).edit().putBoolean("homeDefault", false).apply();
+                        }
                     }
-                }
             }
         }
 
