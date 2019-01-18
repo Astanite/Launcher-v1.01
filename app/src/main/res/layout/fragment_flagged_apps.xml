@@ -38,8 +38,8 @@
             android:layout_margin="16dp"
             android:src="@drawable/ic_save"
             android:layout_alignParentBottom="true"
-            android:tint="#000000"
-            android:backgroundTint="#afafaf"
+            android:tint="#ffffff"
+            android:backgroundTint="#3cb371"
             app:fabSize="normal"
             android:layout_alignParentRight="true" />
     </RelativeLayout>

@@ -5,9 +5,11 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.AppOpsManager;
 import android.app.Dialog;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
@@ -23,6 +25,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.ContextThemeWrapper;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -696,6 +699,30 @@ public class HomeScreenFragment extends Fragment implements TextWatcher {
                     targetSequence2.start();
                 }
             }
+            else
+            {
+                if(!isMyLauncherDefault())
+                {
+                    if(getContext().getSharedPreferences(Constants.SHARED_PREFERENCES_NAME, MODE_PRIVATE).getBoolean("homeDefault", true)) {
+                        Log.e("goodcheck", "onResume: ");
+                        alertDialog = new AlertDialog.Builder(new ContextThemeWrapper(getContext(), R.style.Dtheme)).create();
+                        alertDialog.setTitle("Default home");
+                        alertDialog.setIcon(R.drawable.ic_security_black_24dp);
+                        alertDialog.setMessage("We recommend you to enable Astanite as your defualt Home App for the best experience. \n\nYou can always switch back to your current home app in settings :)");
+                        alertDialog.setCancelable(false);
+                        alertDialog.setButton(Dialog.BUTTON_POSITIVE, "Enable", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                startActivity(new Intent(Settings.ACTION_HOME_SETTINGS));
+                            }
+                        });
+
+                        alertDialog.show();
+
+                        getContext().getSharedPreferences(Constants.SHARED_PREFERENCES_NAME, MODE_PRIVATE).edit().putBoolean("homeDefault", false).apply();
+                    }
+                }
+            }
         }
 
         if(mainViewModel.getCurrentMode().getValue() != 0)
@@ -886,5 +913,27 @@ public class HomeScreenFragment extends Fragment implements TextWatcher {
         } catch (PackageManager.NameNotFoundException e) {
             return false;
         }
+    }
+
+    boolean isMyLauncherDefault() {
+        final IntentFilter filter = new IntentFilter(Intent.ACTION_MAIN);
+        filter.addCategory(Intent.CATEGORY_HOME);
+
+        List<IntentFilter> filters = new ArrayList<IntentFilter>();
+        filters.add(filter);
+
+        final String myPackageName = getContext().getPackageName();
+        List<ComponentName> activities = new ArrayList<ComponentName>();
+        final PackageManager packageManager = (PackageManager) getContext().getPackageManager();
+
+        // You can use name of your package here as third argument
+        packageManager.getPreferredActivities(filters, activities, null);
+
+        for (ComponentName activity : activities) {
+            if (myPackageName.equals(activity.getPackageName())) {
+                return true;
+            }
+        }
+        return false;
     }
 }
