@@ -20,6 +20,7 @@ import java.util.Objects;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
+import kotlin.collections.IntIterator;
 import launcher.astanite.com.astanite.utils.Constants;
 
 public class BlockingAppService extends Service {
@@ -31,6 +32,8 @@ public class BlockingAppService extends Service {
     //private List<String> sleepModeApps;
     //private List<String> leisureModeApps;
     private List<String> setCurrentMode;
+    int flag = 0;
+    String prevapp = "Null";
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -40,7 +43,7 @@ public class BlockingAppService extends Service {
     @Override
     public void onCreate() {
         Log.e("Service Created", "onCreate: ");
-
+        Log.e("FlagValue", Integer.toString(flag));
         super.onCreate();
     }
 
@@ -56,9 +59,9 @@ public class BlockingAppService extends Service {
                 public void run() {
                     printForegroundTask();
                     Log.e("screen_on", "loop");
-                    handler.postDelayed(this, 1000);
+                    handler.postDelayed(this, 500);
                 }
-            }, 1000);
+            }, 500);
         }
         return START_STICKY;
     }
@@ -94,37 +97,26 @@ public class BlockingAppService extends Service {
 
         Log.e("TAG", "Current App in foreground is: " + currentApp);
 
-        if (!setCurrentMode.contains(currentApp)) {
-            Intent launchIntent = getPackageManager().getLaunchIntentForPackage("launcher.astanite.com.astanite");
-            if (launchIntent != null) {
-                startActivity(launchIntent);
-            }
-            //focusModeApps = new ArrayList<>(sp.getStringSet(Constants.KEY_FOCUS_APPS, new HashSet<>()));
-            //sleepModeApps = new ArrayList<>(sp.getStringSet(Constants.KEY_SLEEP_APPS, new HashSet<>()));
-            //leisureModeApps = new ArrayList<>(sp.getStringSet(Constants.KEY_MY_MODE_APPS, new HashSet<>()));
+        if(currentApp.equals(prevapp))
+        {
+            flag++;
+        }
+        else {
+            flag = 0;
+        }
 
-        /*int curr_mode = sp.getInt(Constants.KEY_CURRENT_MODE, Constants.MODE_NONE);
-        setActiveModeButton(curr_mode);
-        setCurrentMode.add("launcher.astanite.com.astanite");*/
+        prevapp = currentApp;
 
-        /*int check_count = 0;
-        for (String focus : setCurrentMode) {
-            //if package name matches, no problem
-            //else execute below code
-            if (!currentApp.equals(focus)) {
-                //increase the counter
-                Log.i("app_not_allowed", focus);
-                check_count++;
-            } else
-                break;                                         //current app matched focus Mode app
-            if (check_count == setCurrentMode.size()) {
-                Log.i("Block Current app ", currentApp); //blocking the current app by showing an activity
+        if(flag <3)
+        {
+            Log.e("Check Triggered", "printForegroundTask: " );
+            if (!setCurrentMode.contains(currentApp)) {
                 Intent launchIntent = getPackageManager().getLaunchIntentForPackage("launcher.astanite.com.astanite");
                 if (launchIntent != null) {
-                    startActivity(launchIntent);//null pointer check in case package name was not found
+                    startActivity(launchIntent);
                 }
+
             }
-        }*/
         }
     }
 
