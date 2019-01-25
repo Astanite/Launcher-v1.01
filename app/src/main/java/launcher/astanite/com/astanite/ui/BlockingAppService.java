@@ -59,9 +59,9 @@ public class BlockingAppService extends Service {
                 public void run() {
                     printForegroundTask();
                     Log.e("screen_on", "loop");
-                    handler.postDelayed(this, 500);
+                    handler.postDelayed(this, 800);
                 }
-            }, 500);
+            }, 800);
         }
         return START_STICKY;
     }
@@ -107,7 +107,7 @@ public class BlockingAppService extends Service {
 
         prevapp = currentApp;
 
-        if(flag <3)
+        if(flag <5)
         {
             Log.e("Check Triggered", "printForegroundTask: " );
             if (!setCurrentMode.contains(currentApp)) {
