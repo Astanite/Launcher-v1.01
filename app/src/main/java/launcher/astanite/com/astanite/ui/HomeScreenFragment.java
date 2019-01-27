@@ -731,6 +731,10 @@ public class HomeScreenFragment extends Fragment implements TextWatcher {
         {
             progressBar.setProgress(calculateprogress());
         }
+        else
+        {
+            progressBar.setProgress(0);
+        }
 
         int apparentMode = mainViewModel.getCurrentMode().getValue();
         int actualMode = sharedPreferences.getInt(Constants.KEY_CURRENT_MODE, Constants.MODE_NONE);
