@@ -156,6 +156,18 @@
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginTop="90dp"/>
 
+    <TextView
+        android:id="@+id/waitinfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textColor="#ffffff"
+        android:textSize="30dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="400dp"/>
+
     <View
         android:id="@+id/answerblank"
         android:layout_width="120dp"

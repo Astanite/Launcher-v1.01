@@ -39,10 +39,11 @@ public class TimerFragment extends Fragment {
     ConstraintLayout keypad;
     View answerblank;
 
-    public int d=3,ans=0,count = 0,correct=0;
+    public int ans=0,count = 0,correct=0;
+    public float d = 2;
     public int desired;
     public long stime, dtime, delay=15000;
-    public TextView tv,timer,overtv;
+    public TextView tv,timer,overtv, waitinfo;
 
     public TimerFragment() {
         // Required empty public constructor
@@ -113,6 +114,7 @@ public class TimerFragment extends Fragment {
         keypad = view.findViewById(R.id.keypad);
         answerblank = view.findViewById(R.id.answerblank);
         info = view.findViewById(R.id.info);
+        waitinfo = view.findViewById(R.id.waitinfo);
 
         et = view.findViewById(R.id.answerblanktv);
         tv = view.findViewById(R.id.tv);
@@ -258,10 +260,16 @@ public class TimerFragment extends Fragment {
 
                         //Increasing or decreasing difficulty
                         {
-                            if (time > 30 && d > 1)
-                                d--;
+                            if (time > 20)
+                            {
+                                if(d>1.8)
+                                {
+                                    d = d-0.8f;
+                                }
+
+                            }
                             else if (d < 6)
-                                d++;
+                                d = d+0.5f;
                         }
 
                         savediff(d);
@@ -280,11 +288,13 @@ public class TimerFragment extends Fragment {
 
                                 visible();
                                 et.setText("");
+                                waitinfo.setText("");
                                 correct=question();
                             }
 
                             public void onTick(long millisUntilFinished) {
                                 et.setText("00 : " + millisUntilFinished / 1000);
+                                waitinfo.setText(Integer.toString(desired-count) + " MORE TO GO");
 
                             }
                         }.start();
@@ -315,20 +325,20 @@ public class TimerFragment extends Fragment {
 
 
 
-    public void savediff(int d)
+    public void savediff(float d)
     {
         SharedPreferences sharedpref = getContext().getSharedPreferences("difficulty", Context.MODE_PRIVATE);
 
         SharedPreferences.Editor editor = sharedpref.edit();
-        editor.putInt("diff", d);
+        editor.putFloat("diff", d);
         editor.apply();
     }
 
     //Function to get difficulty
-    public int getdiff()
+    public float getdiff()
     {
         SharedPreferences sharedpref = getContext().getSharedPreferences("difficulty", Context.MODE_PRIVATE);
-        int temp = sharedpref.getInt("diff",2);
+        float temp = sharedpref.getFloat("diff",2f);
         return temp;
     }
 
@@ -447,8 +457,9 @@ public class TimerFragment extends Fragment {
     // Main function to supply questions
     public int question()
     {
+        Log.e("Difficulty",Integer.toString(Math.round(d)) );
         int correct=0;
-        switch (d)
+        switch (Math.round(d))
         {
             case 1: correct= level1(); break;
             case 2: correct= level2(); break;
@@ -456,6 +467,7 @@ public class TimerFragment extends Fragment {
             case 4: correct= level4(); break;
             case 5: correct= level5(); break;
             case 6: correct= level6(); break;
+            default: correct= level2(); break;
         }
 
         stime = System.currentTimeMillis();
