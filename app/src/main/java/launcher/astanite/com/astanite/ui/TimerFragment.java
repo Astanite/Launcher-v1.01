@@ -328,7 +328,7 @@ public class TimerFragment extends Fragment {
     public int getdiff()
     {
         SharedPreferences sharedpref = getContext().getSharedPreferences("difficulty", Context.MODE_PRIVATE);
-        int temp = sharedpref.getInt("diff",3);
+        int temp = sharedpref.getInt("diff",2);
         return temp;
     }
 

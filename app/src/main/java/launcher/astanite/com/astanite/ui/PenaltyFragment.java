@@ -179,7 +179,7 @@ public class PenaltyFragment extends Fragment {
             mins = mins%60;
 
             int tempbar = seekBar.getProgress();
-            exitl = tempbar/14;
+            exitl = tempbar/20;
 
 
 

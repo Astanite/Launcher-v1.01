@@ -561,7 +561,8 @@ public class HomeScreenFragment extends Fragment implements TextWatcher {
         long currentTime = System.currentTimeMillis();
         long enteredTime = mainViewModel.getTimeOfEnteringMode();
         long delta = currentTime - enteredTime;
-        if (delta < mainViewModel.getModeTime() && delta != 0) {
+        if (delta < mainViewModel.getModeTime() && delta != 0 && getDesired()>0) {
+            Log.e("DESIRED", Integer.toString(getDesired()));
             timerScreenListener.showTimer();
         } else {
             getContext().stopService(new Intent(getContext(), BlockingAppService.class));
@@ -914,6 +915,13 @@ public class HomeScreenFragment extends Fragment implements TextWatcher {
         } catch (PackageManager.NameNotFoundException e) {
             return false;
         }
+    }
+
+    public int getDesired()
+    {
+        SharedPreferences sharedpref = getContext().getSharedPreferences("difficulty", Context.MODE_PRIVATE);
+        int temp = sharedpref.getInt("getdesired",1);
+        return temp;
     }
 
     boolean isMyLauncherDefault() {
