@@ -42,6 +42,9 @@
                 android:textColor="#878787"
                 android:textColorHint="#878787"
                 android:maxLength="30"
+                android:maxLines="1"
+                android:minLines="1"
+                android:singleLine="true"
                 android:textSize="18sp" />
         </androidx.cardview.widget.CardView>
 
