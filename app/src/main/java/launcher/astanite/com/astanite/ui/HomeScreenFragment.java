@@ -634,13 +634,13 @@ public class HomeScreenFragment extends Fragment implements TextWatcher {
                             .descriptionTextSize(16).titleTextColor(R.color.colorWhite).descriptionTextColor(R.color.colorWhite)
                             .descriptionTextAlpha(0.9f);
 
-                    TapTarget tAnalytics = TapTarget.forView(HomeActivity.ivDataAnal, "Analytics", "Astanite helps you understand your smartphone usage pattern, so that you can develop better smartphone habits.")
+                    /*TapTarget tAnalytics = TapTarget.forView(HomeActivity.ivDataAnal, "Analytics", "Astanite helps you understand your smartphone usage pattern, so that you can develop better smartphone habits.")
                             .cancelable(false).dimColor(R.color.colorBlack).tintTarget(false).outerCircleAlpha(0f)
                             .outerCircleColor(R.color.colorBlack).targetCircleColor(R.color.transparent).titleTextSize(25)
                             .descriptionTextSize(16).titleTextColor(R.color.colorWhite).descriptionTextColor(R.color.colorWhite)
-                            .descriptionTextAlpha(0.9f);
+                            .descriptionTextAlpha(0.9f);*/
 
-                    targetSequence = new TapTargetSequence(getActivity()).targets(tIntention, tAnalytics)
+                    targetSequence = new TapTargetSequence(getActivity()).targets(tIntention)//, tAnalytics)
                             .listener(new TapTargetSequence.Listener() {
                                 @Override
                                 public void onSequenceFinish() {
@@ -649,9 +649,9 @@ public class HomeScreenFragment extends Fragment implements TextWatcher {
 
                                 @Override
                                 public void onSequenceStep(TapTarget lastTarget, boolean targetClicked) {
-                                    if (lastTarget == tAnalytics) {
+                                    /*if (lastTarget == tAnalytics) {
                                         HomeActivity.ivDataAnal.performClick();
-                                    }
+                                    }*/
                                 }
 
                                 @Override
