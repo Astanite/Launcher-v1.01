@@ -36,6 +36,7 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.viewpager.widget.ViewPager;
 import launcher.astanite.com.astanite.R;
 import launcher.astanite.com.astanite.ui.settings.FlaggedAppsFragment;
+import launcher.astanite.com.astanite.ui.settings.SettingsActivity;
 import launcher.astanite.com.astanite.ui.settings.SettingsViewModel;
 import launcher.astanite.com.astanite.utils.Constants;
 
@@ -88,7 +89,10 @@ public class IntroActivity extends AppCompatActivity {
                     Toast.makeText(IntroActivity.this, "Welcome " + currentUser.getDisplayName() + '!', Toast.LENGTH_SHORT).show();
                     mlogin.setVisibility(View.GONE);
                     //Login successful now move to homeActivity
-                    Intent intent = new Intent(IntroActivity.this, HomeActivity.class);
+                    /*Intent intent = new Intent(IntroActivity.this, HomeActivity.class);
+                    startActivity(intent);*/
+
+                    Intent intent = new Intent(IntroActivity.this, SettingsActivity.class);
                     startActivity(intent);
                 } else {
                     mlogin.setVisibility(View.VISIBLE);

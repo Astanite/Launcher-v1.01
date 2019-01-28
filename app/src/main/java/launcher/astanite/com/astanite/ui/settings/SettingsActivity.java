@@ -2,6 +2,7 @@ package launcher.astanite.com.astanite.ui.settings;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Display;
 import android.view.Window;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -33,24 +34,32 @@ public class SettingsActivity extends AppCompatActivity {
         flaggedAppsFragment = new FlaggedAppsFragment();
         ModesListFragment modesListFragment = new ModesListFragment();
 
-        int tempKey = ((MyApplication) this.getApplication()).getSettingsmode();
-
-        if(tempKey != Constants.MODE_NONE)
+        if(getSharedPreferences(Constants.SHARED_PREFERENCES_NAME, MODE_PRIVATE).getBoolean("settingsinstall",true))
         {
-            settingsViewModel.currentFragment.postValue(Constants.FRAGMENT_FLAGGED_APPS);
-            settingsViewModel.currentMode.setValue(tempKey);
+            settingsViewModel.currentFragment.setValue(Constants.FRAGMENT_DISTRACTIVE_APPS);
+            settingsViewModel.currentMode.setValue(Constants.DISTRACTIVE_APP);
+        } else {
+            int tempKey = ((MyApplication) this.getApplication()).getSettingsmode();
+
+            if(tempKey != Constants.MODE_NONE)
+            {
+                settingsViewModel.currentFragment.postValue(Constants.FRAGMENT_FLAGGED_APPS);
+                settingsViewModel.currentMode.setValue(tempKey);
+            }
+            else if (savedInstanceState == null) {
+                // 0 for ModesList Fragment
+                // 1 for Settings Fragment
+                // 2 for FlaggedAppsFragment
+                // 3 for FlaggedContactsFragment
+                settingsViewModel.currentFragment.setValue(Constants.FRAGMENT_MODES);
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.settingsContainer, modesListFragment)
+                        .commit();
+            }
         }
-        else if (savedInstanceState == null) {
-            // 0 for ModesList Fragment
-            // 1 for Settings Fragment
-            // 2 for FlaggedAppsFragment
-            // 3 for FlaggedContactsFragment
-            settingsViewModel.currentFragment.setValue(Constants.FRAGMENT_MODES);
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.settingsContainer, modesListFragment)
-                    .commit();
-        }
+
+
 
         settingsViewModel.currentFragment
                 .observe(this, currentFragment -> {

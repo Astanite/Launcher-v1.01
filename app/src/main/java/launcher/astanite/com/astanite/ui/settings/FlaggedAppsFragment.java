@@ -1,7 +1,10 @@
 package launcher.astanite.com.astanite.ui.settings;
 
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -9,11 +12,13 @@ import android.graphics.PorterDuff;
 import android.graphics.SweepGradient;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -37,6 +42,8 @@ import launcher.astanite.com.astanite.data.MyApplication;
 import launcher.astanite.com.astanite.ui.HomeActivity;
 import launcher.astanite.com.astanite.utils.Constants;
 
+import static android.content.Context.MODE_PRIVATE;
+
 public class FlaggedAppsFragment extends Fragment {
 
     private static final String TAG = FlaggedAppsFragment.class.getSimpleName();
@@ -46,6 +53,7 @@ public class FlaggedAppsFragment extends Fragment {
     private FloatingActionButton fab_save;
     private CardView cv_focus, cv_sleep, cv_leisure;
     private ImageView ivFocus, ivSleep, ivLeisure;
+    private TextView heading;
 
     public FlaggedAppsFragment() {
         // Required empty public constructor
@@ -97,7 +105,30 @@ public class FlaggedAppsFragment extends Fragment {
         ivLeisure = view.findViewById(R.id.iv_leisure);
         fab_save = view.findViewById(R.id.fab_save);
         LinearLayout mode_switcher = view.findViewById(R.id.ll_modes_switch);
-        if (!isDist) mode_switcher.setVisibility(View.VISIBLE); // visibility of the view is set to gone in xml.
+        if (!isDist)
+        {
+            mode_switcher.setVisibility(View.VISIBLE); // visibility of the view is set to gone in xml.
+        } else {
+            heading = view.findViewById(R.id.tv_app_selection);
+            heading.setText("Distractive Apps");
+
+            if(getContext().getSharedPreferences(Constants.SHARED_PREFERENCES_NAME,Context.MODE_PRIVATE).getBoolean("settingsinstall",true))
+            {
+                final AlertDialog alertDialog = new AlertDialog.Builder(new ContextThemeWrapper(getContext(), R.style.Dtheme)).create();
+                alertDialog.setTitle("Distractive Apps");
+                alertDialog.setIcon(R.drawable.ic_assignment_turned_in_black_24dp);
+                alertDialog.setMessage("Select the apps that you find most distractive. Astanite will help you decrease thier usage  :)");
+                alertDialog.setButton(Dialog.BUTTON_POSITIVE, "OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        alertDialog.cancel();
+                    }
+                });
+
+                alertDialog.show();
+                getContext().getSharedPreferences(Constants.SHARED_PREFERENCES_NAME,Context.MODE_PRIVATE).edit().putBoolean("AppdrawerInstall",false).apply();
+            }
+        }
 
         flaggedAppsAdapter = new FlaggedAppsAdapter(new ArrayList<>(), Glide.with(getContext()));
         GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 4);
@@ -147,6 +178,8 @@ public class FlaggedAppsFragment extends Fragment {
                 List<AppInfo> flaggedApps = flaggedAppsAdapter.getCheckedApps();
                 settingsViewModel.saveFlaggedApps(flaggedApps);
                 Snackbar.make(rootView, "Flagged Apps updated!", Snackbar.LENGTH_LONG).show();
+
+                getActivity().getSharedPreferences(Constants.SHARED_PREFERENCES_NAME, MODE_PRIVATE).edit().putBoolean("settingsinstall",false).apply();
 
                 startActivity(new Intent(getActivity(), HomeActivity.class));
             } else {
@@ -215,7 +248,7 @@ public class FlaggedAppsFragment extends Fragment {
                 break;
         }
 
-        SharedPreferences prefs = getContext().getSharedPreferences(Constants.SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
+        SharedPreferences prefs = getContext().getSharedPreferences(Constants.SHARED_PREFERENCES_NAME, MODE_PRIVATE);
         Set<String> hashSet = prefs.getStringSet(key, new HashSet<>());
 
             for(int j=0; j<appslist.size(); j++)
