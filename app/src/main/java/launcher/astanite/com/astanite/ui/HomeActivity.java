@@ -394,15 +394,15 @@ public class HomeActivity extends AppCompatActivity implements
             closeAppDrawer();
             mainViewModel.isAppDrawerOpen.setValue(false);
         } else if (mainViewModel.isPenaltyScreenOpen) {
-            if(((MyApplication)getApplication()).getPenaltymode() == false)
-            {
+            //if(((MyApplication)getApplication()).getPenaltymode() == false)
+            //{
                 showHomeScreen();
                 mainViewModel.isPenaltyScreenOpen = false;
-            }
-            else
-            {
-                ((MyApplication)getApplication()).setPenaltymode(false);
-            }
+            //}
+            //else
+            //{
+            //    ((MyApplication)getApplication()).setPenaltymode(false);
+            //}
         }
         if (mainViewModel.isAnalysisOpen.getValue()){
             showHomeScreen();
@@ -412,6 +412,17 @@ public class HomeActivity extends AppCompatActivity implements
         {
             showHomeScreen();
             mainViewModel.isTimerOpen = false;
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(((MyApplication)getApplication()).getPenaltymode() == true )
+        {
+            Log.e("MODECHECK", "onResume: " );
+            showPenaltyScreen(((MyApplication)getApplication()).getSettingsmode());
+            ((MyApplication)getApplication()).setPenaltymode(false);
         }
     }
 

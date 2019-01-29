@@ -760,6 +760,9 @@ public class HomeScreenFragment extends Fragment implements TextWatcher {
                     ivExitLeisure.performClick();
                     ivExitLeisure.setVisibility(View.GONE);
                     break;
+                case Constants.MODE_NONE:
+                    Log.e("Oh", "yes ");
+                    break;
             }
         }
     }
