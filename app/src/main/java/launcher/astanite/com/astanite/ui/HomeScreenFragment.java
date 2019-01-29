@@ -642,11 +642,24 @@ public class HomeScreenFragment extends Fragment implements TextWatcher {
                             .descriptionTextSize(16).titleTextColor(R.color.colorWhite).descriptionTextColor(R.color.colorWhite)
                             .descriptionTextAlpha(0.9f);*/
 
-                    targetSequence = new TapTargetSequence(getActivity()).targets(tIntention)//, tAnalytics)
+                    TapTarget tmodes = TapTarget.forView(iv_Mode, "Modes", "Astanite encourage you to leave all the distractions behind and do the things you love the most.")
+                            .cancelable(false).dimColor(R.color.colorBlack).tintTarget(false).outerCircleAlpha(0f)
+                            .outerCircleColor(R.color.colorBlack).targetCircleColor(R.color.transparent).titleTextSize(25)
+                            .descriptionTextSize(16).titleTextColor(R.color.colorWhite).descriptionTextColor(R.color.colorWhite)
+                            .descriptionTextAlpha(0.9f);
+
+                    TapTarget tmodes2 = TapTarget.forView(iv_Mode, "Tailored for you!", "Customize Focus, Sleep and Leisure Mode according to what you need.")
+                            .cancelable(false).dimColor(R.color.colorBlack).tintTarget(false).outerCircleAlpha(0f)
+                            .outerCircleColor(R.color.colorBlack).targetCircleColor(R.color.transparent).titleTextSize(25)
+                            .descriptionTextSize(16).titleTextColor(R.color.colorWhite).descriptionTextColor(R.color.colorWhite)
+                            .descriptionTextAlpha(0.9f);
+
+                    targetSequence = new TapTargetSequence(getActivity()).targets(tIntention, tmodes, tmodes2)//, tAnalytics)
                             .listener(new TapTargetSequence.Listener() {
                                 @Override
                                 public void onSequenceFinish() {
                                     getContext().getSharedPreferences(Constants.SHARED_PREFERENCES_NAME, MODE_PRIVATE).edit().putBoolean("homeInstall1", false).apply();
+                                    Toast.makeText(getContext(), "You're ready to go!", Toast.LENGTH_LONG).show();
                                 }
 
                                 @Override
@@ -654,6 +667,11 @@ public class HomeScreenFragment extends Fragment implements TextWatcher {
                                     /*if (lastTarget == tAnalytics) {
                                         HomeActivity.ivDataAnal.performClick();
                                     }*/
+
+                                    if(lastTarget == tmodes || lastTarget == tmodes2)
+                                    {
+                                        iv_Mode.performClick();
+                                    }
                                 }
 
                                 @Override
@@ -667,7 +685,7 @@ public class HomeScreenFragment extends Fragment implements TextWatcher {
             }
             else if(getContext().getSharedPreferences(Constants.SHARED_PREFERENCES_NAME, MODE_PRIVATE).getBoolean("homeInstall2", true))
             {
-                if(targetSequence2==null) {
+                /*if(targetSequence2==null) {
                     TapTarget tmodes = TapTarget.forView(iv_Mode, "Modes", "Astanite encourage you to leave all the distractions behind and do the things you love the most.")
                             .cancelable(false).dimColor(R.color.colorBlack).tintTarget(false).outerCircleAlpha(0f)
                             .outerCircleColor(R.color.colorBlack).targetCircleColor(R.color.transparent).titleTextSize(25)
@@ -700,7 +718,7 @@ public class HomeScreenFragment extends Fragment implements TextWatcher {
                             });
 
                     targetSequence2.start();
-                }
+                }*/
             }
             else
             {

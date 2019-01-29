@@ -30,6 +30,8 @@ public class DataReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         Log.e("TAG", "onReceive: " );
 
+        context.getSharedPreferences(Constants.SHARED_PREFERENCES_NAME, MODE_PRIVATE).edit().putBoolean("NewData?", true).apply();
+
         flagapp = new ArrayList<>();
         flagapp.addAll(context.getSharedPreferences(Constants.SHARED_PREFERENCES_NAME, MODE_PRIVATE).getStringSet(Constants.KEY_DISTRACTIVE_APPS, new HashSet<>()));
 
@@ -193,6 +195,10 @@ public class DataReceiver extends BroadcastReceiver {
     //Function to save totaltime for thisindex
     public void savetotaltime(int thisindex, float time, Context context)
     {
+        if(time>10)
+        {
+            time =10;
+        }
         SharedPreferences sharedpref = context.getSharedPreferences("datalysis", Context.MODE_PRIVATE);
 
         SharedPreferences.Editor editor = sharedpref.edit();
@@ -204,6 +210,11 @@ public class DataReceiver extends BroadcastReceiver {
     //function to save flagtime for thisindex
     public void saveflagtime(int thisindex, float time, Context context )
     {
+
+        if(time>10)
+        {
+            time = 10;
+        }
         SharedPreferences sharedpref = context.getSharedPreferences("datalysis", Context.MODE_PRIVATE);
 
         SharedPreferences.Editor editor = sharedpref.edit();

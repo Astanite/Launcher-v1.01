@@ -21,6 +21,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.getkeepsafe.taptargetview.TapTarget;
+import com.getkeepsafe.taptargetview.TapTargetView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
@@ -62,6 +64,7 @@ public class HomeActivity extends AppCompatActivity implements
     private CoordinatorLayout rootView;
     private BroadCastReceiver receiver = new BroadCastReceiver(this);
     private boolean AppDrawerStateOpen = false;
+    private TapTargetView tapTargetView;
 
     @Override
     protected void onStart() {
@@ -423,6 +426,25 @@ public class HomeActivity extends AppCompatActivity implements
             Log.e("MODECHECK", "onResume: " );
             showPenaltyScreen(((MyApplication)getApplication()).getSettingsmode());
             ((MyApplication)getApplication()).setPenaltymode(false);
+        }
+        else if(getApplicationContext().getSharedPreferences(Constants.SHARED_PREFERENCES_NAME, MODE_PRIVATE).getBoolean("NewData?", false))
+        {
+            if(tapTargetView == null) {
+                tapTargetView.showFor(this,
+                        TapTarget.forView(ivDataAnal, "Analytics", "Click here to view your yesterday's Smartphone usage!")
+                                .cancelable(false).dimColor(R.color.colorBlack).tintTarget(false).outerCircleAlpha(0f)
+                                .outerCircleColor(R.color.colorBlack).targetCircleColor(R.color.transparent).titleTextSize(25)
+                                .descriptionTextSize(16).titleTextColor(R.color.colorWhite).descriptionTextColor(R.color.colorWhite)
+                                .descriptionTextAlpha(0.9f),
+                        new TapTargetView.Listener() {
+                            @Override
+                            public void onTargetClick(TapTargetView view) {
+                                super.onTargetClick(view);
+                                ivDataAnal.performClick();
+                                getBaseContext().getSharedPreferences(Constants.SHARED_PREFERENCES_NAME,MODE_PRIVATE).edit().putBoolean("NewData?", false).apply();
+                            }
+                        });
+            }
         }
     }
 
