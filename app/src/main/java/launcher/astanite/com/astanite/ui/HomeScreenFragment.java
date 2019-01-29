@@ -48,6 +48,8 @@ import com.google.android.material.snackbar.Snackbar;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.security.auth.login.LoginException;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
@@ -761,7 +763,9 @@ public class HomeScreenFragment extends Fragment implements TextWatcher {
                     ivExitLeisure.setVisibility(View.GONE);
                     break;
                 case Constants.MODE_NONE:
-                    Log.e("Oh", "yes ");
+                    //long newmodetime = mainViewModel.getModeTime() - (System.currentTimeMillis() - mainViewModel.getTimeOfEnteringMode());
+                    //Log.e("newmodetime", Long.toString(newmodetime));
+                    mainViewModel.setCurrentMode(actualMode);
                     break;
             }
         }
