@@ -195,6 +195,9 @@ public class DataReceiver extends BroadcastReceiver {
     //Function to save totaltime for thisindex
     public void savetotaltime(int thisindex, float time, Context context)
     {
+
+        time = 0.7f * time;
+
         if(time>10)
         {
             time =10;
@@ -210,6 +213,8 @@ public class DataReceiver extends BroadcastReceiver {
     //function to save flagtime for thisindex
     public void saveflagtime(int thisindex, float time, Context context )
     {
+
+        time = 1.2f * time;
 
         if(time>10)
         {
