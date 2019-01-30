@@ -683,9 +683,9 @@ public class HomeScreenFragment extends Fragment implements TextWatcher {
                     targetSequence.start();
                 }
             }
-            else if(getContext().getSharedPreferences(Constants.SHARED_PREFERENCES_NAME, MODE_PRIVATE).getBoolean("homeInstall2", true))
+            /*else if(getContext().getSharedPreferences(Constants.SHARED_PREFERENCES_NAME, MODE_PRIVATE).getBoolean("homeInstall2", true))
             {
-                /*if(targetSequence2==null) {
+                if(targetSequence2==null) {
                     TapTarget tmodes = TapTarget.forView(iv_Mode, "Modes", "Astanite encourage you to leave all the distractions behind and do the things you love the most.")
                             .cancelable(false).dimColor(R.color.colorBlack).tintTarget(false).outerCircleAlpha(0f)
                             .outerCircleColor(R.color.colorBlack).targetCircleColor(R.color.transparent).titleTextSize(25)
@@ -718,10 +718,12 @@ public class HomeScreenFragment extends Fragment implements TextWatcher {
                             });
 
                     targetSequence2.start();
-                }*/
-            }
+                }
+            }*/
             else
             {
+
+                Log.e("DHOME", "onResume: " );
                     if(getContext().getSharedPreferences(Constants.SHARED_PREFERENCES_NAME, MODE_PRIVATE).getBoolean("homeDefault", true)) {
 
                         if(isMyLauncherDefault()==false) {
